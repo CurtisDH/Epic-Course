@@ -1,31 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
 
 public class AIBase : MonoBehaviour
 {
-    NavMeshAgent agent;
+    NavMeshAgent _agent;
     public float health;
-    public int warFund;
+    [SerializeField]
+    protected int warFund; // How much money is awarded for killing the enemy. // Might add my own twist to the income. 
+    // Reason for protected - Allows for inherited scripts to access warFund. Not sure if required currently.
     private void Start()
     {
-        if (GetComponent<NavMeshAgent>() != null) 
+        if (GetComponent<NavMeshAgent>() != null) //Checks if there is a navmesh agent..
         {
-            agent = GetComponent<NavMeshAgent>();
+            _agent = GetComponent<NavMeshAgent>();
         }
-        else // If there is no NavmeshAgent then create one.
+        else // ..If there is no NavmeshAgent then create one.
         {
             gameObject.AddComponent<NavMeshAgent>();
-            agent = GetComponent<NavMeshAgent>();
+            _agent = GetComponent<NavMeshAgent>();
         }
-        MoveTo(GameObject.Find("Base").transform.position);
+        MoveTo(GameObject.Find("Base").transform.position); // temp for testing movement.
     }
 
     public void MoveTo(Vector3 position)
     {
-        agent.SetDestination(position);
+        _agent.SetDestination(position);
     }
 
 
