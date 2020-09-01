@@ -10,7 +10,7 @@ public class Mech2 : AIBase
     }
     public override void onDeath()
     {
-        throw new System.NotImplementedException();
+        base.onDeath();
     }
 
 

@@ -8,9 +8,9 @@ public class SpawnManager : MonoBehaviour
     private static SpawnManager _instance;
     public static SpawnManager Instance
     {
-        get 
+        get
         {
-            if(_instance == null)
+            if (_instance == null)
             {
                 Debug.Log("SpawnManager Instance is NULL.. Attempting to lazy instantiate ");
                 var SpawnManager = new GameObject("SpawnManager");
@@ -20,9 +20,6 @@ public class SpawnManager : MonoBehaviour
             return _instance;
         }
     }
-
-
-
     [SerializeField]
     GameObject[] Enemies;
     [SerializeField]
@@ -41,14 +38,43 @@ public class SpawnManager : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(SpawnRoutine());
+        CreateWave();
     }
-    IEnumerator SpawnRoutine() 
+    IEnumerator SpawnRoutine()
     {
-        for(int i = 0; i < Wave.Count; i++)
+        for (int i = 0; i < Wave.Count; i++)
         {
+            Debug.Log(Wave.Count);
+            Debug.Log("test");
             yield return new WaitForSeconds(timeBetweenWave);
-            var enemy = Instantiate(Enemies[Random.Range(0, Enemies.Length)]); // might change to create a spawn list of enemies which are randomly defined for that wave.
+            Debug.Log("test1");
+            if (PoolManager.Instance.PooledObjects.Count == 0)
+            {
+                var enemy = Instantiate(Enemies[Random.Range(0, Enemies.Length)]); // might change to create a spawn list of enemies which are randomly defined for that wave.
+                SpawnEnemy(enemy);
+            }
+            else
+            {
+                SpawnEnemy(PoolManager.Instance.PooledObjects[0]);
+                PoolManager.Instance.PooledObjects.RemoveAt(0);
+            }
+
+
+        }
+        while (true)
+        {
+            yield return new WaitForSeconds(2);
+            if (GameObject.Find("EnemyContainer").transform.childCount == 0)
+            {
+                //Display wave complete?
+                Debug.Log("EnemyContainer empty.. Spawning new Wave");
+                CreateWave();
+                break;
+            }
+        }
+        void SpawnEnemy(GameObject enemy)
+        {
+            enemy.SetActive(true);
             enemy.transform.position = StartPos;
             if (enemy.GetComponent<AIBase>())
             {
@@ -62,30 +88,29 @@ public class SpawnManager : MonoBehaviour
                 Debug.LogError("Couldn't find Component AIBase");
             }
         }
-        while (true)
-        {
-            yield return new WaitForSeconds(2);
-            if (GameObject.Find("EnemyContainer").transform.childCount == 0)
-            {
-                //Display wave complete?
-                Debug.Log("EnemyContainer empty.. Spawning new Wave");
-                CreateWave();
-                break;
-            }
-        }
-
     }
 
     void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
     {
         CurrentWave++;
         Wave.Clear();
-        for(int i = 0; i < (AmountToSpawn * CurrentWave); i++)
+        for (int i = 0; i < (AmountToSpawn * CurrentWave); i++)
         {
             Wave.Add(Enemies[Random.Range(0, Enemies.Length)]);
         }
         StartCoroutine(SpawnRoutine());
     }
 
+
+
+    //TEMP
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            GameObject.Find("EnemyContainer").transform.GetChild(0).GetComponent<AIBase>().onDeath();
+        }
+    }
 
 }

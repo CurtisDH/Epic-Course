@@ -51,14 +51,13 @@ public abstract class AIBase : MonoBehaviour
 
             }
         }
-
-
-
-        
     }
 
-    public abstract void onDeath();
-
-
-
+    public virtual void onDeath()
+    {
+        PoolManager.Instance.PooledObjects.Add(this.gameObject); // haven't setup animation transitions yet.
+        this.gameObject.transform.parent = null;
+        //play death animation and then setactive false, then recyle the gameobj;
+        this.gameObject.SetActive(false);
+    }
 }
