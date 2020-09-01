@@ -5,7 +5,24 @@ using UnityEngine.AI;
 
 public class SpawnManager : MonoBehaviour
 {
-    //TO-DO CONVERT TO SINGLETON
+    private static SpawnManager _instance;
+    public static SpawnManager Instance
+    {
+        get 
+        {
+            if(_instance == null)
+            {
+                Debug.Log("SpawnManager Instance is NULL.. Attempting to lazy instantiate ");
+                var SpawnManager = new GameObject("SpawnManager");
+                SpawnManager.AddComponent<SpawnManager>();
+                Debug.Log("Created a SpawnManager");
+            }
+            return _instance;
+        }
+    }
+
+
+
     [SerializeField]
     GameObject[] Enemies;
     [SerializeField]
@@ -18,6 +35,10 @@ public class SpawnManager : MonoBehaviour
 
     float timeBetweenWave = 2f;
 
+    private void Awake()
+    {
+        _instance = this;
+    }
     private void Start()
     {
         StartCoroutine(SpawnRoutine());
@@ -40,7 +61,6 @@ public class SpawnManager : MonoBehaviour
             {
                 Debug.LogError("Couldn't find Component AIBase");
             }
-            
         }
         while (true)
         {
@@ -65,8 +85,6 @@ public class SpawnManager : MonoBehaviour
             Wave.Add(Enemies[Random.Range(0, Enemies.Length)]);
         }
         StartCoroutine(SpawnRoutine());
-        
-
     }
 
 
