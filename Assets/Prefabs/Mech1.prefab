@@ -285,7 +285,7 @@ MonoBehaviour:
   health: 0
   speed: 3.5
   AICollision: 0
-  _warFund: 0
+  _warFund: 25
 --- !u!65 &5506511887496755999
 BoxCollider:
   m_ObjectHideFlags: 0
