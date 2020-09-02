@@ -8,6 +8,9 @@ public abstract class AIBase : MonoBehaviour
     public float health;
     public float speed;
     [SerializeField]
+    bool AICollision = true; // When set to true - AI Will not be able to walk through eachother.
+
+    [SerializeField]
     private int _warFund;
     public int WarFund
     {
@@ -16,6 +19,8 @@ public abstract class AIBase : MonoBehaviour
             return _warFund;
         }
     }
+
+
     // How much money is awarded for killing the enemy.         //Make this value protected??
     // Might add my own twist to the income. replacing this feature.
     // Might influence warfund based on how far the enemy has made it into the course;
@@ -31,6 +36,14 @@ public abstract class AIBase : MonoBehaviour
         {
             gameObject.AddComponent<NavMeshAgent>();
             _agent = GetComponent<NavMeshAgent>();
+        }
+        if(AICollision == true)
+        {
+            _agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        }
+        else
+        {
+            _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         }
         _agent.speed = speed;
 

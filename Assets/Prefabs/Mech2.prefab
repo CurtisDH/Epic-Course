@@ -428,7 +428,7 @@ NavMeshAgent:
   m_Height: 4.23
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &7432936581490532612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,6 +444,7 @@ MonoBehaviour:
   _agent: {fileID: 0}
   health: 0
   speed: 1.5
+  AICollision: 0
   _warFund: 0
 --- !u!65 &-9067449408353783062
 BoxCollider:

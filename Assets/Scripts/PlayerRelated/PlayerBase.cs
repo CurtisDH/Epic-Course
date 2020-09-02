@@ -7,6 +7,7 @@ public class PlayerBase : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //GameManager.Instance.Warfund-=other.GetComponent<AIBase>().WarFund;
+        if(other.GetComponent<AIBase>())
         other.GetComponent<AIBase>().onDeath(); // or move the above statement into the death script of the AI?
     }
 
