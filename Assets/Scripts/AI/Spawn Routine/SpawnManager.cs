@@ -79,7 +79,7 @@ public class SpawnManager : MonoBehaviour
             if (enemy.GetComponent<AIBase>())
             {
                 enemy.GetComponent<AIBase>().InitaliseAI();
-                enemy.GetComponent<NavMeshAgent>().Warp(StartPos); // had issues with the agent saying "NO AGENT ON NAVMESH" using Warp fixes this.
+                enemy.GetComponent<NavMeshAgent>().Warp(StartPos); // had issues with unity saying "NO AGENT ON NAVMESH" using Warp fixes this.
                 enemy.GetComponent<AIBase>().MoveTo(EndPos);
                 enemy.transform.parent = GameObject.Find("EnemyContainer").transform;
             }
