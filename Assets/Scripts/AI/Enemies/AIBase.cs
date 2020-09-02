@@ -7,7 +7,16 @@ public abstract class AIBase : MonoBehaviour
     NavMeshAgent _agent;
     public float health;
     public float speed;
-    public int warFund; // How much money is awarded for killing the enemy.         //Make this value protected??
+    [SerializeField]
+    private int _warFund;
+    public int WarFund
+    {
+        get
+        {
+            return _warFund;
+        }
+    }
+    // How much money is awarded for killing the enemy.         //Make this value protected??
     // Might add my own twist to the income. replacing this feature.
     // Might influence warfund based on how far the enemy has made it into the course;
 
