@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CurtisDH.Utilites;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -45,9 +46,7 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < Wave.Count; i++)
         {
             Debug.Log(Wave.Count);
-            Debug.Log("test");
             yield return new WaitForSeconds(timeBetweenWave);
-            Debug.Log("test1");
             if (PoolManager.Instance.PooledObjects.Count == 0)
             {
                 var enemy = Instantiate(Enemies[Random.Range(0, Enemies.Length)]); // might change to create a spawn list of enemies which are randomly defined for that wave.
@@ -55,11 +54,10 @@ public class SpawnManager : MonoBehaviour
             }
             else
             {
+                Utilites.RandomiseList(PoolManager.Instance.PooledObjects);
                 SpawnEnemy(PoolManager.Instance.PooledObjects[0]);
-                PoolManager.Instance.PooledObjects.RemoveAt(0);
+                PoolManager.Instance.PooledObjects.RemoveAt(0); // I could have just done PoolManager.Instance.PoolObjects[Random.Range(0,PoolManager.Instance>PoolObjects.Count];
             }
-
-
         }
         while (true)
         {
