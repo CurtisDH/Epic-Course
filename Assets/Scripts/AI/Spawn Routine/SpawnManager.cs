@@ -69,7 +69,6 @@ public class SpawnManager : MonoBehaviour
     {
         if(PoolManager.Instance.PooledObjects.Count > 1)
         {
-
             Utilites.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
         }
         for (int i = 0; i < Wave.Count; i++)
@@ -89,21 +88,6 @@ public class SpawnManager : MonoBehaviour
                 break;
             }
         }
-        //void SpawnEnemy(GameObject enemy)
-        //{
-        //    //enemy.SetActive(true);
-        //    //if (enemy.GetComponent<AIBase>()) // use OnEnable to init ai request the data from spawnmanager
-        //    //{
-        //    //    //enemy.GetComponent<AIBase>().InitaliseAI(); // Moved to OnEnable inside AIBase
-        //    //    //enemy.GetComponent<NavMeshAgent>().Warp(StartPos); // had issues with unity saying "NO AGENT ON NAVMESH" using Warp fixes this.
-        //    //    //enemy.GetComponent<AIBase>().MoveTo(EndPos);
-        //    //    enemy.transform.parent = GameObject.Find("EnemyContainer").transform;
-        //    //}
-        //    //else
-        //    //{
-        //    //    Debug.LogError("Couldn't find Component AIBase");
-        //    //}
-        //}
     }
 
     void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
