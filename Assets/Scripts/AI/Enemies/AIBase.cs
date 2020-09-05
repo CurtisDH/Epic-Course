@@ -1,12 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+//attribute require component
 
 public abstract class AIBase : MonoBehaviour
 {
     [SerializeField]
     NavMeshAgent _agent;
-    public float health;
-    public float speed;
+    [SerializeField]
+    private float health;
+    [SerializeField]
+    private float speed;
+    [SerializeField]
+    bool AICollision = true; // When set to true - AI Will not be able to walk through eachother.
+
     [SerializeField]
     private int _warFund;
     public int WarFund
@@ -16,9 +22,17 @@ public abstract class AIBase : MonoBehaviour
             return _warFund;
         }
     }
+
+
     // How much money is awarded for killing the enemy.         //Make this value protected??
     // Might add my own twist to the income. replacing this feature.
     // Might influence warfund based on how far the enemy has made it into the course;
+
+    private void OnEnable()
+    {
+        InitaliseAI();
+    }
+
 
 
     public void InitaliseAI()
@@ -32,6 +46,21 @@ public abstract class AIBase : MonoBehaviour
             gameObject.AddComponent<NavMeshAgent>();
             _agent = GetComponent<NavMeshAgent>();
         }
+        if(AICollision == true)
+        {
+            _agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        }
+        else
+        {
+            _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+        }
+
+        
+        _agent.Warp(SpawnManager.Instance.StartPos); // had issues with unity saying "NO AGENT ON NAVMESH" using Warp fixes this.
+        MoveTo(SpawnManager.Instance.EndPos);
+        transform.parent = GameObject.Find("EnemyContainer").transform;
+
+
         _agent.speed = speed;
 
     }
@@ -66,6 +95,7 @@ public abstract class AIBase : MonoBehaviour
     {
         PoolManager.Instance.PooledObjects.Add(this.gameObject); // haven't setup animation transitions yet.
         this.gameObject.transform.parent = null;
+        GameManager.Instance.AdjustWarfund(WarFund, true);
         //play death animation and then setactive false, then recyle the gameobj;
         this.gameObject.SetActive(false);
     }

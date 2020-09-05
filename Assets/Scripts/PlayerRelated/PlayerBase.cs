@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBase : MonoBehaviour
+public class PlayerBase : MonoBehaviour //  Should probably rename this because of the similarity with AIBase
 {
     private void OnTriggerEnter(Collider other)
     {
-        //GameManager.Instance.Warfund-=other.GetComponent<AIBase>().WarFund;
-        other.GetComponent<AIBase>().onDeath(); // or move the above statement into the death script of the AI?
+        if(other.GetComponent<AIBase>())
+        {
+            other.GetComponent<AIBase>().onDeath();
+        }
+        
     }
 
 

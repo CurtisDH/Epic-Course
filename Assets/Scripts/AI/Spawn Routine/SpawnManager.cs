@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CurtisDH.Utilites;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -21,9 +22,33 @@ public class SpawnManager : MonoBehaviour
         }
     }
     [SerializeField]
-    GameObject[] Enemies;
+    GameObject[] _enemies; //change to _enemies
+
+    public GameObject[] Enemies
+    {
+        get
+        {
+            return _enemies;
+        }
+    }
     [SerializeField]
-    Vector3 StartPos, EndPos;
+    private Vector3 _startPos, _endPos;
+
+
+    public Vector3 StartPos
+    {
+        get
+        {
+            return _startPos;
+        }
+    }
+    public Vector3 EndPos
+    {
+        get
+        {
+            return _endPos;
+        }
+    }
 
     [SerializeField]
     List<GameObject> Wave;
@@ -42,24 +67,15 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator SpawnRoutine()
     {
+        if(PoolManager.Instance.PooledObjects.Count > 1)
+        {
+            Utilites.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
+        }
         for (int i = 0; i < Wave.Count; i++)
         {
             Debug.Log(Wave.Count);
-            Debug.Log("test");
             yield return new WaitForSeconds(timeBetweenWave);
-            Debug.Log("test1");
-            if (PoolManager.Instance.PooledObjects.Count == 0)
-            {
-                var enemy = Instantiate(Enemies[Random.Range(0, Enemies.Length)]); // might change to create a spawn list of enemies which are randomly defined for that wave.
-                SpawnEnemy(enemy);
-            }
-            else
-            {
-                SpawnEnemy(PoolManager.Instance.PooledObjects[0]);
-                PoolManager.Instance.PooledObjects.RemoveAt(0);
-            }
-
-
+            PoolManager.Instance.SpawnEnemy();
         }
         while (true)
         {
@@ -70,22 +86,6 @@ public class SpawnManager : MonoBehaviour
                 Debug.Log("EnemyContainer empty.. Spawning new Wave");
                 CreateWave();
                 break;
-            }
-        }
-        void SpawnEnemy(GameObject enemy)
-        {
-            enemy.SetActive(true);
-            enemy.transform.position = StartPos;
-            if (enemy.GetComponent<AIBase>())
-            {
-                enemy.GetComponent<AIBase>().InitaliseAI();
-                enemy.GetComponent<NavMeshAgent>().Warp(StartPos); // had issues with unity saying "NO AGENT ON NAVMESH" using Warp fixes this.
-                enemy.GetComponent<AIBase>().MoveTo(EndPos);
-                enemy.transform.parent = GameObject.Find("EnemyContainer").transform;
-            }
-            else
-            {
-                Debug.LogError("Couldn't find Component AIBase");
             }
         }
     }
