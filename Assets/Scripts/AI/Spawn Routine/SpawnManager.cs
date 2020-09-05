@@ -33,8 +33,6 @@ public class SpawnManager : MonoBehaviour
     }
     [SerializeField]
     private Vector3 _startPos, _endPos;
-
-
     public Vector3 StartPos
     {
         get
@@ -67,7 +65,7 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator SpawnRoutine()
     {
-        if(PoolManager.Instance.PooledObjects.Count > 1)
+        if (PoolManager.Instance.PooledObjects.Count > 1)
         {
             Utilites.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
         }
@@ -89,7 +87,6 @@ public class SpawnManager : MonoBehaviour
             }
         }
     }
-
     void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
     {
         CurrentWave++;
@@ -100,17 +97,4 @@ public class SpawnManager : MonoBehaviour
         }
         StartCoroutine(SpawnRoutine());
     }
-
-
-
-    //TEMP
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            GameObject.Find("EnemyContainer").transform.GetChild(0).GetComponent<AIBase>().onDeath();
-        }
-    }
-
 }

@@ -12,9 +12,4 @@ public class Mech2 : AIBase
     {
         base.onDeath();
     }
-
-
-
-
-
 }

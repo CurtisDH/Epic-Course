@@ -8,7 +8,7 @@ namespace CurtisDH
     {
         public class Utilites
         {
-            public static void GenerateText(Vector2 position,string text,float ScaleSize)
+            public static void GenerateText(Vector2 position, string text, float ScaleSize)
             {
                 if (GameObject.Find("WorldSpaceTextCanvas") == null)
                 {
@@ -17,7 +17,7 @@ namespace CurtisDH
                     textobj.AddComponent<TextMeshPro>().text = text;
                     textobj.transform.position = position;
                     textobj.transform.parent = GameObject.Find("WorldSpaceTextCanvas").transform;
-                    textobj.transform.localScale=new Vector3 (ScaleSize, ScaleSize, ScaleSize);
+                    textobj.transform.localScale = new Vector3(ScaleSize, ScaleSize, ScaleSize);
 
                 }
                 else
@@ -26,7 +26,7 @@ namespace CurtisDH
                     textobj.AddComponent<TextMeshPro>().text = text;
                     textobj.transform.position = position;
                     textobj.transform.parent = GameObject.Find("WorldSpaceTextCanvas").transform;
-                    textobj.transform.localScale= new Vector3(ScaleSize, ScaleSize, ScaleSize);
+                    textobj.transform.localScale = new Vector3(ScaleSize, ScaleSize, ScaleSize);
                 }
                 Debug.Log("GenerateText");
 
@@ -36,7 +36,7 @@ namespace CurtisDH
             {
                 Vector3 mousepos = Input.mousePosition;
 
-                if(WorldSpace == true)
+                if (WorldSpace == true)
                 {
                     Vector3 MousePosWS = Camera.main.ScreenToWorldPoint(mousepos);
                     return new Vector3(MousePosWS.x, MousePosWS.y, 0);
@@ -48,7 +48,7 @@ namespace CurtisDH
             }
             public static void RandomiseList<T>(List<T> list)
             {
-                for(int i = 0;i < list.Count;i++)
+                for (int i = 0; i < list.Count; i++)
                 {
                     var randomIndex = Random.Range(0, list.Count);
                     var val = list[randomIndex];

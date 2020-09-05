@@ -10,7 +10,7 @@ public class PoolManager : MonoBehaviour
     {
         get
         {
-            if(_instance == null)
+            if (_instance == null)
             {
                 Debug.LogError("PoolManager is NULL creating one..");
                 var PoolManager = new GameObject("PoolManager");
@@ -38,7 +38,7 @@ public class PoolManager : MonoBehaviour
         else
         {
             PooledObjects[0].SetActive(true);
-            PooledObjects.RemoveAt(0); 
+            PooledObjects.RemoveAt(0);
         }
     }
 

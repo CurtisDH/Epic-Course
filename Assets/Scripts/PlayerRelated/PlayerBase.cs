@@ -6,7 +6,7 @@ public class PlayerBase : MonoBehaviour //  Should probably rename this because 
 {
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<AIBase>())
+        if (other.GetComponent<AIBase>())
         {
             other.GetComponent<AIBase>().onDeath();
         }

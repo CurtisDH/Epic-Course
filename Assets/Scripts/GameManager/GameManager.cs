@@ -17,20 +17,20 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if(_instance == null)
+            if (_instance == null)
             {
                 Debug.LogError("GameManager not found. Attempting to Create");
                 try
                 {
                     _ = new GameObject("GameManager").AddComponent<GameManager>();
                 }
-                catch (ArgumentNullException e )
+                catch (ArgumentNullException e)
                 // I think a try,catch is unnecessary so may change it after some research later
                 {
-                    Debug.LogError("Failed to create GameManager" + e) ;
+                    Debug.LogError("Failed to create GameManager" + e);
                     return (_instance);
                 }
-                
+
                 Debug.Log("GameManager Created Successfully");
             }
             return _instance;
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-        if(negative == true)
+        if (negative == true)
         {
             _warFund -= amount;
         }

@@ -43,7 +43,7 @@ public abstract class AIBase : MonoBehaviour
             gameObject.AddComponent<NavMeshAgent>();
             _agent = GetComponent<NavMeshAgent>();
         }
-        if(AICollision == true)
+        if (AICollision == true)
         {
             _agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
         }
@@ -60,7 +60,7 @@ public abstract class AIBase : MonoBehaviour
 
     public virtual void MoveTo(Vector3 position)
     {
-        if(_agent !=null)
+        if (_agent != null)
         {
             _agent.SetDestination(position);
             Debug.Log("Destination Acquired " + position);
