@@ -32,9 +32,6 @@ public abstract class AIBase : MonoBehaviour
     {
         InitaliseAI();
     }
-
-
-
     public void InitaliseAI()
     {
         if (GetComponent<NavMeshAgent>() != null) //Checks if there is a navmesh agent..
@@ -54,13 +51,9 @@ public abstract class AIBase : MonoBehaviour
         {
             _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         }
-
-        
         _agent.Warp(SpawnManager.Instance.StartPos); // had issues with unity saying "NO AGENT ON NAVMESH" using Warp fixes this.
         MoveTo(SpawnManager.Instance.EndPos);
         transform.parent = GameObject.Find("EnemyContainer").transform;
-
-
         _agent.speed = speed;
 
     }

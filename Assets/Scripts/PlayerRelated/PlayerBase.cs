@@ -10,7 +10,6 @@ public class PlayerBase : MonoBehaviour //  Should probably rename this because 
         {
             other.GetComponent<AIBase>().onDeath();
         }
-        
     }
 
 

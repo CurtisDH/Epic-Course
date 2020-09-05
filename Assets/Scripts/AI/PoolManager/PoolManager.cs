@@ -16,7 +16,6 @@ public class PoolManager : MonoBehaviour
                 var PoolManager = new GameObject("PoolManager");
                 PoolManager.AddComponent<PoolManager>();
                 Debug.Log("Created");
-                
             }
             return _instance;
         }
@@ -35,7 +34,6 @@ public class PoolManager : MonoBehaviour
         if (PooledObjects.Count == 0)
         {
             Instantiate(SpawnManager.Instance.Enemies[Random.Range(0, SpawnManager.Instance.Enemies.Length)]); // might change to create a spawn list of enemies which are randomly defined for that wave.
-            
         }
         else
         {
