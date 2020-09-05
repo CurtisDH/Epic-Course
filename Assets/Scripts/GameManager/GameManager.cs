@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     {
         if (_warFund <= 0)
         {
-            throw new NotImplementedException();
+            Debug.LogWarning("Not implemented");
         }
 
 

@@ -4234,7 +4234,7 @@ GameObject:
   - component: {fileID: 616653812}
   - component: {fileID: 616653815}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: EndTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5692,11 +5692,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbcad83956d55ff449d6e9d8b471bda2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemies:
+  _enemies:
   - {fileID: 5771616546207876607, guid: 0f65c2bf1df9e10428ba14096acacc6b, type: 3}
   - {fileID: 5368526353365115250, guid: b8882e251e0c4d549aab69b9a2a8c5f5, type: 3}
-  StartPos: {x: -44, y: 0, z: 0}
-  EndPos: {x: 0.24, y: 0.626, z: 0.014}
+  _startPos: {x: -45, y: 1, z: 0}
+  _endPos: {x: 0, y: 1, z: 0}
   Wave: []
 --- !u!4 &839555677
 Transform:

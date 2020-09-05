@@ -31,7 +31,7 @@ public class SpawnManager : MonoBehaviour
             return _enemies;
         }
     }
-
+    [SerializeField]
     private Vector3 _startPos, _endPos;
 
 
