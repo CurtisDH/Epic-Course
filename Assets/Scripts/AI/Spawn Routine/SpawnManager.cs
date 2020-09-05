@@ -69,6 +69,7 @@ public class SpawnManager : MonoBehaviour
     {
         if(PoolManager.Instance.PooledObjects.Count > 1)
         {
+
             Utilites.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
         }
         for (int i = 0; i < Wave.Count; i++)

@@ -39,7 +39,6 @@ public class PoolManager : MonoBehaviour
         }
         else
         {
-            //Utilites.RandomiseList(PoolManager.Instance.PooledObjects); //move this to randomise once instead of everytime -- more performant
             PooledObjects[0].SetActive(true);
             PooledObjects.RemoveAt(0); 
         }
