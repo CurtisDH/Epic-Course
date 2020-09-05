@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+//attribute require component
 
 public abstract class AIBase : MonoBehaviour
 {
     [SerializeField]
     NavMeshAgent _agent;
-    public float health;
-    public float speed;
+    [SerializeField]
+    private float health;
+    [SerializeField]
+    private float speed;
     [SerializeField]
     bool AICollision = true; // When set to true - AI Will not be able to walk through eachother.
 
@@ -24,6 +27,12 @@ public abstract class AIBase : MonoBehaviour
     // How much money is awarded for killing the enemy.         //Make this value protected??
     // Might add my own twist to the income. replacing this feature.
     // Might influence warfund based on how far the enemy has made it into the course;
+
+    private void OnEnable()
+    {
+        InitaliseAI();
+    }
+
 
 
     public void InitaliseAI()
@@ -45,6 +54,13 @@ public abstract class AIBase : MonoBehaviour
         {
             _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         }
+
+        
+        _agent.Warp(SpawnManager.Instance.StartPos); // had issues with unity saying "NO AGENT ON NAVMESH" using Warp fixes this.
+        MoveTo(SpawnManager.Instance.EndPos);
+        transform.parent = GameObject.Find("EnemyContainer").transform;
+
+
         _agent.speed = speed;
 
     }
