@@ -21,7 +21,7 @@ namespace CurtisDH.Scripts.Managers
             {
                 if (_instance == null)
                 {
-                    Debug.LogError("GameManager not found. Attempting to Create");
+                    Debug.LogError("GameManager::GameManager not found. Attempting to Create");
                     try
                     {
                         _ = new GameObject("GameManager").AddComponent<GameManager>();
@@ -29,11 +29,11 @@ namespace CurtisDH.Scripts.Managers
                     catch (ArgumentNullException e)
                     // I think a try,catch is unnecessary so may change it after some research later
                     {
-                        Debug.LogError("Failed to create GameManager" + e);
+                        Debug.LogError("GameManager::Failed to create GameManager" + e);
                         return (_instance);
                     }
 
-                    Debug.Log("GameManager Created Successfully");
+                    Debug.Log("GameManager::GameManager Created Successfully");
                 }
                 return _instance;
             }
@@ -48,7 +48,7 @@ namespace CurtisDH.Scripts.Managers
         {
             if (_warFund <= 0)
             {
-                Debug.LogWarning("Not implemented");
+                Debug.LogWarning("GameManager::AdjustWarfund Not implemented");
             }
 
 

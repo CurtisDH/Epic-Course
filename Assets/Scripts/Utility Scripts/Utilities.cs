@@ -26,7 +26,7 @@ namespace CurtisDH.Utilites
                 textobj.transform.parent = GameObject.Find("WorldSpaceTextCanvas").transform;
                 textobj.transform.localScale = new Vector3(ScaleSize, ScaleSize, ScaleSize);
             }
-            Debug.Log("GenerateText");
+            Debug.Log("Utilties::GenerateText");
 
         }
 

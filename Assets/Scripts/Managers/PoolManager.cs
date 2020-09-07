@@ -22,10 +22,10 @@ namespace CurtisDH.Scripts.Managers
             {
                 if (_instance == null)
                 {
-                    Debug.LogError("PoolManager is NULL creating one..");
+                    Debug.LogError("PoolManager::PoolManager is NULL creating one..");
                     var PoolManager = new GameObject("PoolManager");
                     PoolManager.AddComponent<PoolManager>();
-                    Debug.Log("Created");
+                    Debug.Log("PoolManager::Created");
                 }
                 return _instance;
             }

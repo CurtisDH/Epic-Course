@@ -64,7 +64,7 @@ public abstract class AIBase : MonoBehaviour
         if (_agent != null)
         {
             _agent.SetDestination(position);
-            Debug.Log("Destination Acquired " + position);
+            //Debug.Log("AIBase::Destination Acquired " + position);
         }
         else
         {
@@ -74,12 +74,12 @@ public abstract class AIBase : MonoBehaviour
             }
             else // ..If there is no NavmeshAgent then create one and assign agent to it.
             {
-                Debug.Log("No NavmeshAgent found Assigning one... ");
+                Debug.Log("AIBase::No NavmeshAgent found Assigning one... ");
                 gameObject.AddComponent<NavMeshAgent>();
                 _agent = GetComponent<NavMeshAgent>();
-                Debug.Log("NavmeshAgent Created and Assigned Successfully ");
+                Debug.Log("AIBase::NavmeshAgent Created and Assigned Successfully ");
                 _agent.SetDestination(position);
-                Debug.Log("Destination Acquired After Creating NavMeshAgent" + position);
+                Debug.Log("AIBase::Destination Acquired After Creating NavMeshAgent" + position);
 
             }
         }

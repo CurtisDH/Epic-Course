@@ -17,10 +17,10 @@ namespace CurtisDH.Scripts.Managers
             {
                 if (_instance == null)
                 {
-                    Debug.Log("SpawnManager Instance is NULL.. Attempting to lazy instantiate ");
+                    Debug.Log("SpawnManager::SpawnManager Instance is NULL.. Attempting to lazy instantiate ");
                     var SpawnManager = new GameObject("SpawnManager");
                     SpawnManager.AddComponent<SpawnManager>();
-                    Debug.Log("Created a SpawnManager");
+                    Debug.Log("SpawnManager::Created a SpawnManager");
                 }
                 return _instance;
             }
@@ -75,7 +75,7 @@ namespace CurtisDH.Scripts.Managers
             }
             for (int i = 0; i < Wave.Count; i++)
             {
-                //Debug.Log(Wave.Count);
+                //Debug.Log("SpawnManager::Wavecount "+Wave.Count);
                 yield return new WaitForSeconds(timeBetweenWave);
                 SpawnEnemy();
             }
