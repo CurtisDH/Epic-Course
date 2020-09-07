@@ -1,16 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerBase : MonoBehaviour //  Should probably rename this because of the similarity with AIBase
+namespace CurtisDH.Scripts.PlayerRelated
 {
-    private void OnTriggerEnter(Collider other)
+    using CurtisDH.Scripts.Enemies;
+    public class PlayerBase : MonoBehaviour //  Should probably rename this because of the similarity with AIBase
     {
-        if (other.GetComponent<AIBase>())
+        private void OnTriggerEnter(Collider other)
         {
-            other.GetComponent<AIBase>().onDeath();
+            if (other.GetComponent<AIBase>())
+            {
+                other.GetComponent<AIBase>().onDeath();
+            }
         }
     }
-
-
 }
+
+

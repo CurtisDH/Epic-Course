@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using CurtisDH.Scripts.Enemies;
 public class Mech1 : AIBase
 {
     public override void MoveTo(Vector3 position)
