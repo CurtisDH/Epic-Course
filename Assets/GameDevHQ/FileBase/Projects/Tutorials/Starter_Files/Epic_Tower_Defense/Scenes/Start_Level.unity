@@ -2847,7 +2847,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 437238911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3df95adfba5ac349b61e5832aa20ae8, type: 3}
+  m_Script: {fileID: 11500000, guid: fbe525a67cc98ca408d08e66b5eceeae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _warFund: 0
@@ -5689,7 +5689,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 839555674}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbcad83956d55ff449d6e9d8b471bda2, type: 3}
+  m_Script: {fileID: 11500000, guid: 52a49924a8b68d84ba19cf1a6a3df737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _enemies:
@@ -14024,10 +14024,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2013990388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23fd41e03636c8b4585729ab5926319b, type: 3}
+  m_Script: {fileID: 11500000, guid: a94655ebd8be5284691621d6c64d4e31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PooledObjects: []
+  _pooledObjects: []
 --- !u!4 &2013990390
 Transform:
   m_ObjectHideFlags: 0

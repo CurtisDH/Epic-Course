@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using CurtisDH.Scripts.Managers;
 //attribute require component
 
 public abstract class AIBase : MonoBehaviour
 {
     [SerializeField]
-    NavMeshAgent _agent;
+    private NavMeshAgent _agent;
     [SerializeField]
-    private float health;
+    private float _health;
     [SerializeField]
-    private float speed;
+    private float _speed;
     [SerializeField]
-    bool AICollision = true; // When set to true - AI Will not be able to walk through eachother.
+    bool _AICollision = true; // When set to true - AI Will not be able to walk through eachother.
 
     [SerializeField]
     private int _warFund;
@@ -43,7 +44,7 @@ public abstract class AIBase : MonoBehaviour
             gameObject.AddComponent<NavMeshAgent>();
             _agent = GetComponent<NavMeshAgent>();
         }
-        if (AICollision == true)
+        if (_AICollision == true)
         {
             _agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
         }
@@ -54,7 +55,7 @@ public abstract class AIBase : MonoBehaviour
         _agent.Warp(SpawnManager.Instance.StartPos); // had issues with unity saying "NO AGENT ON NAVMESH" using Warp fixes this.
         MoveTo(SpawnManager.Instance.EndPos);
         transform.parent = GameObject.Find("EnemyContainer").transform;
-        _agent.speed = speed;
+        _agent.speed = _speed;
 
     }
 
