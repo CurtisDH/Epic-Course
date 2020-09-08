@@ -30,25 +30,21 @@ public class CameraController : MonoBehaviour
         Scroll();
 
     }
-    void Scroll()
+    void Scroll() // Will change from FOV later just a temp setup
     {
-        if (_maxZoom >= _cam.fieldOfView || _minZoom <= _cam.fieldOfView) return;
+        
+        if (_invertScroll == false)
+        {
+            if (-Input.mouseScrollDelta.y > 0 && _cam.fieldOfView >= _maxZoom) return;
+            if (-Input.mouseScrollDelta.y < 0 && _cam.fieldOfView <= _minZoom) return;
+            _cam.fieldOfView -= Input.mouseScrollDelta.y * _scrollIncrement;
+        }
         else
         {
-            if (_invertScroll == false)
-            {
-
-                _cam.fieldOfView -= Input.mouseScrollDelta.y * _scrollIncrement;
-            }
-            else
-            {
-                _cam.fieldOfView += Input.mouseScrollDelta.y * _scrollIncrement;
-            }
+            if (Input.mouseScrollDelta.y > 0 && _cam.fieldOfView >= _maxZoom) return;
+            if (Input.mouseScrollDelta.y < 0 && _cam.fieldOfView <= _minZoom) return;
+            _cam.fieldOfView += Input.mouseScrollDelta.y * _scrollIncrement;
         }
-        
-
-
-
         EdgeScroll();
     }
     void WASD()
