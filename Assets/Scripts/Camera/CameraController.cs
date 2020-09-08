@@ -8,6 +8,10 @@ public class CameraController : MonoBehaviour
     private float _speed;
     [SerializeField]
     private float _scrollIncrement;
+    [SerializeField]
+    private Camera _cam;
+    [SerializeField]
+    private bool _invertScroll;
     void Update()
     {
         MoveCamera();
@@ -21,7 +25,14 @@ public class CameraController : MonoBehaviour
     }
     void Scroll()
     {
-        Vector2 scrollDelta = Input.mouseScrollDelta;
+        if(_invertScroll == false)
+        {
+            _cam.fieldOfView -= Input.mouseScrollDelta.y;
+        }
+        if (_invertScroll == true)
+        {
+            _cam.fieldOfView += Input.mouseScrollDelta.y;
+        }
 
 
 
