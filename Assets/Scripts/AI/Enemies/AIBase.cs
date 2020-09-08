@@ -87,11 +87,11 @@ namespace CurtisDH.Scripts.Enemies
             }
         }
 
-        public virtual void onDeath()
+        public virtual void onDeath() //make event system detect on death
         {
             PoolManager.Instance.PooledObjects.Add(this.gameObject); // haven't setup animation transitions yet.
             this.gameObject.transform.parent = null;
-            GameManager.Instance.AdjustWarfund(WarFund, true);
+            GameManager.Instance.AdjustWarfund(WarFund, true); //change this to an event system?
             //play death animation and then setactive false, then recyle the gameobj;
             this.gameObject.SetActive(false);
         }
