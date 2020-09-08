@@ -5,13 +5,20 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
+    private Camera _cam;
+
+    [SerializeField]
     private float _speed;
+
+    #region Scroll Variables
     [SerializeField]
     private float _scrollIncrement;
     [SerializeField]
-    private Camera _cam;
-    [SerializeField]
     private bool _invertScroll;
+    [SerializeField]
+    private float _maxZoom = 135,_minZoom = 20;
+
+    #endregion
     void Update()
     {
         MoveCamera();
@@ -25,14 +32,20 @@ public class CameraController : MonoBehaviour
     }
     void Scroll()
     {
-        if(_invertScroll == false)
+        if (_maxZoom >= _cam.fieldOfView || _minZoom <= _cam.fieldOfView) return;
+        else
         {
-            _cam.fieldOfView -= Input.mouseScrollDelta.y;
+            if (_invertScroll == false)
+            {
+
+                _cam.fieldOfView -= Input.mouseScrollDelta.y * _scrollIncrement;
+            }
+            else
+            {
+                _cam.fieldOfView += Input.mouseScrollDelta.y * _scrollIncrement;
+            }
         }
-        if (_invertScroll == true)
-        {
-            _cam.fieldOfView += Input.mouseScrollDelta.y;
-        }
+        
 
 
 
