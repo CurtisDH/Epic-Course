@@ -22,7 +22,10 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float _edgeScrollSize;
     #endregion
-
+    #region Boundaries
+    [SerializeField]
+    Vector2 _xBounds, _yBounds, _zBounds;
+    #endregion
 
 
     void Update()
@@ -32,6 +35,7 @@ public class CameraController : MonoBehaviour
 
     void MoveCamera() // Might add A middlemouse to rotate the camera.
     {
+        ClampPosition();
         WASD();
         Scroll();
         EdgeScroll();
@@ -56,6 +60,14 @@ public class CameraController : MonoBehaviour
     void WASD() 
     {
         MoveDirection(new Vector3(Input.GetAxis("Horizontal"),0 , Input.GetAxis("Vertical")));
+    }
+    void ClampPosition()
+    {
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x, _xBounds.x, _xBounds.y),
+            Mathf.Clamp(transform.position.y, _yBounds.x, _yBounds.y),
+            Mathf.Clamp(transform.position.z, _zBounds.x, _zBounds.y)
+            );
     }
     void EdgeScroll() // Still need to smooth the edge scrolling. Quick look at the API (Vector3.SmoothDamp) (Mathf.SmoothDamp) (Vector3.Lerp) 
     {
