@@ -53,26 +53,11 @@ public class CameraController : MonoBehaviour
         }
 
     }
-    void WASD()
+    void WASD() 
     {
-        if (Input.GetKey(KeyCode.W)) //up/forward
-        {
-            MoveDirection(Vector3.forward);
-        }
-        if (Input.GetKey(KeyCode.A))//left
-        {
-            MoveDirection(Vector3.left);
-        }
-        if (Input.GetKey(KeyCode.S))//down/back
-        {
-            MoveDirection(Vector3.back);
-        }
-        if (Input.GetKey(KeyCode.D))//right
-        {
-            MoveDirection(Vector3.right);
-        }
+        MoveDirection(new Vector3(Input.GetAxis("Horizontal"),0 , Input.GetAxis("Vertical")));
     }
-    void EdgeScroll()
+    void EdgeScroll() // Still need to smooth the edge scrolling. Quick look at the API (Vector3.SmoothDamp) (Mathf.SmoothDamp) (Vector3.Lerp) 
     {
         //Don't really want to use this in update unless required. Perhaps UI triggers?
         if (Input.mousePosition.x > Screen.width - _edgeScrollSize)
@@ -98,7 +83,7 @@ public class CameraController : MonoBehaviour
     }
 
 
-    void MoveDirection(Vector3 direction)
+    void MoveDirection(Vector3 direction) //may add an option for an independent edge scroll speed.
     {
         transform.Translate(direction * (_speed * Time.deltaTime));
     }
