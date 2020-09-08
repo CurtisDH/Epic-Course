@@ -8390,12 +8390,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cam: {fileID: 534669904}
-  _speed: 2
+  _speed: 5
   _scrollIncrement: 10
   _invertScroll: 0
   _maxZoom: 135
   _minZoom: 20
   _edgeScrollSize: 25
+  _xBounds: {x: -40, y: 0}
+  _yBounds: {x: 0, y: 25}
+  _zBounds: {x: -20, y: 15}
 --- !u!1001 &1273481603
 PrefabInstance:
   m_ObjectHideFlags: 0
