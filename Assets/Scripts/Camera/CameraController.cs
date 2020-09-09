@@ -40,26 +40,28 @@ public class CameraController : MonoBehaviour
         Scroll();
         EdgeScroll();
     }
-    void Scroll() // Will change from FOV later just a temp setup
+    void Scroll() // Need to limit max zoom
     {
 
         if (_invertScroll == false)
         {
-            if (-Input.mouseScrollDelta.y > 0 && _cam.fieldOfView >= _maxZoom) return;
-            if (-Input.mouseScrollDelta.y < 0 && _cam.fieldOfView <= _minZoom) return;
-            _cam.fieldOfView -= Input.mouseScrollDelta.y * _scrollIncrement;
+            _cam.transform.position = new Vector3(_cam.transform.position.x + Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement,
+                _cam.transform.position.y + -Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement,
+                _cam.transform.position.z
+            );
         }
         else
         {
-            if (Input.mouseScrollDelta.y > 0 && _cam.fieldOfView >= _maxZoom) return;
-            if (Input.mouseScrollDelta.y < 0 && _cam.fieldOfView <= _minZoom) return;
-            _cam.fieldOfView += Input.mouseScrollDelta.y * _scrollIncrement;
+            _cam.transform.position = new Vector3(_cam.transform.position.x + -Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement,
+              _cam.transform.position.y + Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement,
+              _cam.transform.position.z
+             );
         }
 
     }
-    void WASD() 
+    void WASD()
     {
-        MoveDirection(new Vector3(Input.GetAxis("Horizontal"),0 , Input.GetAxis("Vertical")));
+        MoveDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
     }
     void ClampPosition()
     {
