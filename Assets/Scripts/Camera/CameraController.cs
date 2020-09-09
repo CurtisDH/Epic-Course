@@ -74,7 +74,7 @@ public class CameraController : MonoBehaviour
         var clampPos = transform.position;
         clampPos.x = Mathf.Clamp(clampPos.x, _xBounds.x, _xBounds.y);
         clampPos.y = Mathf.Clamp(clampPos.y, _yBounds.x, _yBounds.y);
-        clampPos.z = Mathf.Clamp(clampPos.x, _zBounds.x, _zBounds.y);
+        clampPos.z = Mathf.Clamp(clampPos.z, _zBounds.x, _zBounds.y);
         transform.position = clampPos;
 
         #endregion

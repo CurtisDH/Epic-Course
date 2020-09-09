@@ -64,7 +64,6 @@ namespace CurtisDH.Scripts.Managers
         {
             _instance = this;
         }
-
         private void Start()
         {
             CreateWave();
@@ -93,9 +92,8 @@ namespace CurtisDH.Scripts.Managers
                 yield return new WaitForSeconds(timeBetweenWave);
                 SpawnEnemy();
             }
-            
-        }
 
+        }
         void SpawnEnemy()
         {
             try
@@ -107,7 +105,6 @@ namespace CurtisDH.Scripts.Managers
                 Instantiate(Enemies[Random.Range(0, Enemies.Length)]);
             }
         }
-
         public void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
         {
             if (GameObject.Find("EnemyContainer").transform.childCount == 0)

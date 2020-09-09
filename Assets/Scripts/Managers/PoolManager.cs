@@ -42,9 +42,6 @@ namespace CurtisDH.Scripts.Managers
         {
             return _pooledObjects?[0];
         }
-
-
-
     }
 
 }
