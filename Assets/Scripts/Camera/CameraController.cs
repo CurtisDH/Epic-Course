@@ -21,6 +21,8 @@ public class CameraController : MonoBehaviour
     #region EdgeScroll Variables
     [SerializeField]
     private float _edgeScrollSize;
+    [SerializeField]
+    bool FixedEdgeScroll;
     #endregion
     #region Boundaries
     [SerializeField]
@@ -79,35 +81,64 @@ public class CameraController : MonoBehaviour
 
         #endregion
     }
-    void EdgeScroll() // Still need to smooth the edge scrolling. Quick look at the API (Vector3.SmoothDamp) (Mathf.SmoothDamp) (Vector3.Lerp) 
+    void EdgeScroll() 
+        // Issue with method2 only one direction is selected making it feel really janky.
+        // Issue with Original Method less performant & is fixed - can't change value without lots of mess
     {
-        var direction = Vector3.zero;
-        //Don't really want to use this in update unless required. Perhaps UI triggers?
-        if (Input.mousePosition.x > Screen.width - _edgeScrollSize)
+        if(FixedEdgeScroll == true)
         {
-            //Debug.Log("CameraController::MPos.X:RIGHT " + Input.mousePosition.x);
-            direction = Vector3.right;
+            #region Original method
+            if (Input.mousePosition.x > Screen.width - _edgeScrollSize)
+            {
+                //Debug.Log("CameraController::MPos.X:RIGHT " + Input.mousePosition.x);
+                MoveDirection(Vector3.right);
+            }
+            if (Input.mousePosition.x < _edgeScrollSize)
+            {
+                //Debug.Log("CameraController::MPos.X:LEFT " + Input.mousePosition.x);
+                MoveDirection(Vector3.left);
+            }
+            if (Input.mousePosition.y > Screen.height - _edgeScrollSize)
+            {
+                //Debug.Log("CameraController::MPos.Y:TOP " + Input.mousePosition.y);
+                MoveDirection(Vector3.up);
+            }
+            if (Input.mousePosition.y < _edgeScrollSize)
+            {
+                //Debug.Log("CameraController::MPos.Y:BOTTOM " + Input.mousePosition.y);
+                MoveDirection(Vector3.back);
+            }
+            #endregion
         }
-        if (Input.mousePosition.x < _edgeScrollSize)
+        else 
         {
-            //Debug.Log("CameraController::MPos.X:LEFT " + Input.mousePosition.x);
-            direction = Vector3.left;
+            #region Method 2
+            var direction = Vector3.zero;
+            //Don't really want to use this in update unless required. Perhaps UI triggers?
+            if (Input.mousePosition.x > Screen.width - _edgeScrollSize)
+            {
+                //Debug.Log("CameraController::MPos.X:RIGHT " + Input.mousePosition.x);
+                direction = Vector3.right;
+            }
+            if (Input.mousePosition.x < _edgeScrollSize)
+            {
+                //Debug.Log("CameraController::MPos.X:LEFT " + Input.mousePosition.x);
+                direction = Vector3.left;
+            }
+            if (Input.mousePosition.y > Screen.height - _edgeScrollSize)
+            {
+                //Debug.Log("CameraController::MPos.Y:TOP " + Input.mousePosition.y);
+                direction = Vector3.forward;
+            }
+            if (Input.mousePosition.y < _edgeScrollSize)
+            {
+                //Debug.Log("CameraController::MPos.Y:BOTTOM " + Input.mousePosition.y);
+                direction = Vector3.back;
+            }
+            MoveDirection(direction);
+            #endregion
         }
-        if (Input.mousePosition.y > Screen.height - _edgeScrollSize)
-        {
-            //Debug.Log("CameraController::MPos.Y:TOP " + Input.mousePosition.y);
-            direction = Vector3.forward;
-        }
-        if (Input.mousePosition.y < _edgeScrollSize)
-        {
-            //Debug.Log("CameraController::MPos.Y:BOTTOM " + Input.mousePosition.y);
-            direction = Vector3.back;
-        }
-
-        MoveDirection(direction);
     }
-
-
     void MoveDirection(Vector3 direction) //may add an option for an independent edge scroll speed.
     {
         transform.Translate(direction * (_speed * Time.deltaTime));
