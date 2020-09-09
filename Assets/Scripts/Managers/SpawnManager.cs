@@ -6,8 +6,6 @@ using UnityEngine;
 namespace CurtisDH.Scripts.Managers
 {
     using CurtisDH.Utilites;
-    using UnityEngine.AI;
-
     public class SpawnManager : MonoBehaviour
     {
         private static SpawnManager _instance;
@@ -58,6 +56,8 @@ namespace CurtisDH.Scripts.Managers
         private int _currentWave;
 
         float timeBetweenWave = 2f;
+        [SerializeField]
+        private List<Wave> CustomWaves;
 
         private void Awake()
         {
@@ -69,6 +69,29 @@ namespace CurtisDH.Scripts.Managers
         }
         IEnumerator SpawnRoutine()
         {
+            foreach (var wave in CustomWaves) //quick and dirty will refine it later
+            {
+                if (wave.WaveID == _currentWave)
+                {
+                    for (int i = 0; i < wave.Enemies.Count; i++)
+                    {
+                        Instantiate(wave.Enemies[i]);
+                        yield return new WaitForSeconds(wave.TimeBetweenEnemySpawns);
+                    }
+                    while (true) //repeating code from line 105. Probably a better way to manage this E.G if enemy hits end trigger check if theres any child objects left.
+                    {
+                        yield return new WaitForSeconds(2);
+                        if (GameObject.Find("EnemyContainer").transform.childCount == 0)
+                        {
+                            //Display wave complete?
+                            //Debug.Log("EnemyContainer empty.. Spawning new Wave");
+                            CreateWave();
+                            yield break;
+                        }
+                    }
+                    
+                }
+            }
             if (PoolManager.Instance.PooledObjects.Count > 1)
             {
                 Utilites.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
@@ -79,7 +102,7 @@ namespace CurtisDH.Scripts.Managers
                 yield return new WaitForSeconds(timeBetweenWave);
                 SpawnEnemy();
             }
-            while (true)
+            while (true)//remove this and replace it with an event system or end trigger to activate the next wave/check for when theres no enemies left.
             {
                 yield return new WaitForSeconds(2);
                 if (GameObject.Find("EnemyContainer").transform.childCount == 0)

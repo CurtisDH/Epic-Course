@@ -5698,6 +5698,8 @@ MonoBehaviour:
   _startPos: {x: -45, y: 1, z: 0}
   _endPos: {x: 0, y: 1, z: 0}
   Wave: []
+  CustomWaves:
+  - {fileID: 11400000, guid: 944bdfcc6cb3f9746b86164208abcffa, type: 2}
 --- !u!4 &839555677
 Transform:
   m_ObjectHideFlags: 0
