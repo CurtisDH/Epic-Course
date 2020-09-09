@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CurtisDH.Scripts.PlayerRelated;
+using System;
 using UnityEngine;
 
 namespace CurtisDH.Scripts.Managers
@@ -43,25 +44,34 @@ namespace CurtisDH.Scripts.Managers
             _instance = this;
         }
 
-
-        public void AdjustWarfund(int amount, bool negative = false)
+        private void OnEnable()
+        {
+            PlayerBase.onPlayerBaseReached += AdjustWarfund;
+            PlayerBase.onPlayerBaseReached += AdjustPlayerLives;
+        }
+        public void AdjustWarfund(int amount)
         {
             if (_warFund <= 0)
             {
                 Debug.LogWarning("GameManager::AdjustWarfund Not implemented");
             }
 
+            _warFund += amount;
 
-            if (negative == true)
-            {
-                _warFund -= amount;
-            }
-            else
-            {
-                _warFund += amount;
-            }
         }
+        public void AdjustPlayerLives(int amount)
+        {
+            amount *= -1;
+            amount /= 10;
 
+            //subtract player lives here
+            Debug.LogError("GameManager::AdjustPlayerLives not Implemented: " + amount);
+        }
+        private void OnDisable()
+        {
+            PlayerBase.onPlayerBaseReached -= AdjustWarfund;
+            PlayerBase.onPlayerBaseReached -= AdjustPlayerLives;
+        }
     }
 }
 

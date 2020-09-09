@@ -65,33 +65,35 @@ public class CameraController : MonoBehaviour
     }
     void ClampPosition()
     {
+        #region Parent Object
         transform.position = new Vector3(
             Mathf.Clamp(transform.position.x, _xBounds.x, _xBounds.y),
             Mathf.Clamp(transform.position.y, _yBounds.x, _yBounds.y),
             Mathf.Clamp(transform.position.z, _zBounds.x, _zBounds.y)
             );
+        #endregion
     }
     void EdgeScroll() // Still need to smooth the edge scrolling. Quick look at the API (Vector3.SmoothDamp) (Mathf.SmoothDamp) (Vector3.Lerp) 
     {
         //Don't really want to use this in update unless required. Perhaps UI triggers?
         if (Input.mousePosition.x > Screen.width - _edgeScrollSize)
         {
-            Debug.Log("CameraController::MPos.X:RIGHT " + Input.mousePosition.x);
+            //Debug.Log("CameraController::MPos.X:RIGHT " + Input.mousePosition.x);
             MoveDirection(Vector3.right);
         }
         if (Input.mousePosition.x < _edgeScrollSize)
         {
-            Debug.Log("CameraController::MPos.X:LEFT " + Input.mousePosition.x);
+            //Debug.Log("CameraController::MPos.X:LEFT " + Input.mousePosition.x);
             MoveDirection(Vector3.left);
         }
         if (Input.mousePosition.y > Screen.height - _edgeScrollSize)
         {
-            Debug.Log("CameraController::MPos.Y:TOP " + Input.mousePosition.y);
+            //Debug.Log("CameraController::MPos.Y:TOP " + Input.mousePosition.y);
             MoveDirection(Vector3.forward);
         }
         if (Input.mousePosition.y < _edgeScrollSize)
         {
-            Debug.Log("CameraController::MPos.Y:BOTTOM " + Input.mousePosition.y);
+            //Debug.Log("CameraController::MPos.Y:BOTTOM " + Input.mousePosition.y);
             MoveDirection(Vector3.back);
         }
     }
