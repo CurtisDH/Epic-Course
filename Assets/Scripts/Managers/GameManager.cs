@@ -51,13 +51,7 @@ namespace CurtisDH.Scripts.Managers
         }
         public void AdjustWarfund(int amount)
         {
-            if (_warFund <= 0)
-            {
-                Debug.LogWarning("GameManager::AdjustWarfund Not implemented");
-            }
-
             _warFund += amount;
-
         }
         public void AdjustPlayerLives(int amount)
         {
