@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace CurtisDH.Scripts.Managers
 {
+    using CurtisDH.Scripts.PlayerRelated;
     using CurtisDH.Utilites;
     public class SpawnManager : MonoBehaviour
     {
@@ -63,6 +64,16 @@ namespace CurtisDH.Scripts.Managers
         {
             _instance = this;
         }
+        private void OnEnable()
+        {
+            PlayerBase.onPlayerbaseReached += CreateWave;
+        }
+        private void OnDisable()
+        {
+
+            PlayerBase.onPlayerbaseReached -= CreateWave;
+
+        }
         private void Start()
         {
             CreateWave();
@@ -78,18 +89,7 @@ namespace CurtisDH.Scripts.Managers
                         Instantiate(wave.Enemies[i]);
                         yield return new WaitForSeconds(wave.TimeBetweenEnemySpawns);
                     }
-                    while (true) //repeating code from line 105. Probably a better way to manage this E.G if enemy hits end trigger check if theres any child objects left.
-                    {
-                        yield return new WaitForSeconds(2);
-                        if (GameObject.Find("EnemyContainer").transform.childCount == 0)
-                        {
-                            //Display wave complete?
-                            //Debug.Log("EnemyContainer empty.. Spawning new Wave");
-                            CreateWave();
-                            yield break;
-                        }
-                    }
-                    
+                    yield break;
                 }
             }
             if (PoolManager.Instance.PooledObjects.Count > 1)
@@ -102,17 +102,7 @@ namespace CurtisDH.Scripts.Managers
                 yield return new WaitForSeconds(timeBetweenWave);
                 SpawnEnemy();
             }
-            while (true)//remove this and replace it with an event system or end trigger to activate the next wave/check for when theres no enemies left.
-            {
-                yield return new WaitForSeconds(2);
-                if (GameObject.Find("EnemyContainer").transform.childCount == 0)
-                {
-                    //Display wave complete?
-                    //Debug.Log("EnemyContainer empty.. Spawning new Wave");
-                    CreateWave();
-                    break;
-                }
-            }
+            
         }
 
         void SpawnEnemy()
@@ -129,14 +119,20 @@ namespace CurtisDH.Scripts.Managers
 
         void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
         {
-            _currentWave++;
-            Wave.Clear();
-            for (int i = 0; i < (_amountToSpawn * _currentWave); i++)
+            if (GameObject.Find("EnemyContainer").transform.childCount == 0)
             {
-                Wave.Add(Enemies[Random.Range(0, Enemies.Length)]);
+                _currentWave++;
+                Wave.Clear();
+                for (int i = 0; i < (_amountToSpawn * _currentWave); i++)
+                {
+                    Wave.Add(Enemies[Random.Range(0, Enemies.Length)]);
+                }
+                StartCoroutine(SpawnRoutine());
             }
-            StartCoroutine(SpawnRoutine());
+
         }
     }
+
+
 
 }
