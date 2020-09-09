@@ -22,7 +22,9 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float _edgeScrollSize;
     [SerializeField]
-    bool FixedEdgeScroll;
+    private bool _FixedEdgeScroll;
+    [SerializeField]
+    private bool _edgeScroll; //disables edge scrolling if set to false
     #endregion
     #region Boundaries
     [SerializeField]
@@ -85,7 +87,8 @@ public class CameraController : MonoBehaviour
         // Issue with method2 only one direction is selected making it feel really janky.
         // Issue with Original Method less performant & is fixed - can't change value without lots of mess
     {
-        if(FixedEdgeScroll == true)
+        if (_edgeScroll == false) return;
+        if(_FixedEdgeScroll == true)
         {
             #region Original method
             if (Input.mousePosition.x > Screen.width - _edgeScrollSize)
