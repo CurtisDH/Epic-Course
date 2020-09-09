@@ -36,6 +36,8 @@ namespace CurtisDH.Scripts.Enemies
         private void OnEnable()
         {
             InitaliseAI();
+
+            PlayerBase.onPlayerBaseReached += onDeath;
         }
         public void InitaliseAI()
         {
@@ -89,13 +91,16 @@ namespace CurtisDH.Scripts.Enemies
             }
         }
 
-        public virtual void onDeath() //make event system detect on death
+        public virtual void onDeath(GameObject obj) //make event system detect on death
         {
-            PoolManager.Instance.PooledObjects.Add(this.gameObject); // haven't setup animation transitions yet. // change to event system?
-            this.gameObject.transform.parent = null;
-            //GameManager.Instance.AdjustWarfund(WarFund, true); //change this to an event system?
-            //play death animation and then setactive false, then recyle the gameobj;
-            this.gameObject.SetActive(false);
+            if (obj == this.gameObject)
+            {
+                PoolManager.Instance.PooledObjects.Add(this.gameObject);
+                this.gameObject.transform.parent = null;
+                GameManager.Instance.AdjustWarfund(-WarFund); //change this to an event system?
+                SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
+                this.gameObject.SetActive(false);
+            }
         }
     }
 }

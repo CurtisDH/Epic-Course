@@ -43,12 +43,6 @@ namespace CurtisDH.Scripts.Managers
         {
             _instance = this;
         }
-
-        private void OnEnable()
-        {
-            PlayerBase.onPlayerBaseReached += AdjustWarfund;
-            PlayerBase.onPlayerBaseReached += AdjustPlayerLives;
-        }
         public void AdjustWarfund(int amount)
         {
             _warFund += amount;
@@ -60,11 +54,6 @@ namespace CurtisDH.Scripts.Managers
 
             //subtract player lives here
             Debug.LogError("GameManager::AdjustPlayerLives not Implemented: " + amount);
-        }
-        private void OnDisable()
-        {
-            PlayerBase.onPlayerBaseReached -= AdjustWarfund;
-            PlayerBase.onPlayerBaseReached -= AdjustPlayerLives;
         }
     }
 }

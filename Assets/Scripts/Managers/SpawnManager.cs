@@ -64,16 +64,7 @@ namespace CurtisDH.Scripts.Managers
         {
             _instance = this;
         }
-        private void OnEnable()
-        {
-            PlayerBase.onPlayerbaseReached += CreateWave;
-        }
-        private void OnDisable()
-        {
 
-            PlayerBase.onPlayerbaseReached -= CreateWave;
-
-        }
         private void Start()
         {
             CreateWave();
@@ -117,7 +108,7 @@ namespace CurtisDH.Scripts.Managers
             }
         }
 
-        void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
+        public void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
         {
             if (GameObject.Find("EnemyContainer").transform.childCount == 0)
             {

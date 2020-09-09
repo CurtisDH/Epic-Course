@@ -45,57 +45,66 @@ public class CameraController : MonoBehaviour
 
         if (_invertScroll == false)
         {
-            _cam.transform.position = new Vector3(_cam.transform.position.x + Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement,
-                _cam.transform.position.y + -Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement,
-                _cam.transform.position.z
-            );
+            var camPos = _cam.transform.position;
+            camPos.x += Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement;
+            camPos.y += -Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement;
+
+            _cam.transform.position = camPos;
         }
         else
         {
-            _cam.transform.position = new Vector3(_cam.transform.position.x + -Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement,
-              _cam.transform.position.y + Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement,
-              _cam.transform.position.z
-             );
+            var InvertedCamPos = _cam.transform.position;
+            InvertedCamPos.x += -Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement;
+            InvertedCamPos.y += Input.GetAxis("Mouse ScrollWheel") * _scrollIncrement;
+            _cam.transform.position = InvertedCamPos;
         }
 
     }
     void WASD()
     {
-        MoveDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
+        var hozMovment = Input.GetAxis("Horizontal");
+        var vertMovement = Input.GetAxis("Vertical");
+        var direction = new Vector3(hozMovment, 0, vertMovement);
+        MoveDirection(direction);
+
     }
     void ClampPosition()
     {
         #region Parent Object
-        transform.position = new Vector3(
-            Mathf.Clamp(transform.position.x, _xBounds.x, _xBounds.y),
-            Mathf.Clamp(transform.position.y, _yBounds.x, _yBounds.y),
-            Mathf.Clamp(transform.position.z, _zBounds.x, _zBounds.y)
-            );
+        var clampPos = transform.position;
+        clampPos.x = Mathf.Clamp(clampPos.x, _xBounds.x, _xBounds.y);
+        clampPos.y = Mathf.Clamp(clampPos.y, _yBounds.x, _yBounds.y);
+        clampPos.z = Mathf.Clamp(clampPos.x, _zBounds.x, _zBounds.y);
+        transform.position = clampPos;
+
         #endregion
     }
     void EdgeScroll() // Still need to smooth the edge scrolling. Quick look at the API (Vector3.SmoothDamp) (Mathf.SmoothDamp) (Vector3.Lerp) 
     {
+        var direction = Vector3.zero;
         //Don't really want to use this in update unless required. Perhaps UI triggers?
         if (Input.mousePosition.x > Screen.width - _edgeScrollSize)
         {
             //Debug.Log("CameraController::MPos.X:RIGHT " + Input.mousePosition.x);
-            MoveDirection(Vector3.right);
+            direction = Vector3.right;
         }
         if (Input.mousePosition.x < _edgeScrollSize)
         {
             //Debug.Log("CameraController::MPos.X:LEFT " + Input.mousePosition.x);
-            MoveDirection(Vector3.left);
+            direction = Vector3.left;
         }
         if (Input.mousePosition.y > Screen.height - _edgeScrollSize)
         {
             //Debug.Log("CameraController::MPos.Y:TOP " + Input.mousePosition.y);
-            MoveDirection(Vector3.forward);
+            direction = Vector3.forward;
         }
         if (Input.mousePosition.y < _edgeScrollSize)
         {
             //Debug.Log("CameraController::MPos.Y:BOTTOM " + Input.mousePosition.y);
-            MoveDirection(Vector3.back);
+            direction = Vector3.back;
         }
+
+        MoveDirection(direction);
     }
 
 
