@@ -8,6 +8,19 @@ public class TowerLocation : MonoBehaviour
     GameObject TurretOccupying;
     [SerializeField]
     bool _isOccupied;
+    private void OnMouseEnter()
+    {
+        //snap object
+    }
+    private void OnMouseDown()
+    {
+        //place object.
+    }
+    private void OnMouseExit()
+    {
+        //release object
+    }
+    //event system check if isPlacingTower is happening & if isoccupied is false
     public bool IsOccupied
     {
         get

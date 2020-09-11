@@ -4,6 +4,26 @@ using UnityEngine.UIElements;
 
 public class TowerConstruction : MonoBehaviour
 {
+    private TowerConstruction _instance;
+
+    public TowerConstruction Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                var t = new GameObject("TowerConstruction").AddComponent<TowerConstruction>();
+                _instance = t;
+            }
+            return _instance;
+        }
+    }
+    private void OnEnable()
+    {
+        _instance = this;
+    }
+
+
     public GameObject[] Towers;
     [SerializeField]
     GameObject SelectedTower;
@@ -28,18 +48,15 @@ public class TowerConstruction : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction, Color.green);
-
-        Debug.Log("TowerConstruction::Clicked");
         if (Physics.Raycast(ray, out hit))
         {
-            Debug.Log("TowerConstruction::IfRaycast");
             TowerOutline(hit.point);
+            CancelTowerCreation();
             Debug.Log(hit.transform.gameObject.name + " :: " + hit.transform.root.transform.name);
             if (Input.GetMouseButtonDown(0))
             {
                 if (hit.transform.GetComponent<TowerLocation>()?.IsOccupied == false)
                 {
-                    Debug.Log("TowerConstruction::IsOccupied = false");
                     hit.transform.GetComponent<TowerLocation>().PlaceTower(SelectedTower);
                     _isPlacingTower = false;
                 }
@@ -73,7 +90,7 @@ public class TowerConstruction : MonoBehaviour
         SelectedTower = tower;
     }
 
-    public void CancelTowerCreation()
+    public void CancelTowerCreation() //if we right click stop placing the tower.
     {
         if (Input.GetMouseButtonDown((1)))
         {
