@@ -6,6 +6,7 @@ namespace CurtisDH.Scripts.Enemies
 {
     using CurtisDH.Scripts.Managers;
     using CurtisDH.Scripts.PlayerRelated;
+    using UnityEngine.Rendering.PostProcessing;
 
     public abstract class AIBase : MonoBehaviour
     {
@@ -38,6 +39,10 @@ namespace CurtisDH.Scripts.Enemies
             InitaliseAI();
 
             PlayerBase.onPlayerBaseReached += onDeath;
+        }
+        private void OnDisable()
+        {
+            PlayerBase.onPlayerBaseReached -= onDeath;
         }
         public void InitaliseAI()
         {
@@ -96,12 +101,13 @@ namespace CurtisDH.Scripts.Enemies
             if (obj == this.gameObject)
             {
                 PoolManager.Instance.PooledObjects.Add(this.gameObject);
-                this.gameObject.transform.parent = null;
+                this.gameObject.transform.parent = GameObject.Find("PoolManager").transform;
                 GameManager.Instance.AdjustWarfund(-WarFund); //change this to an event system?
                 SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
                 this.gameObject.SetActive(false);
             }
         }
+
     }
 }
 

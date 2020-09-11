@@ -52,13 +52,23 @@ namespace CurtisDH.Scripts.Managers
         }
 
         [SerializeField]
-        List<GameObject> Wave;
+        List<GameObject> _wave;
+        public List<GameObject> Wave
+        {
+            get
+            {
+                return _wave;
+            }
+
+        }
+
         private int _amountToSpawn = 10;// add _
         private int _currentWave;
 
         float timeBetweenWave = 2f;
         [SerializeField]
         private List<Wave> CustomWaves;
+
 
         private void Awake()
         {
@@ -70,39 +80,53 @@ namespace CurtisDH.Scripts.Managers
         }
         IEnumerator SpawnRoutine()
         {
+            bool customWave = false;
             foreach (var wave in CustomWaves) //quick and dirty will refine it later
             {
                 if (wave.WaveID == _currentWave)
                 {
                     for (int i = 0; i < wave.Enemies.Count; i++)
                     {
-                        Instantiate(wave.Enemies[i]);
+                        var enemy = Instantiate(wave.Enemies[i]);
+                        enemy.name = wave.Enemies[i].name;
                         yield return new WaitForSeconds(wave.TimeBetweenEnemySpawns);
                     }
-                    yield break;
+                    customWave = true;
                 }
             }
-            if (PoolManager.Instance.PooledObjects.Count > 1)
+            if (customWave == false)
             {
-                Utilites.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
+                Debug.Log(Wave.Count);
+                if (PoolManager.Instance.PooledObjects.Count > 1)
+                {
+                    Utilites.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
+                }
+                for (int i = 0; i < Wave.Count; i++)
+                {
+                    Debug.Log(i);
+                    yield return new WaitForSeconds(timeBetweenWave);
+                    SpawnEnemy(i);
+                }
             }
-            for (int i = 0; i < Wave.Count; i++)
-            {
-                //Debug.Log("SpawnManager::Wavecount "+Wave.Count);
-                yield return new WaitForSeconds(timeBetweenWave);
-                SpawnEnemy();
-            }
-
         }
-        void SpawnEnemy()
+        void SpawnEnemy(int i) // need to check if the pooled enemy name is == the one we want to spawn in the wave list
         {
-            try
+            Debug.Log("SpawnManager::BeforeRequestEnemy");
+            if (PoolManager.Instance.PooledObjects.Count != 0 
+                && PoolManager.Instance.RequestEnemy() != null)
             {
-                PoolManager.Instance.RequestEnemy().SetActive(true);
+                if (PoolManager.Instance.RequestEnemy().name == Wave[i].name)
+                {
+                    Debug.Log("SpawnManager::RequestEnemy");
+                    PoolManager.Instance.RequestEnemy().SetActive(true);
+                    return;
+                }
+
             }
-            catch
+            else
             {
-                Instantiate(Enemies[Random.Range(0, Enemies.Length)]);
+                var enemy = Instantiate(Wave[i]);
+                enemy.name = Wave[i].name;
             }
         }
         public void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
