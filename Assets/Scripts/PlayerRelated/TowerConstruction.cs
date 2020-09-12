@@ -41,6 +41,8 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     [SerializeField]
     GameObject SelectedTower;
     [SerializeField]
+    GameObject SelectedTowerShader;
+    [SerializeField]
     bool _canPlaceTower;
     [SerializeField]
     bool _isPlacingTower;
@@ -76,6 +78,7 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
         if (_isPlacingTower)
         {
             SelectedTower.transform.position = pos;
+            Destroy(SelectedTowerShader); //probably should recycle this
             CancelTowerCreation();
         }
 
@@ -84,6 +87,14 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     {
         if (_isPlacingTower)
         {
+            if(isSnapped == true) //need to refine and remove getcomponent if possible
+            {
+                SelectedTowerShader.GetComponent<Renderer>().material.color = ValidPlacement;
+            }
+            else
+            {
+                SelectedTowerShader.GetComponent<Renderer>().material.color = InvalidPlacement;
+            }
             _snappedTower = isSnapped;
             SelectedTower.transform.position = pos;
         }
@@ -124,7 +135,8 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
         var selectionfield = Instantiate(TurretShader);
         selectionfield.transform.parent = tower.transform;
         selectionfield.transform.position = tower.transform.position;
-        selectionfield.GetComponent<Material>().color = InvalidPlacement;
+        SelectedTowerShader = selectionfield;
+        selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color.
         SelectedTower = tower;
     }
 

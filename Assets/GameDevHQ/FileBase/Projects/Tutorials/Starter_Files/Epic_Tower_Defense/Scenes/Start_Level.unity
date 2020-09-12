@@ -9966,6 +9966,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3916f03e2eef78d4f98ef080c9644fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TurretShader: {fileID: 3318918957541053756, guid: 3fe3e2b67e6a55b4f8596922192ccef0, type: 3}
+  InvalidPlacement: {r: 1, g: 0, b: 0, a: 1}
+  ValidPlacement: {r: 0, g: 1, b: 0, a: 1}
   Towers:
   - {fileID: 79965023}
   - {fileID: 372186566}
