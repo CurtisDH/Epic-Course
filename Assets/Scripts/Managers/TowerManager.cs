@@ -72,7 +72,6 @@ namespace CurtisDH.Scripts.Managers
                 }
             }
         }
-
         public void PlaceTower(Vector3 pos) //receives the gameobject from towerlocation
         {
             if (_isPlacingTower)
@@ -81,7 +80,6 @@ namespace CurtisDH.Scripts.Managers
                 Destroy(SelectedTowerShader); //probably should recycle this
                 CancelTowerCreation();
             }
-
         }
         public void SnapTower(Vector3 pos, bool isSnapped) //if this runs set a bool to say hey we've snapped dont update me until i say so 
         {
@@ -145,18 +143,27 @@ namespace CurtisDH.Scripts.Managers
 
         //need to rework this entire method... (CURRENTLY A BRUTEFORCED MESS)
         public void CreateTower() // pull out of the pooling system.
-        {
+        { //i think i should move createTower to the spawnManager..
+            if(PoolManager.Instance.RequestTower() == null)
+            {
+                onIsPlacingTower?.Invoke(_isPlacingTower);
+                var tower = Instantiate(SelectedTower);
+                var selectionfield = Instantiate(TurretShader);
+                selectionfield.transform.parent = tower.transform;
+                selectionfield.transform.position = tower.transform.position;
+                float TowerRadius = SelectedTower.GetComponent<TowerBase>().TowerRadius;
+                selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
+                SelectedTowerShader = selectionfield;
+                selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color.
+                SelectedTower = tower;
+            }
+            else
+            {
+                SelectedTower = PoolManager.Instance.RequestTower();
+            }
+
             _isPlacingTower = true;
-            onIsPlacingTower?.Invoke(_isPlacingTower);
-            var tower = Instantiate(SelectedTower);
-            var selectionfield = Instantiate(TurretShader);
-            selectionfield.transform.parent = tower.transform;
-            selectionfield.transform.position = tower.transform.position;
-            float TowerRadius = SelectedTower.GetComponent<TowerBase>().TowerRadius;
-            selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
-            SelectedTowerShader = selectionfield;
-            selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color.
-            SelectedTower = tower;
+            
         }
 
         public void CancelTowerCreation()
@@ -176,6 +183,7 @@ namespace CurtisDH.Scripts.Managers
 
         void TowerToRecycle(GameObject obj)
         {
+            PoolManager.Instance.ObjectsReadyToRecycle(obj, false);
             obj.SetActive(false);
         }
 
