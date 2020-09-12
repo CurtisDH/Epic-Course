@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerLocation : MonoBehaviour
+public class TowerLocation : MonoBehaviour //setup event system to play particles
 {
     [SerializeField]
     GameObject TurretOccupying;
     [SerializeField]
     bool _isOccupied;
+    private void OnEnable()
+    {
+        TowerConstruction.onIsPlacingTower += EnableParticleSystem;
+    }
+    private void OnDisable()
+    {
+        TowerConstruction.onIsPlacingTower -= EnableParticleSystem;
+    }
+
     private void OnMouseEnter()
     {
         //snap object
@@ -28,7 +37,10 @@ public class TowerLocation : MonoBehaviour
             return _isOccupied;
         }
     }
+    public void EnableParticleSystem()
+    {
 
+    }
     public void PlaceTower(GameObject obj)
     {
         TurretOccupying = obj;

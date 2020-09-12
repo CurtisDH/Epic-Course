@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class TowerConstruction : MonoBehaviour
+public class TowerConstruction : MonoBehaviour // renameto tower manager?
 {
     private TowerConstruction _instance;
-
     public TowerConstruction Instance
     {
         get
@@ -18,6 +18,8 @@ public class TowerConstruction : MonoBehaviour
             return _instance;
         }
     }
+
+    public static Action onIsPlacingTower; //Event system
     private void OnEnable()
     {
         _instance = this;
@@ -38,9 +40,6 @@ public class TowerConstruction : MonoBehaviour
             return _isPlacingTower;
         }
     }
-    //lots to do for this class.. Got to recycle turrets AKA pooling system
-    //Particle system for showing placeable turrets
-
     void Update()
     {
         if (_isPlacingTower != true) return;
@@ -86,6 +85,7 @@ public class TowerConstruction : MonoBehaviour
     public void CreateTower() // change to pooling system
     {
         _isPlacingTower = true;
+        onIsPlacingTower?.Invoke();
         var tower = Instantiate(SelectedTower);
         SelectedTower = tower;
     }
