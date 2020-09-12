@@ -1145,27 +1145,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.51
+      value: 15.11
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.56
+      value: 11.32
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.008849514
+      value: -0.73649365
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.87049204
+      value: -0.0049874904
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0018964155
+      value: 0.67641056
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.49209934
+      value: 0.004580611
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_RootOrder
@@ -1173,11 +1173,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -0.688
+      value: -180
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 121.045006
+      value: 85.13
       objectReference: {fileID: 0}
     - target: {fileID: 4211689612457470, guid: 79e304cd59d704e2da2c8e5d225b1798, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -9974,6 +9974,7 @@ MonoBehaviour:
   SelectedTower: {fileID: 0}
   _canPlaceTower: 0
   _isPlacingTower: 0
+  _snappedTower: 0
 --- !u!1001 &1273481603
 PrefabInstance:
   m_ObjectHideFlags: 0
