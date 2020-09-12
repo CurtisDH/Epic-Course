@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3318918957541053755}
   - component: {fileID: 3318918957541053754}
   m_Layer: 0
-  m_Name: Turret_Placeable_Shader
+  m_Name: AvailableLocation_shader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3318918957541053756}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -26.077, y: 0.913, z: 3.734281}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

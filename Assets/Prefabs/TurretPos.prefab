@@ -57,3 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e6900e6a87c564aae6322a1cdebe24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TurretOccupying: {fileID: 0}
+  _isOccupied: 0
+  AvailableSpotPrefab: {fileID: 3318918957541053756, guid: c3c6c9e969471d248b3b92fd7a6a5f3b, type: 3}
+  _activeAvailableSpot: {fileID: 0}
