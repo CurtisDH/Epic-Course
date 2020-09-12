@@ -6,7 +6,6 @@ namespace CurtisDH.Scripts.Enemies
 {
     using CurtisDH.Scripts.Managers;
     using CurtisDH.Scripts.PlayerRelated;
-    using UnityEngine.Rendering.PostProcessing;
 
     public abstract class AIBase : MonoBehaviour
     {

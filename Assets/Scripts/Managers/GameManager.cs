@@ -1,5 +1,4 @@
-﻿using CurtisDH.Scripts.PlayerRelated;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace CurtisDH.Scripts.Managers

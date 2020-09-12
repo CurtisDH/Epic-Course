@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CurtisDH.Utilities;
+using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class TowerConstruction : MonoBehaviour // renameto tower manager?
 {
@@ -10,7 +9,7 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     {
         get
         {
-            if(_instance == null)
+            if (_instance == null)
             {
                 var t = new GameObject("TowerConstruction").AddComponent<TowerConstruction>();
                 _instance = t;
@@ -19,13 +18,25 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
         }
     }
 
-    public static Action onIsPlacingTower; //Event system
+    public static Action<bool> onIsPlacingTower; //Event system
     private void OnEnable()
     {
+        TowerLocation.onMouseDown += PlaceTower;
+        TowerLocation.onMouseEnter += SnapTower;
+        TowerLocation.onMouseExit += SnapTower;
         _instance = this;
     }
+    private void OnDisable()
+    {
+        TowerLocation.onMouseDown -= PlaceTower;
+        TowerLocation.onMouseEnter -= SnapTower;
+        TowerLocation.onMouseExit -= SnapTower;
+    }
 
-
+    [SerializeField]
+    GameObject TurretShader;
+    [SerializeField]
+    Color InvalidPlacement=Color.red, ValidPlacement=Color.green;
     public GameObject[] Towers;
     [SerializeField]
     GameObject SelectedTower;
@@ -33,6 +44,9 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     bool _canPlaceTower;
     [SerializeField]
     bool _isPlacingTower;
+    [SerializeField]
+    bool _snappedTower = false;
+    
     public bool IsPlacingTower
     {
         get
@@ -40,39 +54,58 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
             return _isPlacingTower;
         }
     }
-    void Update()
+
+    private void Update()
     {
         if (_isPlacingTower != true) return;
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        Debug.DrawRay(ray.origin, ray.direction, Color.green);
-        if (Physics.Raycast(ray, out hit))
+        RightClickCancel();//If we press rightclick then cancel the towerplacement.
+        if (_snappedTower == false)
         {
-            TowerOutline(hit.point);
-            CancelTowerCreation();
-            Debug.Log(hit.transform.gameObject.name + " :: " + hit.transform.root.transform.name);
-            if (Input.GetMouseButtonDown(0))
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray,out hit))
             {
-                if (hit.transform.GetComponent<TowerLocation>()?.IsOccupied == false)
-                {
-                    hit.transform.GetComponent<TowerLocation>().PlaceTower(SelectedTower);
-                    _isPlacingTower = false;
-                }
+                TowerOutline(hit.point);
             }
-
         }
-
-
+        
     }
 
+    public void PlaceTower(Vector3 pos) //receives the gameobject from towerlocation
+    {
+        if (_isPlacingTower)
+        {
+            SelectedTower.transform.position = pos;
+            CancelTowerCreation();
+        }
+
+    }
+    public void SnapTower(Vector3 pos, bool isSnapped) //if this runs set a bool to say hey we've snapped dont update me until i say so 
+    {
+        if (_isPlacingTower)
+        {
+            _snappedTower = isSnapped;
+            SelectedTower.transform.position = pos;
+        }
+    }
     public void GatlingTurret() // need to rework all of this just getting a prototype functional
     {
+        if(_isPlacingTower)
+        {
+            CancelTowerCreation();
+            TowerToRecycle(SelectedTower);
+        }
+
         SelectedTower = Towers[1];
         CreateTower();
     }
     public void MissleLauncher()
     {
+        if (_isPlacingTower)
+        {
+            CancelTowerCreation();
+            TowerToRecycle(SelectedTower);
+        }
         SelectedTower = Towers[3];
         CreateTower();
     }
@@ -80,24 +113,39 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     public void TowerOutline(Vector3 pos)
     {
         SelectedTower.transform.position = pos;
+        //set the outline active 
     }
 
-    public void CreateTower() // change to pooling system
+    public void CreateTower() // pull out of the pooling system.
     {
         _isPlacingTower = true;
-        onIsPlacingTower?.Invoke();
+        onIsPlacingTower?.Invoke(_isPlacingTower);
         var tower = Instantiate(SelectedTower);
+        var selectionfield = Instantiate(TurretShader);
+        selectionfield.transform.parent = tower.transform;
+        selectionfield.transform.position = tower.transform.position;
+        selectionfield.GetComponent<Material>().color = InvalidPlacement;
         SelectedTower = tower;
     }
 
-    public void CancelTowerCreation() //if we right click stop placing the tower.
+    public void CancelTowerCreation()
     {
-        if (Input.GetMouseButtonDown((1)))
+        _isPlacingTower = false;
+        onIsPlacingTower?.Invoke(_isPlacingTower);
+    }
+
+    void RightClickCancel()
+    {
+        if (Input.GetMouseButtonDown(1))
         {
-            _isPlacingTower = false;
-            SelectedTower.SetActive(false); //prepping for pooling system
+            CancelTowerCreation();
+            TowerToRecycle(SelectedTower); //add to pooling system
         }
     }
 
+    void TowerToRecycle(GameObject obj)
+    {
+        obj.SetActive(false);
+    }
 
 }

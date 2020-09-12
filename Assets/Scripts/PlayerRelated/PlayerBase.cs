@@ -2,7 +2,6 @@
 
 namespace CurtisDH.Scripts.PlayerRelated
 {
-    using CurtisDH.Scripts.Enemies;
     using System;
 
     public class PlayerBase : MonoBehaviour //  Should probably rename this because of the similarity with AIBase

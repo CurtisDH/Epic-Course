@@ -2,9 +2,9 @@
 using TMPro;
 using UnityEngine;
 
-namespace CurtisDH.Utilites
+namespace CurtisDH.Utilities
 {
-    public class Utilites
+    public class Helper
     {
         public static void GenerateText(Vector2 position, string text, float ScaleSize)
         {

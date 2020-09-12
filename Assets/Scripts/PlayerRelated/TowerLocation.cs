@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerLocation : MonoBehaviour //setup event system to play particles
 {
@@ -8,26 +10,34 @@ public class TowerLocation : MonoBehaviour //setup event system to play particle
     GameObject TurretOccupying;
     [SerializeField]
     bool _isOccupied;
+
+    public static Action<Vector3,bool> onMouseEnter,onMouseExit;
+    public static Action<Vector3> onMouseDown;
+
     private void OnEnable()
     {
-        TowerConstruction.onIsPlacingTower += EnableParticleSystem;
+        TowerConstruction.onIsPlacingTower += ToggleParticleSystem;
     }
     private void OnDisable()
     {
-        TowerConstruction.onIsPlacingTower -= EnableParticleSystem;
+        TowerConstruction.onIsPlacingTower -= ToggleParticleSystem;
     }
 
     private void OnMouseEnter()
     {
-        //snap object
+        if (_isOccupied) return;
+        onMouseEnter?.Invoke(this.gameObject.transform.position,true);
+        Debug.Log(this.gameObject +"::TowerLocation");
     }
     private void OnMouseDown()
     {
-        //place object.
+        if (_isOccupied) return;
+        onMouseDown?.Invoke(this.gameObject.transform.position);
+        _isOccupied = true;
     }
     private void OnMouseExit()
     {
-        //release object
+        onMouseExit?.Invoke(Vector3.zero, false);
     }
     //event system check if isPlacingTower is happening & if isoccupied is false
     public bool IsOccupied
@@ -37,9 +47,9 @@ public class TowerLocation : MonoBehaviour //setup event system to play particle
             return _isOccupied;
         }
     }
-    public void EnableParticleSystem()
+    public void ToggleParticleSystem(bool toggle)
     {
-
+        //particlesystem.setactive = toggle;
     }
     public void PlaceTower(GameObject obj)
     {

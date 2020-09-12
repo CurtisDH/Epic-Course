@@ -5,8 +5,7 @@ using UnityEngine;
 
 namespace CurtisDH.Scripts.Managers
 {
-    using CurtisDH.Scripts.PlayerRelated;
-    using CurtisDH.Utilites;
+    using CurtisDH.Utilities;
     public class SpawnManager : MonoBehaviour
     {
         private static SpawnManager _instance;
@@ -99,7 +98,7 @@ namespace CurtisDH.Scripts.Managers
                 Debug.Log(Wave.Count);
                 if (PoolManager.Instance.PooledObjects.Count > 1)
                 {
-                    Utilites.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
+                    Helper.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
                 }
                 for (int i = 0; i < Wave.Count; i++)
                 {
