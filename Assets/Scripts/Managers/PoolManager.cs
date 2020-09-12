@@ -15,6 +15,15 @@ namespace CurtisDH.Scripts.Managers
                 return _pooledObjects;
             }
         }
+        [SerializeField]
+        private List<GameObject> _pooledTurrets;
+        public List<GameObject> PooledTurrets
+        {
+            get
+            {
+                return _pooledTurrets;
+            }
+        }
         private static PoolManager _instance;
         public static PoolManager Instance
         {
@@ -34,9 +43,15 @@ namespace CurtisDH.Scripts.Managers
         {
             _instance = this;
         }
-        public void ObjectsReadyToRecycle(GameObject obj) // when object setActive = false (In the die method) add it to this list.
+        public void ObjectsReadyToRecycle(GameObject obj, bool enemies= true) // when object setActive = false (In the die method) add it to this list.
         {
-            PooledObjects.Add(obj);
+            if (enemies != true)
+            {
+                _pooledTurrets.Add(obj);
+                return;
+            }
+                PooledObjects.Add(obj);
+            
         }
         public GameObject RequestEnemy() //this is broken can't figure out why
         #region error message
@@ -72,6 +87,23 @@ namespace CurtisDH.Scripts.Managers
             }
 
             return null;
+        }
+        public GameObject RequestTower() // currently kinda works..
+            //it returns whatever turret is in the pool regardless of the selected one. 
+            // ideas... Seperate the lists into different IDs (Doesn't seem modular enough to me)
+            // Check all the pooled turrets ID's before returning (if an id matches the one we want return that)
+        {
+            if(_pooledTurrets.Count != 0)
+            {
+                var TurretToReturn = _pooledTurrets[0];
+                TurretToReturn.SetActive(true);
+                _pooledTurrets.RemoveAt(0);
+                return TurretToReturn;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
