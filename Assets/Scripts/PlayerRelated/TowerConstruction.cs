@@ -1,4 +1,5 @@
-﻿using CurtisDH.Utilities;
+﻿using CurtisDH.Scripts.Managers;
+using CurtisDH.Utilities;
 using System;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     [SerializeField]
     GameObject TurretShader;
     [SerializeField]
-    Color InvalidPlacement=Color.red, ValidPlacement=Color.green;
+    Color InvalidPlacement = Color.red, ValidPlacement = Color.green;
     public GameObject[] Towers;
     [SerializeField]
     GameObject SelectedTower;
@@ -48,7 +49,7 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     bool _isPlacingTower;
     [SerializeField]
     bool _snappedTower = false;
-    
+
     public bool IsPlacingTower
     {
         get
@@ -65,7 +66,7 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray,out hit))
+            if (Physics.Raycast(ray, out hit))
             {
                 TowerOutline(hit.point);
             }
@@ -86,7 +87,7 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     {
         if (_isPlacingTower)
         {
-            if(isSnapped == true) //need to refine and remove getcomponent if possible
+            if (isSnapped == true) //need to refine and remove getcomponent if possible
             {
                 SelectedTowerShader.GetComponent<Renderer>().material.color = ValidPlacement;
             }
@@ -100,24 +101,40 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
     }
     public void GatlingTurret() // need to rework all of this just getting a prototype functional
     {
-        if(_isPlacingTower)
+        if (GameManager.Instance.WarFund >= 200)
         {
-            CancelTowerCreation();
-            TowerToRecycle(SelectedTower);
-        }
+            if (_isPlacingTower)
+            {
+                CancelTowerCreation();
+                TowerToRecycle(SelectedTower);
+            }
 
-        SelectedTower = Towers[1];
-        CreateTower();
+            SelectedTower = Towers[1];
+            CreateTower(); //change value to the cost of the tower.
+        }
+        else
+        {
+            Debug.Log("TowerConstruction::"+GameManager.Instance.WarFund);
+            //tell the users that there is not enough currency
+        }
     }
     public void MissleLauncher()
     {
-        if (_isPlacingTower)
+        if (GameManager.Instance.WarFund >= 500)
         {
-            CancelTowerCreation();
-            TowerToRecycle(SelectedTower);
+            if (_isPlacingTower)
+            {
+                CancelTowerCreation();
+                TowerToRecycle(SelectedTower);
+            }
+            SelectedTower = Towers[3];
+            CreateTower();
         }
-        SelectedTower = Towers[3];
-        CreateTower();
+        else
+        {
+            Debug.Log("TowerConstruction::" + GameManager.Instance.WarFund);
+            //tell the users that there is not enough currency
+        }
     }
 
     public void TowerOutline(Vector3 pos)
