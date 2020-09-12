@@ -100,8 +100,8 @@ namespace CurtisDH.Scripts.Managers
             }
         }
         public void GatlingTurret() // need to rework all of this just getting a prototype functional
-        {
-            if (GameManager.Instance.WarFund >= 200) //need to link this to the turrets warfund
+        {//need a better way to access the towers warfund..
+            if (GameManager.Instance.WarFund >= Towers[0].GetComponent<TowerBase>().WarFund) //need to link this to the turrets warfund
             {
                 if (_isPlacingTower)
                 {
@@ -118,9 +118,9 @@ namespace CurtisDH.Scripts.Managers
                 //tell the users that there is not enough currency
             }
         }
-        public void MissleLauncher()
+        public void MissleLauncher() //need a better way to access the towers warfund..
         {
-            if (GameManager.Instance.WarFund >= 500)
+            if (GameManager.Instance.WarFund >= Towers[1].GetComponent<TowerBase>().WarFund)
             {
                 if (_isPlacingTower)
                 {
