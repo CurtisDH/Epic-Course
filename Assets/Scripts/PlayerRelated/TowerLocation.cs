@@ -11,6 +11,11 @@ public class TowerLocation : MonoBehaviour //setup event system to play particle
     [SerializeField]
     bool _isOccupied;
 
+
+    [SerializeField]
+    GameObject AvailableSpotPrefab;
+    [SerializeField]
+    GameObject _activeAvailableSpot;
     public static Action<Vector3,bool> onMouseEnter,onMouseExit;
     public static Action<Vector3> onMouseDown;
 
@@ -49,6 +54,15 @@ public class TowerLocation : MonoBehaviour //setup event system to play particle
     }
     public void ToggleParticleSystem(bool toggle)
     {
+        if (_isOccupied) return;
+        if(_activeAvailableSpot == null)
+        {
+            var T =Instantiate(AvailableSpotPrefab);
+            T.transform.parent = this.transform;
+            T.transform.position = this.transform.position;
+            _activeAvailableSpot = T;
+        }
+        _activeAvailableSpot.SetActive(toggle);
         //particlesystem.setactive = toggle;
     }
     public void PlaceTower(GameObject obj)

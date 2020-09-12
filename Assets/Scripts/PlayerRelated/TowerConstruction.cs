@@ -70,7 +70,6 @@ public class TowerConstruction : MonoBehaviour // renameto tower manager?
                 TowerOutline(hit.point);
             }
         }
-        
     }
 
     public void PlaceTower(Vector3 pos) //receives the gameobject from towerlocation
