@@ -109,7 +109,7 @@ namespace CurtisDH.Scripts.Managers
                     TowerToRecycle(SelectedTower);
                 }
 
-                SelectedTower = Towers[0];
+                SelectedTower = Towers?[0];
                 CreateTower(); //change value to the cost of the tower.
             }
             else
@@ -120,7 +120,7 @@ namespace CurtisDH.Scripts.Managers
         }
         public void MissleLauncher() //need a better way to access the towers warfund..
         {
-            if (GameManager.Instance.WarFund >= Towers[1].GetComponent<TowerBase>().WarFund)
+            if (GameManager.Instance.WarFund >= Towers?[1].GetComponent<TowerBase>().WarFund)
             {
                 if (_isPlacingTower)
                 {
