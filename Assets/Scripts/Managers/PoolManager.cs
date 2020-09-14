@@ -10,7 +10,7 @@ namespace CurtisDH.Scripts.Managers
     {
         [SerializeField]
         private List<GameObject> _pooledObjects;
-
+        [SerializeField]
         private List<GameObject> _enemyType0, _enemyType1;
         public List<GameObject> PooledObjects
         {
@@ -78,12 +78,10 @@ namespace CurtisDH.Scripts.Managers
         #endregion
         {
             int id = SpawnManager.Instance.Wave[waveID].GetComponent<AIBase>().ID;
-            Helper.RandomiseList(_enemyType0);
             if (id == 0)//switch to switch statement if increase ID's in size.
             {
-                if (_enemyType0.Count != 0)
+                if (_enemyType0.Count > 0)
                 {
-                    Helper.RandomiseList(_enemyType0);
                     Debug.Log("PoolManager::etype0 count > 1");
                     var enemy = _enemyType0[0];
                     enemy.SetActive(true);
@@ -93,9 +91,8 @@ namespace CurtisDH.Scripts.Managers
             }
             else if (id == 1)
             {
-                if (_enemyType1.Count != 0)
+                if (_enemyType1.Count > 0)
                 {
-                    Helper.RandomiseList(_enemyType1);
                     Debug.Log("PoolManager::etype1 count > 1");
                     var enemy = _enemyType1[0];
                     enemy.SetActive(true);
