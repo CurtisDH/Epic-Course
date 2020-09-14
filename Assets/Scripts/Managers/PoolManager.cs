@@ -59,16 +59,7 @@ namespace CurtisDH.Scripts.Managers
             }
         }
         public GameObject RequestEnemy(int waveID = 0) //Reworking the whole pooling system as its non-functional
-        #region error message
-        //        ArgumentOutOfRangeException: Index was out of range.Must be non-negative and less than the size of the collection.
-        //Parameter name: index
-        //System.ThrowHelper.ThrowArgumentOutOfRangeException (System.ExceptionArgument argument, System.ExceptionResource resource) (at<fb001e01371b4adca20013e0ac763896>:0)
-        //System.ThrowHelper.ThrowArgumentOutOfRangeException() (at<fb001e01371b4adca20013e0ac763896>:0)
-        //CurtisDH.Scripts.Managers.PoolManager.RequestEnemy() (at Assets/Scripts/Managers/PoolManager.cs:76)
-        //CurtisDH.Scripts.Managers.SpawnManager.SpawnEnemy(System.Int32 i) (at Assets/Scripts/Managers/SpawnManager.cs:118)
-        //CurtisDH.Scripts.Managers.SpawnManager+<SpawnRoutine>d__21.MoveNext() (at Assets/Scripts/Managers/SpawnManager.cs:108)
-        //UnityEngine.SetupCoroutine.InvokeMoveNext(System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at<4cc8ec075538416496e5db5d391208ac>:0)
-        #endregion
+        
         {
             int id = SpawnManager.Instance.Wave[waveID].GetComponent<AIBase>().ID;
             if (id == 0)//switch to switch statement if increase ID's in size.
