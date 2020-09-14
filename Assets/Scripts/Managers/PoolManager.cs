@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using CurtisDH.Scripts.Enemies;
+using CurtisDH.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -7,7 +9,9 @@ namespace CurtisDH.Scripts.Managers
     public class PoolManager : MonoBehaviour
     {
         [SerializeField]
-        private List<GameObject> _pooledObjects; 
+        private List<GameObject> _pooledObjects;
+
+        private List<GameObject> _enemyType0, _enemyType1;
         public List<GameObject> PooledObjects
         {
             get
@@ -43,31 +47,25 @@ namespace CurtisDH.Scripts.Managers
         {
             _instance = this;
         }
-        public void ObjectsReadyToRecycle(GameObject obj, bool enemies = true, int id = 0,int warfund = 0) // when object setActive = false (In the die method) add it to this list.
+        public void ObjectsReadyToRecycle(GameObject obj, bool enemies = true, int id = 0, int warfund = 0) // when object setActive = false (In the die method) add it to this list.
         {
             obj.transform.parent = transform;
-            if(id == 0) // will switch to switch statement if I increase the id's
-            {
-                
-            }
-            else if (id == 1)
-            {
-
-            }
             if (enemies != true)
             {
                 _pooledTurrets.Add(obj);
                 return;
             }
-            else
+            GameManager.Instance.AdjustWarfund(-warfund);
+            if (id == 0) // will switch to switch statement if I increase the id's
             {
-                _pooledObjects.Add(obj);
-                GameManager.Instance.AdjustWarfund(-warfund);
+                _enemyType0.Add(obj);
             }
-            
-
+            else if (id == 1)
+            {
+                _enemyType1.Add(obj);
+            }
         }
-        public GameObject RequestEnemy(int id) //Reworking the whole pooling system as its non-functional
+        public GameObject RequestEnemy(int waveID = 0) //Reworking the whole pooling system as its non-functional
         #region error message
         //        ArgumentOutOfRangeException: Index was out of range.Must be non-negative and less than the size of the collection.
         //Parameter name: index
@@ -79,28 +77,36 @@ namespace CurtisDH.Scripts.Managers
         //UnityEngine.SetupCoroutine.InvokeMoveNext(System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at<4cc8ec075538416496e5db5d391208ac>:0)
         #endregion
         {
-            int i = 0;
-            if (SpawnManager.Instance.Wave.Count != 0 && _pooledObjects.Count != 0)
-                while (_pooledObjects[i].name != SpawnManager.Instance.Wave[i].name)
+            int id = SpawnManager.Instance.Wave[waveID].GetComponent<AIBase>().ID;
+            Helper.RandomiseList(_enemyType0);
+            if (id == 0)//switch to switch statement if increase ID's in size.
+            {
+                if (_enemyType0.Count != 0)
                 {
-                    Debug.Log("PoolManager::While Loop " + i);
-                    if (_pooledObjects[i].name == SpawnManager.Instance.Wave[i].name)
-                    {
-                        Debug.Log("PoolManager::Line48");
-                        var enemytoreturn = _pooledObjects[i];
-                        _pooledObjects.RemoveAt(i);
-                        Debug.Log("PoolManager::Line51" + enemytoreturn);
-                        enemytoreturn.SetActive(true);
-                        return enemytoreturn;
-                    }
-                    i++;
+                    Helper.RandomiseList(_enemyType0);
+                    Debug.Log("PoolManager::etype0 count > 1");
+                    var enemy = _enemyType0[0];
+                    enemy.SetActive(true);
+                    _enemyType0.RemoveAt(0);
+                    return enemy;
                 }
-            //if (_pooledObjects[i].name == SpawnManager.Instance.Wave[i].name)
-            //{
+            }
+            else if (id == 1)
+            {
+                if (_enemyType1.Count != 0)
+                {
+                    Helper.RandomiseList(_enemyType1);
+                    Debug.Log("PoolManager::etype1 count > 1");
+                    var enemy = _enemyType1[0];
+                    enemy.SetActive(true);
+                    _enemyType1.RemoveAt(0);
+                    return enemy;
+                }
+            }
+            Debug.Log("PoolManager::No list available creating object");
+            var e = Instantiate(SpawnManager.Instance.Wave[waveID]);
+            return e;
 
-            //}
-
-            return null;
         }
         public GameObject RequestTower() // currently kinda works..
                                          //it returns whatever turret is in the pool regardless of the selected one. 

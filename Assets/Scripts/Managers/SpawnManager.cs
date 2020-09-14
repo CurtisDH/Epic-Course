@@ -96,36 +96,12 @@ namespace CurtisDH.Scripts.Managers
             if (customWave == false)
             {
                 Debug.Log(Wave.Count);
-                if (PoolManager.Instance.PooledObjects.Count > 1)
-                {
-                    Helper.RandomiseList(PoolManager.Instance.PooledObjects); // Changed to make it only randomise the list once
-                }
                 for (int i = 0; i < Wave.Count; i++)
                 {
                     Debug.Log(i);
                     yield return new WaitForSeconds(timeBetweenWave);
-                    SpawnEnemy(i);
+                    PoolManager.Instance.RequestEnemy(waveID:i);
                 }
-            }
-        }
-        void SpawnEnemy(int i) // need to check if the pooled enemy name is == the one we want to spawn in the wave list
-        {
-            Debug.Log("SpawnManager::BeforeRequestEnemy");
-            if (PoolManager.Instance.PooledObjects.Count != 0 
-                && PoolManager.Instance.RequestEnemy() != null)
-            {
-                if (PoolManager.Instance.RequestEnemy().name == Wave[i].name)
-                {
-                    Debug.Log("SpawnManager::RequestEnemy");
-                    PoolManager.Instance.RequestEnemy().SetActive(true);
-                    return;
-                }
-
-            }
-            else
-            {
-                var enemy = Instantiate(Wave[i]);
-                enemy.name = Wave[i].name;
             }
         }
         public void CreateWave() //Randomly populate a list with enemy types. List size depends on current wave * base amount to spawn.
