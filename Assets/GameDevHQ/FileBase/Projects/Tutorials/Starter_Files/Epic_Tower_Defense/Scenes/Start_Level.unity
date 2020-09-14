@@ -3422,14 +3422,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffcf4316cc93c3444ad064afd65b0f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TurretShader: {fileID: 3318918957541053756, guid: b2743e99a57b46f4889ef46c2dcaff14, type: 3}
-  InvalidPlacement: {r: 1, g: 0, b: 0, a: 1}
-  ValidPlacement: {r: 0, g: 1, b: 0, a: 1}
+  _turretShader: {fileID: 0}
+  _invalidPlacement: {r: 1, g: 0, b: 0, a: 1}
+  _validPlacement: {r: 0, g: 1, b: 0, a: 1}
   Towers:
   - {fileID: 491016477543301049, guid: 206f65fbf34a7434b9dade7de23f6156, type: 3}
   - {fileID: 2121844628393979967, guid: 0d7eb314a02a33d458f599e3b509b9a2, type: 3}
-  SelectedTower: {fileID: 0}
-  SelectedTowerShader: {fileID: 0}
+  _selectedTower: {fileID: 0}
+  _selectedTowerShader: {fileID: 0}
   _canPlaceTower: 0
   _isPlacingTower: 0
   _snappedTower: 0
@@ -3715,7 +3715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbe525a67cc98ca408d08e66b5eceeae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _warFund: 0
+  _warFund: 1250
 --- !u!1 &456968718
 GameObject:
   m_ObjectHideFlags: 0
@@ -10917,7 +10917,7 @@ MonoBehaviour:
   _maxZoom: 135
   _minZoom: 20
   _edgeScrollSize: 25
-  _FixedEdgeScroll: 0
+  _fixedEdgeScroll: 0
   _edgeScroll: 0
   _xBounds: {x: -40, y: 0}
   _yBounds: {x: 0, y: 25}
@@ -17188,7 +17188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a94655ebd8be5284691621d6c64d4e31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pooledObjects: []
+  _enemyType0: []
+  _enemyType1: []
+  _turretType0: []
+  _turretType1: []
 --- !u!4 &2013990390
 Transform:
   m_ObjectHideFlags: 0

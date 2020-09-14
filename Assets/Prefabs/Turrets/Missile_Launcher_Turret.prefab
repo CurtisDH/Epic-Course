@@ -654,7 +654,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _warFund: 500
   _towerID: 1
-  _towerRadius: 10
+  _towerRadius: 25
 --- !u!1 &2121847461212468561
 GameObject:
   m_ObjectHideFlags: 0
