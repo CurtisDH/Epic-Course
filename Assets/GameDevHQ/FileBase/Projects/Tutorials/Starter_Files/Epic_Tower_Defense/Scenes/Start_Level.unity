@@ -3422,14 +3422,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffcf4316cc93c3444ad064afd65b0f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _turretShader: {fileID: 0}
+  _turretShader: {fileID: 3318918957541053756, guid: b2743e99a57b46f4889ef46c2dcaff14, type: 3}
   _invalidPlacement: {r: 1, g: 0, b: 0, a: 1}
   _validPlacement: {r: 0, g: 1, b: 0, a: 1}
   Towers:
   - {fileID: 491016477543301049, guid: 206f65fbf34a7434b9dade7de23f6156, type: 3}
   - {fileID: 2121844628393979967, guid: 0d7eb314a02a33d458f599e3b509b9a2, type: 3}
   _selectedTower: {fileID: 0}
-  _selectedTowerShader: {fileID: 0}
+  _towerShaderPrefab: {fileID: 0}
   _canPlaceTower: 0
   _isPlacingTower: 0
   _snappedTower: 0
@@ -5173,7 +5173,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 569195066}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.067417, y: -12.777187, z: 5.3387475}
+  m_LocalPosition: {x: -8.22, y: -12.777187, z: 5.3387475}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2145557089}
