@@ -40,24 +40,15 @@ namespace CurtisDH.Scripts.Managers
         Color InvalidPlacement = Color.red, ValidPlacement = Color.green;
         public GameObject[] Towers;
         [SerializeField]
-        GameObject SelectedTower;
+        GameObject _selectedTower;
         [SerializeField]
-        GameObject SelectedTowerShader;
+        GameObject _selectedTowerShader;
         [SerializeField]
         bool _canPlaceTower;
         [SerializeField]
         bool _isPlacingTower;
         [SerializeField]
         bool _snappedTower = false;
-
-        public bool IsPlacingTower
-        {
-            get
-            {
-                return _isPlacingTower;
-            }
-        }
-
         private void Update()
         {
             if (_isPlacingTower != true) return;
@@ -76,8 +67,8 @@ namespace CurtisDH.Scripts.Managers
         {
             if (_isPlacingTower)
             {
-                SelectedTower.transform.position = pos;
-                Destroy(SelectedTowerShader); //probably should recycle this
+                _selectedTower.transform.position = pos;
+                Destroy(_selectedTowerShader); //probably should recycle this
                 CancelTowerCreation();
             }
         }
@@ -87,14 +78,14 @@ namespace CurtisDH.Scripts.Managers
             {
                 if (isSnapped == true) //need to refine and remove getcomponent if possible
                 {
-                    SelectedTowerShader.GetComponent<Renderer>().material.color = ValidPlacement;
+                    _selectedTowerShader.GetComponent<Renderer>().material.color = ValidPlacement;
                 }
                 else
                 {
-                    SelectedTowerShader.GetComponent<Renderer>().material.color = InvalidPlacement;
+                    _selectedTowerShader.GetComponent<Renderer>().material.color = InvalidPlacement;
                 }
                 _snappedTower = isSnapped;
-                SelectedTower.transform.position = pos;
+                _selectedTower.transform.position = pos;
             }
         }
         public void GatlingTurret() // need to rework all of this just getting a prototype functional
@@ -104,10 +95,10 @@ namespace CurtisDH.Scripts.Managers
                 if (_isPlacingTower)
                 {
                     CancelTowerCreation();
-                    TowerToRecycle(SelectedTower);
+                    TowerToRecycle(_selectedTower);
                 }
 
-                SelectedTower = Towers?[0];
+                _selectedTower = Towers?[0];
                 CreateTower(); //change value to the cost of the tower.
             }
             else
@@ -123,9 +114,9 @@ namespace CurtisDH.Scripts.Managers
                 if (_isPlacingTower)
                 {
                     CancelTowerCreation();
-                    TowerToRecycle(SelectedTower);
+                    TowerToRecycle(_selectedTower);
                 }
-                SelectedTower = Towers[1];
+                _selectedTower = Towers[1];
                 CreateTower();
             }
             else
@@ -137,32 +128,33 @@ namespace CurtisDH.Scripts.Managers
 
         public void TowerOutline(Vector3 pos)
         {
-            SelectedTower.transform.position = pos;
+            _selectedTower.transform.position = pos;
             //set the outline active 
         }
 
         //need to rework this entire method... (CURRENTLY A BRUTEFORCED MESS)
         public void CreateTower() // pull out of the pooling system.
         { //i think i should move createTower to the spawnManager..
-            if(PoolManager.Instance.RequestTower() == null)
+            _isPlacingTower = true;
+            if (PoolManager.Instance.RequestTower() == null)
             {
                 onIsPlacingTower?.Invoke(_isPlacingTower);
-                var tower = Instantiate(SelectedTower);
+                var tower = Instantiate(_selectedTower);
                 var selectionfield = Instantiate(TurretShader);
                 selectionfield.transform.parent = tower.transform;
                 selectionfield.transform.position = tower.transform.position;
-                float TowerRadius = SelectedTower.GetComponent<TowerBase>().TowerRadius;
+                float TowerRadius = _selectedTower.GetComponent<TowerBase>().TowerRadius; //event system
                 selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
-                SelectedTowerShader = selectionfield;
-                selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color.
-                SelectedTower = tower;
+                _selectedTowerShader = selectionfield;
+                selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color. //event
+                _selectedTower = tower;
             }
             else
             {
-                SelectedTower = PoolManager.Instance.RequestTower();
+                _selectedTower = PoolManager.Instance.RequestTower();
             }
 
-            _isPlacingTower = true;
+            
             
         }
 
@@ -177,7 +169,7 @@ namespace CurtisDH.Scripts.Managers
             if (Input.GetMouseButtonDown(1))
             {
                 CancelTowerCreation();
-                TowerToRecycle(SelectedTower); //add to pooling system
+                TowerToRecycle(_selectedTower); //add to pooling system
             }
         }
 
