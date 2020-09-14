@@ -5,8 +5,8 @@ namespace CurtisDH.Scripts.Managers
 {
     public class TowerManager : MonoBehaviour // renameto tower manager?
     {
-        private TowerManager _instance;
-        public TowerManager Instance
+        private static TowerManager _instance;
+        public static TowerManager Instance
         {
             get
             {
@@ -35,14 +35,49 @@ namespace CurtisDH.Scripts.Managers
         }
 
         [SerializeField]
-        GameObject TurretShader;
+        GameObject _turretShader;
+        public GameObject TurretShader
+        {
+            get
+            {
+                return _turretShader;
+            }
+        }
         [SerializeField]
-        Color InvalidPlacement = Color.red, ValidPlacement = Color.green;
+        Color _invalidPlacement = Color.red, _validPlacement = Color.green;
+        public Color InvalidPlacement
+        {
+            get
+            {
+                return _invalidPlacement;
+            }
+        }
+        public Color ValidPlacement
+        {
+            get
+            {
+                return _validPlacement;
+            }
+        }
         public GameObject[] Towers;
         [SerializeField]
         GameObject _selectedTower;
+        public GameObject SelectedTower
+        {
+            get
+            {
+                return _selectedTower;
+            }
+        }
         [SerializeField]
-        GameObject _selectedTowerShader;
+        GameObject _towerShaderPrefab;
+        public GameObject TowerShaderPrefab
+        {
+            get
+            {
+                return _towerShaderPrefab;
+            }
+        }
         [SerializeField]
         bool _canPlaceTower;
         [SerializeField]
@@ -68,21 +103,23 @@ namespace CurtisDH.Scripts.Managers
             if (_isPlacingTower)
             {
                 _selectedTower.transform.position = pos;
-                Destroy(_selectedTowerShader); //probably should recycle this
+                Destroy(_towerShaderPrefab);
+                //_towerShaderPrefab.SetActive(false); //setup to recycle
                 CancelTowerCreation();
             }
         }
+
         public void SnapTower(Vector3 pos, bool isSnapped) //if this runs set a bool to say hey we've snapped dont update me until i say so 
         {
             if (_isPlacingTower)
             {
                 if (isSnapped == true) //need to refine and remove getcomponent if possible
                 {
-                    _selectedTowerShader.GetComponent<Renderer>().material.color = ValidPlacement;
+                    _towerShaderPrefab.GetComponent<Renderer>().material.color = _validPlacement;
                 }
                 else
                 {
-                    _selectedTowerShader.GetComponent<Renderer>().material.color = InvalidPlacement;
+                    _towerShaderPrefab.GetComponent<Renderer>().material.color = _invalidPlacement;
                 }
                 _snappedTower = isSnapped;
                 _selectedTower.transform.position = pos;
@@ -99,7 +136,7 @@ namespace CurtisDH.Scripts.Managers
                 }
 
                 _selectedTower = Towers?[0];
-                CreateTower(); //change value to the cost of the tower.
+                CreateTower(0); //hard coded -- need to change
             }
             else
             {
@@ -116,8 +153,8 @@ namespace CurtisDH.Scripts.Managers
                     CancelTowerCreation();
                     TowerToRecycle(_selectedTower);
                 }
-                _selectedTower = Towers[1];
-                CreateTower();
+                _selectedTower = Towers?[1];
+                CreateTower(1);//hard coded -- need to change
             }
             else
             {
@@ -133,29 +170,20 @@ namespace CurtisDH.Scripts.Managers
         }
 
         //need to rework this entire method... (CURRENTLY A BRUTEFORCED MESS)
-        public void CreateTower() // pull out of the pooling system.
-        { //i think i should move createTower to the spawnManager..
+        public void CreateTower(int id) // pull out of the pooling system.
+        {
             _isPlacingTower = true;
-            if (PoolManager.Instance.RequestTower() == null)
-            {
-                onIsPlacingTower?.Invoke(_isPlacingTower);
-                var tower = Instantiate(_selectedTower);
-                var selectionfield = Instantiate(TurretShader);
-                selectionfield.transform.parent = tower.transform;
-                selectionfield.transform.position = tower.transform.position;
-                float TowerRadius = _selectedTower.GetComponent<TowerBase>().TowerRadius; //event system
-                selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
-                _selectedTowerShader = selectionfield;
-                selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color. //event
-                _selectedTower = tower;
-            }
-            else
-            {
-                _selectedTower = PoolManager.Instance.RequestTower();
-            }
+            onIsPlacingTower?.Invoke(_isPlacingTower);
+            _selectedTower = PoolManager.Instance.RequestTower(id);
 
-            
-            
+            //need to move all this to poolmanager somehow.. or perhaps turn into an event system.
+            float TowerRadius = _selectedTower.GetComponent<TowerBase>().TowerRadius;
+            var selectionfield = Instantiate(_turretShader);
+            selectionfield.transform.parent = _selectedTower.transform;
+            selectionfield.transform.position = _selectedTower.transform.position;
+            selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
+            _towerShaderPrefab = selectionfield;
+            selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color. //event?
         }
 
         public void CancelTowerCreation()
@@ -169,7 +197,7 @@ namespace CurtisDH.Scripts.Managers
             if (Input.GetMouseButtonDown(1))
             {
                 CancelTowerCreation();
-                TowerToRecycle(_selectedTower); //add to pooling system
+                TowerToRecycle(_selectedTower); //add to pooling system -- currently creating a new one upon request.
             }
         }
 

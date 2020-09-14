@@ -9,25 +9,9 @@ namespace CurtisDH.Scripts.Managers
     public class PoolManager : MonoBehaviour
     {
         [SerializeField]
-        private List<GameObject> _pooledObjects;
-        [SerializeField]
         private List<GameObject> _enemyType0, _enemyType1;
-        public List<GameObject> PooledObjects
-        {
-            get
-            {
-                return _pooledObjects;
-            }
-        }
         [SerializeField]
-        private List<GameObject> _pooledTurrets;
-        public List<GameObject> PooledTurrets
-        {
-            get
-            {
-                return _pooledTurrets;
-            }
-        }
+        private List<GameObject> _turretType0, _turretType1;
         private static PoolManager _instance;
         public static PoolManager Instance
         {
@@ -52,7 +36,16 @@ namespace CurtisDH.Scripts.Managers
             obj.transform.parent = transform;
             if (enemies != true)
             {
-                _pooledTurrets.Add(obj);
+                id = obj.GetComponent<TowerBase>().TowerID; //don't want to use getcomponent so may find a better way
+                if (id == 0)
+                {
+                    _turretType0.Add(obj);
+                }
+                else if (id == 1)
+                {
+                    _turretType1.Add(obj);
+                }
+
                 return;
             }
             GameManager.Instance.AdjustWarfund(-warfund);
@@ -82,7 +75,7 @@ namespace CurtisDH.Scripts.Managers
             {
                 if (_enemyType0.Count > 0)
                 {
-                    Debug.Log("PoolManager::etype0 count > 1");
+
                     var enemy = _enemyType0[0];
                     enemy.SetActive(true);
                     _enemyType0.RemoveAt(0);
@@ -93,7 +86,7 @@ namespace CurtisDH.Scripts.Managers
             {
                 if (_enemyType1.Count > 0)
                 {
-                    Debug.Log("PoolManager::etype1 count > 1");
+
                     var enemy = _enemyType1[0];
                     enemy.SetActive(true);
                     _enemyType1.RemoveAt(0);
@@ -105,23 +98,37 @@ namespace CurtisDH.Scripts.Managers
             return e;
 
         }
-        public GameObject RequestTower() // currently kinda works..
-                                         //it returns whatever turret is in the pool regardless of the selected one. 
-                                         // ideas... Seperate the lists into different IDs (Doesn't seem modular enough to me)
-                                         // Check all the pooled turrets ID's before returning (if an id matches the one we want return that)
+        // currently kinda works..
+        //it returns whatever turret is in the pool regardless of the selected one. 
+        // ideas... Seperate the lists into different IDs (Doesn't seem modular enough to me)
+        // Check all the pooled turrets ID's before returning (if an id matches the one we want return that)
+        public GameObject RequestTower(int id = 0)
         {
-            if (_pooledTurrets.Count != 0)
+            if (id == 0)
             {
-                var TurretToReturn = _pooledTurrets[0];
-                TurretToReturn.SetActive(true);
-                _pooledTurrets.RemoveAt(0);
-                return TurretToReturn;
-            }
-            else
-            {
-                return null;
-            }
-        }
-    }
+                if (_turretType0.Count > 0)
+                {
 
+                    var turret = _turretType0[0];
+                    turret.SetActive(true);
+                    _turretType0.RemoveAt(0);
+                    return turret;
+                }
+            }
+            else if (id == 1)
+            {
+                if (_turretType1.Count > 0)
+                {
+
+                    var turret = _turretType1[0];
+                    turret.SetActive(true);
+                    _turretType1.RemoveAt(0);
+                    return turret;
+                }
+            }
+            var tower = Instantiate(TowerManager.Instance.SelectedTower);
+            return tower;
+        }
+
+    }
 }

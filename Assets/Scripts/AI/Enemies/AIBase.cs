@@ -17,7 +17,15 @@ namespace CurtisDH.Scripts.Enemies
         private float _speed;
         [SerializeField]
         bool _AICollision = true; // When set to true - AI Will not be able to walk through eachother.
-
+        [SerializeField]
+        private int _iD;
+        public int ID
+        {
+            get
+            {
+                return _iD;
+            }
+        }
         [SerializeField]
         private int _warFund;
         public int WarFund
@@ -99,11 +107,9 @@ namespace CurtisDH.Scripts.Enemies
         {
             if (obj == this.gameObject)
             {
-                PoolManager.Instance.PooledObjects.Add(this.gameObject);
-                this.gameObject.transform.parent = GameObject.Find("PoolManager").transform;
-                GameManager.Instance.AdjustWarfund(-WarFund); //change this to an event system?
+                PoolManager.Instance.ObjectsReadyToRecycle(gameObject, true, _iD,_warFund);
                 SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
-                this.gameObject.SetActive(false);
+                gameObject.SetActive(false);
             }
         }
 

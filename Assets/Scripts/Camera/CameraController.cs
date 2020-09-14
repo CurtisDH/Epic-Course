@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float _edgeScrollSize;
     [SerializeField]
-    private bool _FixedEdgeScroll;
+    private bool _fixedEdgeScroll;
     [SerializeField]
     private bool _edgeScroll; //disables edge scrolling if set to false
     #endregion
@@ -88,7 +88,7 @@ public class CameraController : MonoBehaviour
         // Issue with Original Method less performant & is fixed - can't change value without lots of mess
     {
         if (_edgeScroll == false) return;
-        if(_FixedEdgeScroll == true)
+        if(_fixedEdgeScroll == true)
         {
             #region Original method
             if (Input.mousePosition.x > Screen.width - _edgeScrollSize)
