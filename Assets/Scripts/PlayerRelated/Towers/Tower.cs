@@ -10,21 +10,21 @@ public abstract class Tower : MonoBehaviour
     public int WarFund
     {
         get => _warFund;
-        set => _warFund = WarFund;
+        set => _warFund = value;
     }
     [SerializeField]
     protected int _towerID;
     public int TowerID
     {
         get => _towerID;
-        set => _towerID = TowerID;
+        set => _towerID = value;
     }
     [SerializeField]
     protected float _towerRadius;
     public float TowerRadius
     {
         get => _towerRadius;
-        set => _towerRadius = TowerRadius;
+        set => _towerRadius = value;
     }
     [SerializeField]
     protected Queue<GameObject> _enemiesInRange;

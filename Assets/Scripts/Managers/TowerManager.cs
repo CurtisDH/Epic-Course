@@ -129,7 +129,7 @@ namespace CurtisDH.Scripts.Managers
         }
         public void GatlingTurret() // need to rework all of this just getting a prototype functional
         {//need a better way to access the towers warfund..
-            if (GameManager.Instance.WarFund >= Towers[0].GetComponent<ITower>().WarFund) //need to link this to the turrets warfund
+            if (GameManager.Instance.WarFund >= Towers[0].GetComponent<Tower>().WarFund) //need to link this to the turrets warfund
             {
                 if (_isPlacingTower)
                 {
@@ -148,7 +148,7 @@ namespace CurtisDH.Scripts.Managers
         }
         public void MissleLauncher() //need a better way to access the towers warfund..
         {
-            if (GameManager.Instance.WarFund >= Towers?[1].GetComponent<ITower>().WarFund)
+            if (GameManager.Instance.WarFund >= Towers?[1].GetComponent<Tower>().WarFund)
             {
                 if (_isPlacingTower)
                 {
@@ -179,7 +179,7 @@ namespace CurtisDH.Scripts.Managers
             _selectedTower = PoolManager.Instance.RequestTower(id);
 
             //need to move all this to poolmanager somehow.. or perhaps turn into an event system.
-            float TowerRadius = _selectedTower.GetComponent<ITower>().TowerRadius;
+            float TowerRadius = _selectedTower.GetComponent<Tower>().TowerRadius;
             var selectionfield = Instantiate(_towerShaderPrefab);
             selectionfield.transform.parent = _selectedTower.transform;
             selectionfield.transform.position = _selectedTower.transform.position;
