@@ -591,7 +591,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2117873469570627463}
   - component: {fileID: 2081665413686848025}
-  - component: {fileID: -4738402316659067555}
   m_Layer: 0
   m_Name: Missile_Launcher_Turret
   m_TagString: Untagged
@@ -623,38 +622,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 2121844628393979967}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f37f75a662e08584192823355ae4ac73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147, type: 3}
-  _misslePositions:
-  - {fileID: 2121932618251390729}
-  - {fileID: 2121263416327479109}
-  - {fileID: 2121836699825727433}
-  - {fileID: 2121620543506855819}
-  - {fileID: 2123319970204904677}
-  - {fileID: 2121521843676548633}
-  _fireDelay: 2
-  _launchSpeed: 10
-  _power: 20
-  _fuseDelay: 0
-  _reloadTime: 0
-  _destroyTime: 10
---- !u!114 &-4738402316659067555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121844628393979967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7109180fe5fe14c4a9703a6de3830262, type: 3}
+  m_Script: {fileID: 11500000, guid: e9da83c02e932eb41855433f194eb9bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _warFund: 500
   _towerID: 1
-  _towerRadius: 25
+  _towerRadius: 10
+  _missilePrefab: {fileID: 2121932618251390729}
+  _misslePositions:
+  - {fileID: 2121620543506855819}
+  - {fileID: 2121836699825727433}
+  - {fileID: 2121932618251390729}
+  - {fileID: 2121521843676548633}
+  - {fileID: 2121263416327479109}
+  - {fileID: 2123319970204904677}
+  _fireDelay: 0.6
+  _launchSpeed: 10
+  _power: 6
+  _fuseDelay: 5
+  _reloadTime: 5
+  _destroyTime: 10
 --- !u!1 &2121847461212468561
 GameObject:
   m_ObjectHideFlags: 0

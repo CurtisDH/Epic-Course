@@ -3429,7 +3429,7 @@ MonoBehaviour:
   - {fileID: 491016477543301049, guid: 206f65fbf34a7434b9dade7de23f6156, type: 3}
   - {fileID: 2121844628393979967, guid: 0d7eb314a02a33d458f599e3b509b9a2, type: 3}
   _selectedTower: {fileID: 0}
-  _towerShaderPrefab: {fileID: 0}
+  _towerShaderPrefab: {fileID: 3318918957541053756, guid: b2743e99a57b46f4889ef46c2dcaff14, type: 3}
   _canPlaceTower: 0
   _isPlacingTower: 0
   _snappedTower: 0
