@@ -95,10 +95,9 @@ namespace CurtisDH.Scripts.Managers
             }
             if (customWave == false)
             {
-                Debug.Log(Wave.Count);
+                //Debug.Log(Wave.Count);
                 for (int i = 0; i < Wave.Count; i++)
                 {
-                    Debug.Log(i);
                     yield return new WaitForSeconds(timeBetweenWave);
                     PoolManager.Instance.RequestEnemy(waveID:i);
                 }
