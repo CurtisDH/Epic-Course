@@ -3422,7 +3422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffcf4316cc93c3444ad064afd65b0f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _turretShader: {fileID: 3318918957541053756, guid: b2743e99a57b46f4889ef46c2dcaff14, type: 3}
+  _turretShader: {fileID: 0}
   _invalidPlacement: {r: 1, g: 0, b: 0, a: 1}
   _validPlacement: {r: 0, g: 1, b: 0, a: 1}
   Towers:
@@ -20274,9 +20274,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c7edd4816764b2cb111ea15f8f117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gunBarrel: {fileID: 0}
   Muzzle_Flash: {fileID: 1905277021149488}
   bulletCasings: {fileID: 198239829222451506}
   fireSound: {fileID: 8300000, guid: 08e0cb88300e54b09aa0deb684c3a3de, type: 3}
+  _audioSource: {fileID: 0}
+  _startWeaponNoise: 1
 --- !u!114 &114764318669105199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20303,6 +20306,7 @@ MonoBehaviour:
   _fuseDelay: 0
   _reloadTime: 0
   _destroyTime: 10
+  _launched: 0
 --- !u!198 &198006839926025720
 ParticleSystem:
   m_ObjectHideFlags: 0

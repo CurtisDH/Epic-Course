@@ -103,7 +103,9 @@ namespace CurtisDH.Scripts.Managers
             if (_isPlacingTower)
             {
                 _selectedTower.transform.position = pos;
-                Destroy(_turretShader);
+                _turretShader.GetComponent<MeshRenderer>().enabled = false;
+                _turretShader.AddComponent<SphereCollider>().isTrigger = true;
+                _turretShader.AddComponent<Rigidbody>().isKinematic = true;
                 //_towerShaderPrefab.SetActive(false); //setup to recycle
                 CancelTowerCreation();
             }
@@ -189,7 +191,7 @@ namespace CurtisDH.Scripts.Managers
         public void CancelTowerCreation()
         {
             _isPlacingTower = false;
-            Destroy(_turretShader); // need to pool
+            //Destroy(_turretShader);
             onIsPlacingTower?.Invoke(_isPlacingTower);
         }
 
@@ -197,6 +199,7 @@ namespace CurtisDH.Scripts.Managers
         {
             if (Input.GetMouseButtonDown(1))
             {
+                Destroy(_turretShader); // need to pool
                 CancelTowerCreation();
                 TowerToRecycle(_selectedTower); //add to pooling system -- currently creating a new one upon request.
             }
