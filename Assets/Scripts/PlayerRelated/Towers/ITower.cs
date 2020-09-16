@@ -1,11 +1,7 @@
-﻿using UnityEngine;
-public interface ITower 
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public interface ITower  // redundant
 {
-    [SerializeField]
-    int WarFund { get; set; }
-    [SerializeField]
-    int TowerID { get; set; }
-    [SerializeField]
-    float TowerRadius { get; set; }
-    void TargetEnemy();
+
 }
