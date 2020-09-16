@@ -36,7 +36,7 @@ namespace CurtisDH.Scripts.Managers
             obj.transform.parent = transform;
             if (enemies != true)
             {
-                id = obj.GetComponent<TowerBase>().TowerID; //don't want to use getcomponent so may find a better way
+                id = obj.GetComponent<ITower>().TowerID; //don't want to use getcomponent so may find a better way
                 if (id == 0)
                 {
                     _turretType0.Add(obj);
@@ -118,6 +118,8 @@ namespace CurtisDH.Scripts.Managers
                 }
             }
             var tower = Instantiate(TowerManager.Instance.SelectedTower);
+
+
             return tower;
         }
 

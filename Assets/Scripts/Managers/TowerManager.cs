@@ -103,7 +103,7 @@ namespace CurtisDH.Scripts.Managers
             if (_isPlacingTower)
             {
                 _selectedTower.transform.position = pos;
-                Destroy(_towerShaderPrefab);
+                Destroy(_turretShader);
                 //_towerShaderPrefab.SetActive(false); //setup to recycle
                 CancelTowerCreation();
             }
@@ -115,11 +115,11 @@ namespace CurtisDH.Scripts.Managers
             {
                 if (isSnapped == true) //need to refine and remove getcomponent if possible
                 {
-                    _towerShaderPrefab.GetComponent<Renderer>().material.color = _validPlacement;
+                    _turretShader.GetComponent<Renderer>().material.color = _validPlacement;
                 }
                 else
                 {
-                    _towerShaderPrefab.GetComponent<Renderer>().material.color = _invalidPlacement;
+                    _turretShader.GetComponent<Renderer>().material.color = _invalidPlacement;
                 }
                 _snappedTower = isSnapped;
                 _selectedTower.transform.position = pos;
@@ -127,7 +127,7 @@ namespace CurtisDH.Scripts.Managers
         }
         public void GatlingTurret() // need to rework all of this just getting a prototype functional
         {//need a better way to access the towers warfund..
-            if (GameManager.Instance.WarFund >= Towers[0].GetComponent<TowerBase>().WarFund) //need to link this to the turrets warfund
+            if (GameManager.Instance.WarFund >= Towers[0].GetComponent<ITower>().WarFund) //need to link this to the turrets warfund
             {
                 if (_isPlacingTower)
                 {
@@ -146,7 +146,7 @@ namespace CurtisDH.Scripts.Managers
         }
         public void MissleLauncher() //need a better way to access the towers warfund..
         {
-            if (GameManager.Instance.WarFund >= Towers?[1].GetComponent<TowerBase>().WarFund)
+            if (GameManager.Instance.WarFund >= Towers?[1].GetComponent<ITower>().WarFund)
             {
                 if (_isPlacingTower)
                 {
@@ -177,18 +177,19 @@ namespace CurtisDH.Scripts.Managers
             _selectedTower = PoolManager.Instance.RequestTower(id);
 
             //need to move all this to poolmanager somehow.. or perhaps turn into an event system.
-            float TowerRadius = _selectedTower.GetComponent<TowerBase>().TowerRadius;
-            var selectionfield = Instantiate(_turretShader);
+            float TowerRadius = _selectedTower.GetComponent<ITower>().TowerRadius;
+            var selectionfield = Instantiate(_towerShaderPrefab);
             selectionfield.transform.parent = _selectedTower.transform;
             selectionfield.transform.position = _selectedTower.transform.position;
             selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
-            _towerShaderPrefab = selectionfield;
+            _turretShader = selectionfield;
             selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color. //event?
         }
 
         public void CancelTowerCreation()
         {
             _isPlacingTower = false;
+            Destroy(_turretShader); // need to pool
             onIsPlacingTower?.Invoke(_isPlacingTower);
         }
 

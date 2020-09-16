@@ -61,11 +61,11 @@ namespace CurtisDH.Scripts.Managers
 
         }
 
-        private int _amountToSpawn = 10;// add _
+        private int _amountToSpawn = 10;
         private int _currentWave;
 
         float timeBetweenWave = 2f;
-        [SerializeField]
+        [SerializeField] // look into adding customwaves from folder to list at runtime
         private List<Wave> CustomWaves;
 
 
