@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
@@ -27,20 +29,37 @@ public abstract class Tower : MonoBehaviour
         set => _towerRadius = value;
     }
     [SerializeField]
-    protected Queue<GameObject> _enemiesInRange;
-    public Queue<GameObject> EnemiesInRange 
+    protected List<GameObject> _enemiesInRange;
+    public List<GameObject> EnemiesInRange
     {
         get => _enemiesInRange;
         set => _enemiesInRange = value;
     }
+
+    private GameObject _targetedEnemy;
+
+    public static Action<GameObject,float> onDamageEnemy;
     private void OnEnable()
     {
-        EnemiesInRange = new Queue<GameObject>();
+        EnemiesInRange = new List<GameObject>();
         TowerEnemyDetection.onEnemyDetectionRadius += AddEnemyToQueue;
+
+        // just incase we forget to set firerate I dont want somehow crash the application
+        if (_fireRate == 0)
+        {
+            _fireRate = 0.25f;
+        }
     }
+    bool _enemyInRange;
+    [SerializeField]
+    float _fireRate; // this will determine how quickly we deal damage to an enemy.
+    [SerializeField]
+    float _damage;
+    [SerializeField]
+    GameObject _gunToFaceEnemy;
     /*
      When an enemy walks into the tower radius - collider trigger
-        Add enemy to a queue list
+        Add enemy to a list
         make the tower look at the enemy deal damage & play a firing animation
     Rotation & Firing
         set a bool to true - While true we rotate the turret to face the targeted enemy specified by the queueing system
@@ -48,15 +67,56 @@ public abstract class Tower : MonoBehaviour
         once the queue is empty we set the bool to false ending the animation sequence and then we return the rotation to normal.
         
     */
+
+    //ways to detect front enemy... 
+    // if we attach a collider to the very first enemy to spawn of x wave then pass it to
+    //whoever runs through it.
+
+
+    bool temp = false;
+    private void Update()
+    {
+        if (_enemyInRange = true && _enemiesInRange.Count != 0)
+            TargetEnemy();
+    }
     public virtual void TargetEnemy()
     {
-        throw new System.NotImplementedException();
+        
+        //we can add a shoot method in here. We need a way to detect if/when the target swaps 
+        if (_enemiesInRange.Count != 0)
+        {
+            
+            var enemy = _enemiesInRange[0];
+            _targetedEnemy = enemy;
+        }
+        transform.LookAt(_targetedEnemy.transform);
+        if(temp == false)
+        StartCoroutine(DamageEnemy());
     }
-    public void AddEnemyToQueue(GameObject enemy,GameObject turret)
+    public void AddEnemyToQueue(GameObject enemy, GameObject turret, bool onTriggerExit)
     {
-        Debug.Log("Tower::Enemy:" + enemy + " Turret:" + turret);
-        if (turret != this.gameObject) return;
-        _enemiesInRange.Enqueue(enemy);
+        if (turret != this.gameObject || enemy.CompareTag("Enemy") == false)
+        {
+            return;
+        }
+        if (onTriggerExit == true)
+        {
+            _enemiesInRange?.Remove(enemy);
+        }
+        else
+        {
+            _enemiesInRange?.Add(enemy);
+        }
+    }
+    IEnumerator DamageEnemy()
+    {
+        temp = true;
+        while (true)
+        {
+            Debug.Log("Tower::DamageEnemy()");
+            onDamageEnemy?.Invoke(_targetedEnemy,_damage);
+            yield return new WaitForSeconds(_fireRate);
+        }
 
 
     }

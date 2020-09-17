@@ -13,6 +13,7 @@ namespace CurtisDH.Scripts.Enemies
         private NavMeshAgent _agent;
         [SerializeField]
         private float _health;
+        public float Health { get => _health; set => _health = value; }
         [SerializeField]
         private float _speed;
         [SerializeField]
@@ -36,6 +37,8 @@ namespace CurtisDH.Scripts.Enemies
             }
         }
 
+        
+
 
         // How much money is awarded for killing the enemy.         //Make this value protected??
         // Might add my own twist to the income. replacing this feature.
@@ -46,10 +49,12 @@ namespace CurtisDH.Scripts.Enemies
             InitaliseAI();
 
             PlayerBase.onPlayerBaseReached += onDeath;
+            Tower.onDamageEnemy += ReceiveDamage;
         }
         private void OnDisable()
         {
             PlayerBase.onPlayerBaseReached -= onDeath;
+            Tower.onDamageEnemy -= ReceiveDamage;
         }
         public void InitaliseAI()
         {
@@ -102,7 +107,13 @@ namespace CurtisDH.Scripts.Enemies
                 }
             }
         }
-
+        private void ReceiveDamage(GameObject enemy,float damage)
+        {
+            if(enemy == this.gameObject)
+            {
+                Health -= damage;
+            }
+        }
         public virtual void onDeath(GameObject obj) //make event system detect on death
         {
             if (obj == this.gameObject)
