@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using GameDevHQ.FileBase.Missle_Launcher.Missle;
 
 namespace GameDevHQ.FileBase.Missle_Launcher
 {
