@@ -77,7 +77,13 @@ public abstract class Tower : MonoBehaviour
     private void Update()
     {
         if (_enemyInRange = true && _enemiesInRange.Count != 0)
+        {
             TargetEnemy();
+        }
+        else
+        {
+            StopFiring();
+        }
     }
     public virtual void TargetEnemy()
     {
@@ -90,8 +96,12 @@ public abstract class Tower : MonoBehaviour
             _targetedEnemy = enemy;
         }
         transform.LookAt(_targetedEnemy.transform);
-        if(temp == false)
+        if (temp == false)
         StartCoroutine(DamageEnemy());
+    }
+    public virtual void StopFiring()
+    {
+
     }
     public void AddEnemyToQueue(GameObject enemy, GameObject turret, bool onTriggerExit)
     {
@@ -113,7 +123,6 @@ public abstract class Tower : MonoBehaviour
         temp = true;
         while (true)
         {
-            Debug.Log("Tower::DamageEnemy()");
             onDamageEnemy?.Invoke(_targetedEnemy,_damage);
             yield return new WaitForSeconds(_fireRate);
         }

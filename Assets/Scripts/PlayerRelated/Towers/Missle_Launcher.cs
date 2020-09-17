@@ -61,7 +61,6 @@ namespace GameDevHQ.FileBase.Missle_Launcher
 
         public override void TargetEnemy()
         {
-            LaunchRockets();
             base.TargetEnemy();
         }
     }
