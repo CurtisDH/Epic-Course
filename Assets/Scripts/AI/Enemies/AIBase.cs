@@ -6,15 +6,21 @@ namespace CurtisDH.Scripts.Enemies
 {
     using CurtisDH.Scripts.Managers;
     using CurtisDH.Scripts.PlayerRelated;
+    using System;
     using System.Collections;
 
     public abstract class AIBase : MonoBehaviour
     {
+        public static Action<GameObject,GameObject,bool> onAiDeath;
+
+
         [SerializeField]
         private NavMeshAgent _agent;
         [SerializeField]
-        private float _health;
-        public float Health { get => _health; set => _health = value; }
+        private float maxHP;
+        [SerializeField]
+        private float _currentHealth;
+        public float Health { get => _currentHealth; set => _currentHealth = value; }
         [SerializeField]
         private float _speed;
         [SerializeField]
@@ -52,6 +58,7 @@ namespace CurtisDH.Scripts.Enemies
             {
                 _anim = this.gameObject.GetComponent<Animator>();
             }
+            
             _anim?.SetTrigger("Reset");
             PlayerBase.onPlayerBaseReached += onDeath;
             Tower.onDamageEnemy += ReceiveDamage;
@@ -84,6 +91,7 @@ namespace CurtisDH.Scripts.Enemies
             MoveTo(SpawnManager.Instance.EndPos);
             transform.parent = GameObject.Find("EnemyContainer").transform;
             _agent.speed = _speed;
+            _currentHealth = maxHP;
 
         }
 
@@ -127,6 +135,7 @@ namespace CurtisDH.Scripts.Enemies
         {
             if (obj == this.gameObject)
             {
+                onAiDeath?.Invoke(obj,null,true);
                 StartCoroutine(DeathRoutine());
             }
         }
@@ -134,7 +143,7 @@ namespace CurtisDH.Scripts.Enemies
         {
             _anim.SetTrigger("Death");
             _agent.speed = 0;
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(2.5f);
             PoolManager.Instance.ObjectsReadyToRecycle(gameObject, true, _iD, _warFund);
             SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
             gameObject.SetActive(false);

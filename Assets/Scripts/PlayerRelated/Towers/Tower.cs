@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CurtisDH.Scripts.Enemies;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,7 +42,7 @@ public abstract class Tower : MonoBehaviour
     {
         EnemiesInRange = new List<GameObject>();
         TowerEnemyDetection.onEnemyDetectionRadius += AddEnemyToQueue;
-
+        AIBase.onAiDeath += AddEnemyToQueue;
         // just incase we forget to set firerate I dont want somehow crash the application
         if (_fireRate == 0)
         {
@@ -103,6 +104,10 @@ public abstract class Tower : MonoBehaviour
     }
     public void AddEnemyToQueue(GameObject enemy, GameObject turret, bool onTriggerExit)
     {
+        if(turret == null)
+        {
+            turret = this.gameObject;
+        }
         if (turret != this.gameObject || enemy.CompareTag("Enemy") == false)
         {
             return;

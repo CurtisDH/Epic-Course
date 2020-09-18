@@ -628,6 +628,10 @@ MonoBehaviour:
   _warFund: 500
   _towerID: 1
   _towerRadius: 10
+  _enemiesInRange: []
+  _fireRate: 0
+  _damage: 0
+  _gunToFaceEnemy: {fileID: 2121575803127714249}
   _missilePrefab: {fileID: 2121932618251390729}
   _misslePositions:
   - {fileID: 2121620543506855819}
