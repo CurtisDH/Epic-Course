@@ -6,6 +6,7 @@ namespace CurtisDH.Scripts.Enemies
 {
     using CurtisDH.Scripts.Managers;
     using CurtisDH.Scripts.PlayerRelated;
+    using System.Collections;
 
     public abstract class AIBase : MonoBehaviour
     {
@@ -36,7 +37,7 @@ namespace CurtisDH.Scripts.Enemies
                 return _warFund;
             }
         }
-
+        Animator _anim;
         
 
 
@@ -47,7 +48,11 @@ namespace CurtisDH.Scripts.Enemies
         private void OnEnable()
         {
             InitaliseAI();
-
+            if(_anim == null)
+            {
+                _anim = this.gameObject.GetComponent<Animator>();
+            }
+            _anim?.SetTrigger("Reset");
             PlayerBase.onPlayerBaseReached += onDeath;
             Tower.onDamageEnemy += ReceiveDamage;
         }
@@ -112,18 +117,28 @@ namespace CurtisDH.Scripts.Enemies
             if(enemy == this.gameObject)
             {
                 Health -= damage;
+                if(Health <= 0)
+                {
+                    onDeath(gameObject); // still need to play death animation
+                }
             }
         }
         public virtual void onDeath(GameObject obj) //make event system detect on death
         {
             if (obj == this.gameObject)
             {
-                PoolManager.Instance.ObjectsReadyToRecycle(gameObject, true, _iD,_warFund);
-                SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
-                gameObject.SetActive(false);
+                StartCoroutine(DeathRoutine());
             }
         }
-
+        IEnumerator DeathRoutine()
+        {
+            _anim.SetTrigger("Death");
+            _agent.speed = 0;
+            yield return new WaitForSeconds(5);
+            PoolManager.Instance.ObjectsReadyToRecycle(gameObject, true, _iD, _warFund);
+            SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
+            gameObject.SetActive(false);
+        }
     }
 }
 

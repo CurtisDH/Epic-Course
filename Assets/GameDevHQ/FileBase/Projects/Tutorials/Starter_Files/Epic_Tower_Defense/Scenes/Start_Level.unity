@@ -20274,12 +20274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c7edd4816764b2cb111ea15f8f117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gunBarrel: {fileID: 0}
-  Muzzle_Flash: {fileID: 1905277021149488}
-  bulletCasings: {fileID: 198239829222451506}
-  fireSound: {fileID: 8300000, guid: 08e0cb88300e54b09aa0deb684c3a3de, type: 3}
-  _audioSource: {fileID: 0}
-  _startWeaponNoise: 1
 --- !u!114 &114764318669105199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20292,21 +20286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f75a662e08584192823355ae4ac73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147, type: 3}
-  _misslePositions:
-  - {fileID: 1873951258856767}
-  - {fileID: 1139053749017971}
-  - {fileID: 1813217203709439}
-  - {fileID: 1605856878245309}
-  - {fileID: 1049360697814739}
-  - {fileID: 1441186623425583}
-  _fireDelay: 2
-  _launchSpeed: 10
-  _power: 20
-  _fuseDelay: 0
-  _reloadTime: 0
-  _destroyTime: 10
-  _launched: 0
 --- !u!198 &198006839926025720
 ParticleSystem:
   m_ObjectHideFlags: 0
