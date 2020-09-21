@@ -17,7 +17,7 @@ namespace CurtisDH.Scripts.Enemies
         [SerializeField]
         private NavMeshAgent _agent;
         [SerializeField]
-        private float maxHP;
+        private float _maxHP;
         [SerializeField]
         private float _currentHealth;
         public float Health { get => _currentHealth; set => _currentHealth = value; }
@@ -44,8 +44,8 @@ namespace CurtisDH.Scripts.Enemies
             }
         }
         Animator _anim;
-        
-
+        [SerializeField]
+        float _deathTime = 3;
 
         // How much money is awarded for killing the enemy.         //Make this value protected??
         // Might add my own twist to the income. replacing this feature.
@@ -58,8 +58,8 @@ namespace CurtisDH.Scripts.Enemies
             {
                 _anim = this.gameObject.GetComponent<Animator>();
             }
-            
-            _anim?.SetTrigger("Reset");
+
+            _anim?.SetTrigger("Reset");            
             PlayerBase.onPlayerBaseReached += onDeath;
             Tower.onDamageEnemy += ReceiveDamage;
         }
@@ -91,7 +91,7 @@ namespace CurtisDH.Scripts.Enemies
             MoveTo(SpawnManager.Instance.EndPos);
             transform.parent = GameObject.Find("EnemyContainer").transform;
             _agent.speed = _speed;
-            _currentHealth = maxHP;
+            _currentHealth = _maxHP;
 
         }
 
@@ -137,13 +137,15 @@ namespace CurtisDH.Scripts.Enemies
             {
                 onAiDeath?.Invoke(obj,null,true);
                 StartCoroutine(DeathRoutine());
+                
             }
         }
         IEnumerator DeathRoutine()
         {
             _anim.SetTrigger("Death");
             _agent.speed = 0;
-            yield return new WaitForSeconds(2.5f);
+            yield return new WaitForSeconds(_deathTime);
+            _anim.WriteDefaultValues();
             PoolManager.Instance.ObjectsReadyToRecycle(gameObject, true, _iD, _warFund);
             SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
             gameObject.SetActive(false);

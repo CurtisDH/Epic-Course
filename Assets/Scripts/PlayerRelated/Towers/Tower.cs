@@ -55,7 +55,9 @@ public abstract class Tower : MonoBehaviour
     [SerializeField]
     float _damage;
     [SerializeField]
-    GameObject _gunToFaceEnemy;
+    GameObject _rotation;
+    [SerializeField]
+    bool _isCoroutineRunning = false;
     /*
      When an enemy walks into the tower radius - collider trigger
         Add enemy to a list
@@ -72,7 +74,7 @@ public abstract class Tower : MonoBehaviour
     //whoever runs through it.
 
 
-    bool temp = false;
+
     private void Update()
     {
         if (_enemyInRange = true && _enemiesInRange.Count != 0)
@@ -94,13 +96,17 @@ public abstract class Tower : MonoBehaviour
             var enemy = _enemiesInRange[0];
             _targetedEnemy = enemy;
         }
-        transform.LookAt(_targetedEnemy.transform);
-        if (temp == false)
-        StartCoroutine(DamageEnemy());
+        _rotation.transform.LookAt(_targetedEnemy.transform);
+        if (_isCoroutineRunning == false)
+        {
+            StartCoroutine(DamageEnemy(_fireRate));
+        }
+        
     }
     public virtual void StopFiring()
     {
-
+        _isCoroutineRunning = false;
+        StopAllCoroutines();
     }
     public void AddEnemyToQueue(GameObject enemy, GameObject turret, bool onTriggerExit)
     {
@@ -121,13 +127,13 @@ public abstract class Tower : MonoBehaviour
             _enemiesInRange?.Add(enemy);
         }
     }
-    IEnumerator DamageEnemy()
+    IEnumerator DamageEnemy(float time)
     {
-        temp = true;
+        _isCoroutineRunning = true;
         while (true)
         {
             onDamageEnemy?.Invoke(_targetedEnemy,_damage);
-            yield return new WaitForSeconds(_fireRate);
+            yield return new WaitForSeconds(time);
         }
 
 

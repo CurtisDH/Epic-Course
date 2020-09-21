@@ -442,12 +442,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 0}
-  maxHP: 5
+  _maxHP: 25
   _currentHealth: 0
   _speed: 2.5
   _AICollision: 0
   _iD: 1
   _warFund: 0
+  _deathTime: 1.75
 --- !u!65 &-9067449408353783062
 BoxCollider:
   m_ObjectHideFlags: 0

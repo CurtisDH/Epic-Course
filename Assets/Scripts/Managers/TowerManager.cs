@@ -106,6 +106,7 @@ namespace CurtisDH.Scripts.Managers
                 _turretShader.GetComponent<MeshRenderer>().enabled = false;
                 _turretShader.AddComponent<SphereCollider>().isTrigger = true;
                 _turretShader.AddComponent<Rigidbody>().isKinematic = true;
+                _turretShader = null;
                 //_towerShaderPrefab.SetActive(false); //setup to recycle
                 CancelTowerCreation();
             }
@@ -177,15 +178,18 @@ namespace CurtisDH.Scripts.Managers
             _isPlacingTower = true;
             onIsPlacingTower?.Invoke(_isPlacingTower);
             _selectedTower = PoolManager.Instance.RequestTower(id);
-
-            //need to move all this to poolmanager somehow.. or perhaps turn into an event system.
-            float TowerRadius = _selectedTower.GetComponent<Tower>().TowerRadius;
-            var selectionfield = Instantiate(_towerShaderPrefab);
-            selectionfield.transform.parent = _selectedTower.transform;
-            selectionfield.transform.position = _selectedTower.transform.position;
-            selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
-            _turretShader = selectionfield;
-            selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color. //event?
+            if(_turretShader == null)
+            {
+                //need to move all this to poolmanager somehow.. or perhaps turn into an event system.
+                float TowerRadius = _selectedTower.GetComponent<Tower>().TowerRadius;
+                var selectionfield = Instantiate(_towerShaderPrefab);
+                selectionfield.transform.parent = _selectedTower.transform;
+                selectionfield.transform.position = _selectedTower.transform.position;
+                selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
+                _turretShader = selectionfield;
+                selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color. //event?
+            }
+            
         }
 
         public void CancelTowerCreation()

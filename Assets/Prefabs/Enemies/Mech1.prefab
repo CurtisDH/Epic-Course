@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 0}
-  maxHP: 5
+  _maxHP: 12
   _currentHealth: 0
   _speed: 3.5
   _AICollision: 0

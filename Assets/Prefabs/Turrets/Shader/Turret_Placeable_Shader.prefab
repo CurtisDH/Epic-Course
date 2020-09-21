@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3318918957541053755}
   - component: {fileID: 3318918957541053754}
   - component: {fileID: 2885309119063441423}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Turret_Placeable_Shader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
