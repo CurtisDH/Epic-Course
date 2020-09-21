@@ -58,22 +58,6 @@ public abstract class Tower : MonoBehaviour
     GameObject _rotation;
     [SerializeField]
     bool _isCoroutineRunning = false;
-    /*
-     When an enemy walks into the tower radius - collider trigger
-        Add enemy to a list
-        make the tower look at the enemy deal damage & play a firing animation
-    Rotation & Firing
-        set a bool to true - While true we rotate the turret to face the targeted enemy specified by the queueing system
-        play the firing animation until the queue is empty.. 
-        once the queue is empty we set the bool to false ending the animation sequence and then we return the rotation to normal.
-        
-    */
-
-    //ways to detect front enemy... 
-    // if we attach a collider to the very first enemy to spawn of x wave then pass it to
-    //whoever runs through it.
-
-
 
     private void Update()
     {
@@ -118,11 +102,11 @@ public abstract class Tower : MonoBehaviour
         {
             return;
         }
-        if (onTriggerExit == true)
+        if (onTriggerExit == true) // if the enemy is leaving
         {
             _enemiesInRange?.Remove(enemy);
         }
-        else
+        else //the enemy is entering
         {
             _enemiesInRange?.Add(enemy);
         }

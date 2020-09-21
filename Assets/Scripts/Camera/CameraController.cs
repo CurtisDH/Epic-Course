@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class CameraController : MonoBehaviour
     #endregion
 
 
+    private void Start()
+    {
+
+    }
     void Update()
     {
         MoveCamera();

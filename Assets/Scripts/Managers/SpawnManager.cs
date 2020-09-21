@@ -6,6 +6,8 @@ using UnityEngine;
 namespace CurtisDH.Scripts.Managers
 {
     using CurtisDH.Utilities;
+    using UnityEditor;
+
     public class SpawnManager : MonoBehaviour
     {
         private static SpawnManager _instance;
