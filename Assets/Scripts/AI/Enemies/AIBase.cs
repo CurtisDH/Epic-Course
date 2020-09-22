@@ -11,7 +11,7 @@ namespace CurtisDH.Scripts.Enemies
 
     public abstract class AIBase : MonoBehaviour
     {
-        public static Action<GameObject,GameObject,bool> onAiDeath;
+        public static Action<GameObject, GameObject, bool> onAiDeath;
 
 
         [SerializeField]
@@ -46,22 +46,28 @@ namespace CurtisDH.Scripts.Enemies
         Animator _anim;
         [SerializeField]
         float _deathTime = 3;
-
-        // How much money is awarded for killing the enemy.         //Make this value protected??
-        // Might add my own twist to the income. replacing this feature.
-        // Might influence warfund based on how far the enemy has made it into the course;
-
+        [SerializeField]
+        float _dissolveTime;
+        [SerializeField]
+        GameObject[] _dissolveMaterials;
         private void OnEnable()
         {
             InitaliseAI();
-            if(_anim == null)
+            if (_anim == null)
             {
                 _anim = this.gameObject.GetComponent<Animator>();
             }
 
-            _anim?.SetTrigger("Reset");            
+            _anim?.SetTrigger("Reset");
             PlayerBase.onPlayerBaseReached += onDeath;
             Tower.onDamageEnemy += ReceiveDamage;
+
+            foreach (var obj in _dissolveMaterials)
+            {
+                StartCoroutine(Dissolve(obj,false));
+            }
+
+
         }
         private void OnDisable()
         {
@@ -120,14 +126,34 @@ namespace CurtisDH.Scripts.Enemies
                 }
             }
         }
-        private void ReceiveDamage(GameObject enemy,float damage)
+        private void ReceiveDamage(GameObject enemy, float damage)
         {
-            if(enemy == this.gameObject)
+            if (enemy == this.gameObject)
             {
                 Health -= damage;
-                if(Health <= 0)
+                if (Health <= 0)
                 {
                     onDeath(gameObject); // still need to play death animation
+                }
+            }
+        }
+        IEnumerator Dissolve(GameObject obj,bool deathRoutine)
+        {
+            yield return new WaitForSeconds(_dissolveTime);
+            if(deathRoutine == true)
+            {
+                for (float i = 0; i < 1; i += 0.01f)
+                {
+                    yield return new WaitForSeconds(_dissolveTime);
+                    obj.GetComponent<Renderer>().material.SetFloat("_fillAmount", i);
+                }
+            }
+            else
+            {
+                for (float i = 1; i > 1; i -= 0.01f)
+                {
+                    yield return new WaitForSeconds(_dissolveTime);
+                    obj.GetComponent<Renderer>().material.SetFloat("_fillAmount", i);
                 }
             }
         }
@@ -135,15 +161,19 @@ namespace CurtisDH.Scripts.Enemies
         {
             if (obj == this.gameObject)
             {
-                onAiDeath?.Invoke(obj,null,true);
+                onAiDeath?.Invoke(obj, null, true);
                 StartCoroutine(DeathRoutine());
-                
+
             }
         }
         IEnumerator DeathRoutine()
         {
             _anim.SetTrigger("Death");
             _agent.speed = 0;
+            foreach (var obj in _dissolveMaterials)
+            {
+                StartCoroutine(Dissolve(obj,true)); 
+            }
             yield return new WaitForSeconds(_deathTime);
             _anim.WriteDefaultValues();
             PoolManager.Instance.ObjectsReadyToRecycle(gameObject, true, _iD, _warFund);
