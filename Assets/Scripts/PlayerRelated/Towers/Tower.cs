@@ -57,7 +57,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField]
     GameObject _rotation;
     [SerializeField]
-    bool _isCoroutineRunning = false;
+    protected bool _isCoroutineRunning = false;
 
     private void Update()
     {
