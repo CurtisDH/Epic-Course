@@ -150,7 +150,7 @@ namespace CurtisDH.Scripts.Enemies
             }
             else
             {
-                for (float i = 1; i > 1; i -= 0.01f)
+                for (float i = 1; i > 0; i -= 0.01f)
                 {
                     yield return new WaitForSeconds(_dissolveTime);
                     obj.GetComponent<Renderer>().material.SetFloat("_fillAmount", i);
