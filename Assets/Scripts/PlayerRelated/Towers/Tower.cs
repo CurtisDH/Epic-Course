@@ -59,7 +59,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField]
     protected bool _isCoroutineRunning = false;
 
-    private void Update()
+    private void Update() //triggerstay
     {
         if (_enemyInRange = true && _enemiesInRange.Count != 0)
         {

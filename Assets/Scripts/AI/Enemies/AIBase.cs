@@ -49,7 +49,7 @@ namespace CurtisDH.Scripts.Enemies
         [SerializeField]
         float _dissolveTime;
         [SerializeField]
-        GameObject[] _dissolveMaterials;
+        Renderer[] _dissolveMaterials;
         private void OnEnable()
         {
             InitaliseAI();
@@ -66,8 +66,6 @@ namespace CurtisDH.Scripts.Enemies
             {
                 StartCoroutine(Dissolve(obj,false));
             }
-
-
         }
         private void OnDisable()
         {
@@ -137,25 +135,38 @@ namespace CurtisDH.Scripts.Enemies
                 }
             }
         }
-        IEnumerator Dissolve(GameObject obj,bool deathRoutine)
+        IEnumerator Dissolve(Renderer obj,bool deathRoutine)
         {
-            yield return new WaitForSeconds(_dissolveTime);
+            //fix this loop up. maybe use time.Deltatime
+            //float current = 0;
             if(deathRoutine == true)
             {
+                //while (current < 1)
+                //{
+                //    current += (Time.deltaTime/_dissolveTime);
+                //    obj.material.SetFloat("_fillAmount", current);
+                //}
                 for (float i = 0; i < 1; i += 0.01f)
                 {
-                    yield return new WaitForSeconds(_dissolveTime);
-                    obj.GetComponent<Renderer>().material.SetFloat("_fillAmount", i);
+                    yield return new WaitForSeconds(_dissolveTime / 100);
+                    obj.material.SetFloat("_fillAmount", i);
                 }
             }
             else
             {
+                //current = 1;
+                //while (current > 0)
+                //{
+                //    current -= (Time.deltaTime / _dissolveTime);
+                //    obj.material.SetFloat("_fillAmount", current);
+                //}
+
                 for (float i = 1; i > 0; i -= 0.01f)
                 {
-                    yield return new WaitForSeconds(_dissolveTime);
-                    obj.GetComponent<Renderer>().material.SetFloat("_fillAmount", i);
+                    yield return new WaitForSeconds(_dissolveTime / 100);
+                    obj.material.SetFloat("_fillAmount", i);
                 }
-            }
+            }           
         }
         public virtual void onDeath(GameObject obj) //make event system detect on death
         {
