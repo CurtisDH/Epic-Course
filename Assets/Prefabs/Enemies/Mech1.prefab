@@ -289,7 +289,7 @@ MonoBehaviour:
   _iD: 0
   _warFund: 25
   _deathTime: 3
-  _dissolveTime: 2
+  _dissolveTime: 1
   _dissolveMaterials:
   - {fileID: 5905852584620743181}
   - {fileID: 5907113187500346307}
