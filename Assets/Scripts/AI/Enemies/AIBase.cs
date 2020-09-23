@@ -50,6 +50,8 @@ namespace CurtisDH.Scripts.Enemies
         float _dissolveTime;
         [SerializeField]
         Renderer[] _dissolveMaterials;
+        [SerializeField]
+        GameObject _deathParticles;
         private void OnEnable()
         {
             InitaliseAI();
@@ -61,7 +63,7 @@ namespace CurtisDH.Scripts.Enemies
             _anim?.SetTrigger("Reset");
             PlayerBase.onPlayerBaseReached += onDeath;
             Tower.onDamageEnemy += ReceiveDamage;
-
+            _deathParticles.SetActive(false);
             foreach (var obj in _dissolveMaterials)
             {
                 StartCoroutine(Dissolve(obj,false));
@@ -181,11 +183,13 @@ namespace CurtisDH.Scripts.Enemies
         {
             _anim.SetTrigger("Death");
             _agent.speed = 0;
+            _deathParticles.SetActive(true);
             foreach (var obj in _dissolveMaterials)
             {
                 StartCoroutine(Dissolve(obj,true)); 
             }
             yield return new WaitForSeconds(_deathTime);
+            _deathParticles.SetActive(false); // play explosion sound
             _anim.WriteDefaultValues();
             PoolManager.Instance.ObjectsReadyToRecycle(gameObject, true, _iD, _warFund);
             SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
