@@ -42,7 +42,7 @@ namespace CurtisDH.Scripts.Managers
             {
                 return _turretShader;
             }
-        }
+        } // need to rework the entire turret shader radius :: Not modular enough
         [SerializeField]
         Color _invalidPlacement = Color.red, _validPlacement = Color.green;
         public Color InvalidPlacement
@@ -97,6 +97,7 @@ namespace CurtisDH.Scripts.Managers
                     TowerOutline(hit.point);
                 }
             }
+
         }
         public void PlaceTower(Vector3 pos) //receives the gameobject from towerlocation
         {
@@ -187,6 +188,7 @@ namespace CurtisDH.Scripts.Managers
                 selectionfield.transform.position = _selectedTower.transform.position;
                 selectionfield.transform.localScale = new Vector3(TowerRadius, TowerRadius, TowerRadius);
                 _turretShader = selectionfield;
+                selectionfield.name = "TowerRadius";
                 selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color. //event?
             }
             
@@ -211,7 +213,7 @@ namespace CurtisDH.Scripts.Managers
 
         void TowerToRecycle(GameObject obj)
         {
-            PoolManager.Instance.ObjectsReadyToRecycle(obj, false);
+            PoolManager.Instance.ObjectsReadyToRecycle(obj,false,obj.GetComponent<Tower>().TowerID);
             obj.SetActive(false);
         }
 

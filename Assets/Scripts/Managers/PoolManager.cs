@@ -36,7 +36,7 @@ namespace CurtisDH.Scripts.Managers
             obj.transform.parent = transform;
             if (enemies != true)
             {
-                id = obj.GetComponent<Tower>().TowerID; //don't want to use getcomponent so may find a better way
+                obj.SetActive(false);
                 if (id == 0)
                 {
                     _turretType0.Add(obj);

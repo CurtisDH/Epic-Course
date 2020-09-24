@@ -8,6 +8,8 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
     [RequireComponent(typeof(AudioSource))] //require audiosource
     public class Missle : MonoBehaviour
     {
+        public GameObject _targetEnemy;
+
         [SerializeField]
         private ParticleSystem _particle; //reference to the particle system
 
@@ -49,7 +51,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
 
 
         // Update is called once per frame
-        void FixedUpdate()
+        void FixedUpdate() //need to rewrite the missle script to make it homing
         {
             if (_fuseOut == false) //check if fuseOut is false
                 return;
@@ -84,11 +86,12 @@ namespace GameDevHQ.FileBase.Missle_Launcher.Missle
         /// <summary>
         /// This method is used to assign traits to our missle assigned from the launcher.
         /// </summary>
-        public void AssignMissleRules(float launchSpeed, float power, float fuseDelay, float destroyTimer)
+        public void AssignMissleRules(float launchSpeed, float power, float fuseDelay, float destroyTimer, GameObject target)
         {
             _launchSpeed = launchSpeed; //set the launch speed
             _power = power; //set the power
             _fuseDelay = fuseDelay; //set the fuse delay
+            _targetEnemy = target;
             Destroy(this.gameObject, destroyTimer); //destroy the rocket after destroyTimer 
         }
     }

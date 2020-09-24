@@ -197,4 +197,3 @@ namespace CurtisDH.Scripts.Enemies
         }
     }
 }
-

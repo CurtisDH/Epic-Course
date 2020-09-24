@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using GameDevHQ.FileBase.Missle_Launcher.Missle;
+using GameDevHQ.FileBase.Missle_Launcher_Dual_Turret.Missle;
+using System.Collections;
 using UnityEngine;
-
+using GameDevHQ.FileBase.Missle_Launcher.Missle;
 namespace GameDevHQ.FileBase.Missle_Launcher
 {
     public class Missle_Launcher : Tower
@@ -35,13 +37,12 @@ namespace GameDevHQ.FileBase.Missle_Launcher
             for (int i = 0; i < _misslePositions.Length; i++) //for loop to iterate through each missle position
             {
                 GameObject rocket = Instantiate(_missilePrefab) as GameObject; //instantiate a rocket
-
+                
                 rocket.transform.parent = _misslePositions[i].transform; //set the rockets parent to the missle launch position 
                 rocket.transform.localPosition = Vector3.zero; //set the rocket position values to zero
                 rocket.transform.localEulerAngles = new Vector3(-90, 0, 0); //set the rotation values to be properly aligned with the rockets forward direction
                 rocket.transform.parent = null; //set the rocket parent to null
-
-                rocket.GetComponent<GameDevHQ.FileBase.Missle_Launcher.Missle.Missle>().AssignMissleRules(_launchSpeed, _power, _fuseDelay, _destroyTime); //assign missle properties 
+                rocket.GetComponent<Missle.Missle>().AssignMissleRules(_launchSpeed, _power, _fuseDelay, _destroyTime,_targetedEnemy); //assign missle properties 
 
                 _misslePositions[i].SetActive(false); //turn off the rocket sitting in the turret to make it look like it fired
 
