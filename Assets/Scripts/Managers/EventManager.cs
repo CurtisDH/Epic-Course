@@ -97,13 +97,13 @@ public class EventManager : MonoBehaviour
         eventToUnsubscribe -= method;
         _eventDictionary[eventName] = eventToUnsubscribe;
     }
-    public static void UnsubscribeEvent<T>(string eventName, Action<T, T> method)
+    public static void UnsubscribeEvent<T,Q>(string eventName, Action<T, Q> method)
     {
         var eventToUnsubscribe = _eventDictionary[eventName];
         eventToUnsubscribe -= method;
         _eventDictionary[eventName] = eventToUnsubscribe;
     }
-    public static void UnsubscribeEvent<T>(string eventName, Action<T, T, T> method)
+    public static void UnsubscribeEvent<T,Q,R>(string eventName, Action<T, Q, R> method)
     {
         var eventToUnsubscribe = _eventDictionary[eventName];
         eventToUnsubscribe -= method;
