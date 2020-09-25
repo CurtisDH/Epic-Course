@@ -3,7 +3,6 @@ using CurtisDH.Scripts.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
@@ -102,7 +101,9 @@ public abstract class Tower : MonoBehaviour
     private void OnMouseDown()
     {
         Debug.Log("TOWER:: ON MOUSE DOWN");
-        _isSelected = true;
+        _isSelected = !_isSelected;
+        if (_towerRadiusShader != null)
+            _towerRadiusShader.GetComponent<Renderer>().enabled = _isSelected;
         UIManager.Instance.ToggleUpgradeUI(_towerID);
         //open UI & create a highlight shader??
     }
@@ -203,6 +204,8 @@ public abstract class Tower : MonoBehaviour
     public void DeselectTower()
     {
         _isSelected = false;
+        if(_towerRadiusShader !=null)
+        _towerRadiusShader.GetComponent<Renderer>().enabled = _isSelected;
     }
 
     private void OnDisable()
