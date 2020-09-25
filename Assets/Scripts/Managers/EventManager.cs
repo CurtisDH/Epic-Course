@@ -13,7 +13,7 @@ public class EventManager : MonoBehaviour
         {
             var eventToAdd = _eventDictionary[eventName];
             eventToAdd += method;
-            _eventDictionary.Add(eventName, eventToAdd);
+            _eventDictionary[eventName] = eventToAdd;
         }
         else
         {
@@ -26,20 +26,20 @@ public class EventManager : MonoBehaviour
         {
             var eventToAdd = _eventDictionary[eventName];
             eventToAdd += method;
-            _eventDictionary.Add(eventName, eventToAdd);
+            _eventDictionary[eventName] = eventToAdd;
         }
         else
         {
             _eventDictionary.Add(eventName, method);
         }
     }
-    public static void Listen<T,Q>(string eventName, Action<T, Q> method)
+    public static void Listen<T, Q>(string eventName, Action<T, Q> method)
     {
         if (_eventDictionary.ContainsKey(eventName))
         {
             var eventToAdd = _eventDictionary[eventName];
             eventToAdd += method;
-            _eventDictionary.Add(eventName, eventToAdd);
+            _eventDictionary[eventName] = eventToAdd;
         }
         else
         {
@@ -52,7 +52,7 @@ public class EventManager : MonoBehaviour
         {
             var eventToAdd = _eventDictionary[eventName];
             eventToAdd += method;
-            _eventDictionary.Add(eventName, eventToAdd);
+            _eventDictionary[eventName] = eventToAdd;
         }
         else
         {
@@ -72,12 +72,12 @@ public class EventManager : MonoBehaviour
         var EventToRaise = _eventDictionary[eventName] as Action<T>;
         EventToRaise.Invoke(arg);
     }
-    public static void RaiseEvent<T,Q>(string eventName, T arg, Q arg1)
+    public static void RaiseEvent<T, Q>(string eventName, T arg, Q arg1)
     {
-        var EventToRaise = _eventDictionary[eventName] as Action<T,Q>;
+        var EventToRaise = _eventDictionary[eventName] as Action<T, Q>;
         EventToRaise.Invoke(arg, arg1);
     }
-    public static void RaiseEvent<T,Q,R>(string eventName, T arg, Q arg1, R arg2)
+    public static void RaiseEvent<T, Q, R>(string eventName, T arg, Q arg1, R arg2)
     {
         var EventToRaise = _eventDictionary[eventName] as Action<T, Q, R>;
         EventToRaise.Invoke(arg, arg1, arg2);
@@ -97,13 +97,13 @@ public class EventManager : MonoBehaviour
         eventToUnsubscribe -= method;
         _eventDictionary[eventName] = eventToUnsubscribe;
     }
-    public static void UnsubscribeEvent<T,Q>(string eventName, Action<T, Q> method)
+    public static void UnsubscribeEvent<T, Q>(string eventName, Action<T, Q> method)
     {
         var eventToUnsubscribe = _eventDictionary[eventName];
         eventToUnsubscribe -= method;
         _eventDictionary[eventName] = eventToUnsubscribe;
     }
-    public static void UnsubscribeEvent<T,Q,R>(string eventName, Action<T, Q, R> method)
+    public static void UnsubscribeEvent<T, Q, R>(string eventName, Action<T, Q, R> method)
     {
         var eventToUnsubscribe = _eventDictionary[eventName];
         eventToUnsubscribe -= method;
