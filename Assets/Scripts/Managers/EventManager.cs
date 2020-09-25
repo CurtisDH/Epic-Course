@@ -33,7 +33,7 @@ public class EventManager : MonoBehaviour
             _eventDictionary.Add(eventName, method);
         }
     }
-    public static void Listen<T>(string eventName, Action<T, T> method)
+    public static void Listen<T,Q>(string eventName, Action<T, Q> method)
     {
         if (_eventDictionary.ContainsKey(eventName))
         {
@@ -46,7 +46,7 @@ public class EventManager : MonoBehaviour
             _eventDictionary.Add(eventName, method);
         }
     }
-    public static void Listen<T>(string eventName, Action<T, T, T> method)
+    public static void Listen<T, Q, R>(string eventName, Action<T, Q, R> method)
     {
         if (_eventDictionary.ContainsKey(eventName))
         {
@@ -72,14 +72,14 @@ public class EventManager : MonoBehaviour
         var EventToRaise = _eventDictionary[eventName] as Action<T>;
         EventToRaise.Invoke(arg);
     }
-    public static void RaiseEvent<T>(string eventName, T arg, T arg1)
+    public static void RaiseEvent<T,Q>(string eventName, T arg, Q arg1)
     {
-        var EventToRaise = _eventDictionary[eventName] as Action<T, T>;
+        var EventToRaise = _eventDictionary[eventName] as Action<T,Q>;
         EventToRaise.Invoke(arg, arg1);
     }
-    public static void RaiseEvent<T>(string eventName, T arg, T arg1, T arg2)
+    public static void RaiseEvent<T,Q,R>(string eventName, T arg, Q arg1, R arg2)
     {
-        var EventToRaise = _eventDictionary[eventName] as Action<T, T, T>;
+        var EventToRaise = _eventDictionary[eventName] as Action<T, Q, R>;
         EventToRaise.Invoke(arg, arg1, arg2);
     }
     #endregion
