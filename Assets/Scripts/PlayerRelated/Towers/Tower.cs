@@ -203,7 +203,6 @@ public abstract class Tower : MonoBehaviour
     public void DeselectTower()
     {
         _isSelected = false;
-        _towerRadiusRenderer.enabled = (false);
     }
 
     private void OnDisable()
