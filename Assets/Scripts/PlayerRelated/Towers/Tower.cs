@@ -66,7 +66,7 @@ public abstract class Tower : MonoBehaviour
         AIBase.onAiDeath += AddEnemyToQueue;
         UIManager.onTowerUpgrade += UpgradeTower;
         UIManager.onTowerCancel += DeselectTower;
-        gameObject.GetComponent<Collider>().enabled = false;
+        gameObject.GetComponent<Collider>().enabled = false; //cache
         if(_currentUpgradedTower == null && _upgradedTowerPrefab != null)
         {
             var stagedTower = Instantiate(_upgradedTowerPrefab);
