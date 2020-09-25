@@ -3,6 +3,7 @@ using CurtisDH.Scripts.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
@@ -51,19 +52,33 @@ public abstract class Tower : MonoBehaviour
     protected bool _isCoroutineRunning = false;
 
     [SerializeField]
-    GameObject _upgradedTurret; //
+    GameObject _currentUpgradedTower; //
+    [SerializeField]
+    GameObject _upgradedTowerPrefab;
     [SerializeField]
     GameObject _towerRadiusShader;
-
-
+    [SerializeField]
+    bool _isSelected;
 
     private void OnEnable()
     {
         EnemiesInRange = new List<GameObject>();
         TowerEnemyDetection.onEnemyDetectionRadius += AddEnemyToQueue;
         AIBase.onAiDeath += AddEnemyToQueue;
-        // just incase we forget to set firerate I dont want somehow crash the application
-        if (_towerRadiusShader != null)
+        UIManager.onTowerUpgrade += UpgradeTower;
+        UIManager.onTowerCancel += DeselectTower;
+        gameObject.GetComponent<Collider>().enabled = false;
+        if(_currentUpgradedTower == null && _upgradedTowerPrefab != null)
+        {
+            var stagedTower = Instantiate(_upgradedTowerPrefab);
+            stagedTower.SetActive(false);
+            stagedTower.transform.position = this.gameObject.transform.position;
+            stagedTower.transform.localScale = new Vector3(.75f, .75f, .75f);
+            _currentUpgradedTower = stagedTower;
+
+        }
+        //if a prefab exists and it's currently not active in the scene
+        if (_towerRadiusShader != null && !_towerRadiusShader.activeInHierarchy)
         {
             var shader = Instantiate(_towerRadiusShader);
             shader.transform.localScale = new Vector3(_towerRadius, _towerRadius, _towerRadius);
@@ -75,11 +90,21 @@ public abstract class Tower : MonoBehaviour
             shader.AddComponent<SphereCollider>().isTrigger = true;
             shader.AddComponent<Rigidbody>().isKinematic = true;
             shader.name = "TowerRadius";
+            gameObject.GetComponent<Collider>().enabled = true;
+            _towerRadiusShader = shader; // Removes the prefabbed radius replacing it with active.
         }
+        // just incase we forget to set firerate I dont want somehow crash the application
         if (_fireRate == 0)
         {
             _fireRate = 0.25f;
         }
+    }
+    private void OnMouseDown()
+    {
+        Debug.Log("TOWER:: ON MOUSE DOWN");
+        _isSelected = true;
+        UIManager.Instance.ToggleUpgradeUI(_towerID);
+        //open UI & create a highlight shader??
     }
     private void Update() //triggerstay
     {
@@ -150,7 +175,7 @@ public abstract class Tower : MonoBehaviour
 
     public void UpgradeTower()
     {
-        if (_upgradedTurret == null)
+        if (_currentUpgradedTower == null)
         {
             return;
         }
@@ -165,16 +190,28 @@ public abstract class Tower : MonoBehaviour
         //        Debug.LogError("Tower::NO TOWER ID OF " + _towerID);
         //        break;
         //}
-        _upgradedTurret.SetActive(true);
-        _upgradedTurret.transform.parent = null; // remove parent object so its stays active
-        _upgradedTurret.transform.position = gameObject.transform.position;
-        PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
+        if(_isSelected)
+        {
+            _currentUpgradedTower.SetActive(true);
+            _currentUpgradedTower.transform.parent = null; // remove parent object so its stays active
+            _currentUpgradedTower.transform.position = gameObject.transform.position;
+            _currentUpgradedTower = null;
+            PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
+        }
+
+    }
+    public void DeselectTower()
+    {
+        _isSelected = false;
+        _towerRadiusRenderer.enabled = (false);
     }
 
     private void OnDisable()
     {
         TowerEnemyDetection.onEnemyDetectionRadius -= AddEnemyToQueue;
         AIBase.onAiDeath -= AddEnemyToQueue;
+        UIManager.onTowerUpgrade -= UpgradeTower;
+        UIManager.onTowerCancel -= DeselectTower;
     }
 
 

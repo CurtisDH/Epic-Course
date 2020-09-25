@@ -108,6 +108,7 @@ namespace CurtisDH.Scripts.Managers
                 _turretShader.AddComponent<SphereCollider>().isTrigger = true;
                 _turretShader.AddComponent<Rigidbody>().isKinematic = true;
                 _turretShader = null;
+                _selectedTower.GetComponent<Collider>().enabled = true;
                 //_towerShaderPrefab.SetActive(false); //setup to recycle
                 CancelTowerCreation();
             }
