@@ -15,6 +15,7 @@ public abstract class Tower : MonoBehaviour
         get => _warFund;
         set => _warFund = value;
     }
+    private int _upgradeCost;
     [SerializeField]
     protected int _towerID;
     public int TowerID
@@ -113,7 +114,7 @@ public abstract class Tower : MonoBehaviour
         _isSelected = !_isSelected;
         if (_towerRadiusShader != null)
             _towerRadiusShader.GetComponent<Renderer>().enabled = _isSelected;
-        UIManager.Instance.ToggleUpgradeUI(_towerID);
+        UIManager.Instance.ToggleUpgradeUI(_towerID,_upgradeCost);
         //open UI & create a highlight shader??
     }
     private void Update() //triggerstay
@@ -179,7 +180,9 @@ public abstract class Tower : MonoBehaviour
         _isCoroutineRunning = true;
         while (true)
         {
-            EventManager.RaiseEvent("onDamageEnemy",_targetedEnemy,_damage);
+            //Passing in what enemy we are attacking, then the damage it needs to take.
+            // by passing in true we say "we've died from the tower" 
+            EventManager.RaiseEvent("onDamageEnemy",_targetedEnemy,_damage,true);
             yield return new WaitForSeconds(time);
         }
     }
@@ -192,6 +195,8 @@ public abstract class Tower : MonoBehaviour
             _currentUpgradedTower.transform.parent = null; // remove parent object so its stays active
             _currentUpgradedTower.transform.position = gameObject.transform.position;
             _currentUpgradedTower = null;
+            _isSelected = false;
+            GameManager.Instance.AdjustWarfund(-_upgradeCost);
             PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
         }
 

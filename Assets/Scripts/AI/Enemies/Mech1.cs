@@ -6,8 +6,8 @@ public class Mech1 : AIBase
     {
         base.MoveTo(position);
     }
-    public override void onDeath(GameObject obj)
+    public override void onDeath(GameObject obj,bool endZoneDeath)
     {
-        base.onDeath(obj);
+        base.onDeath(obj, endZoneDeath);
     }
 }

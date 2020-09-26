@@ -48,7 +48,6 @@ namespace CurtisDH.Scripts.Managers
 
                 return;
             }
-            GameManager.Instance.AdjustWarfund(-warfund); // need to remove this/rework
             if (id == 0) // will switch to switch statement if I increase the id's
             {
                 _enemyType0.Add(obj);

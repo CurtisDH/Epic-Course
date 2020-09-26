@@ -61,18 +61,18 @@ namespace CurtisDH.Scripts.Enemies
             }
 
             _anim?.SetTrigger("Reset");
-            EventManager.Listen("onPlayerBaseReached",(Action<GameObject>)onDeath);
-            EventManager.Listen("onDamageEnemy", (Action<GameObject, float>)ReceiveDamage);
+            EventManager.Listen("onPlayerBaseReached", (Action<GameObject,bool>)onDeath);
+            EventManager.Listen("onDamageEnemy", (Action<GameObject, float,bool>)ReceiveDamage);
             _deathParticles.SetActive(false);
             foreach (var obj in _dissolveMaterials)
             {
-                StartCoroutine(Dissolve(obj,false));
+                StartCoroutine(Dissolve(obj, false));
             }
         }
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onPlayerBaseReached", (Action<GameObject>)onDeath);
-            EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float>)ReceiveDamage);
+            EventManager.UnsubscribeEvent("onPlayerBaseReached", (Action<GameObject,bool>)onDeath);
+            EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float,bool>)ReceiveDamage);
         }
         public void InitaliseAI()
         {
@@ -126,22 +126,23 @@ namespace CurtisDH.Scripts.Enemies
                 }
             }
         }
-        private void ReceiveDamage(GameObject enemy, float damage)
+        private void ReceiveDamage(GameObject enemy, float damage, bool towerDeath)
         {
             if (enemy == this.gameObject)
             {
                 Health -= damage;
                 if (Health <= 0)
                 {
-                    onDeath(gameObject);
+                    //onDeath bool checks to see if it died from the endZone.
+                    onDeath(gameObject, !towerDeath);
                 }
             }
         }
-        IEnumerator Dissolve(Renderer obj,bool deathRoutine)
+        IEnumerator Dissolve(Renderer obj, bool deathRoutine)
         {
             //fix this loop up. maybe use time.Deltatime
             //float current = 0;
-            if(deathRoutine == true)
+            if (deathRoutine == true)
             {
                 //while (current < 1)
                 //{
@@ -168,13 +169,24 @@ namespace CurtisDH.Scripts.Enemies
                     yield return new WaitForSeconds(_dissolveTime / 100);
                     obj.material.SetFloat("_fillAmount", i);
                 }
-            }           
+            }
         }
-        public virtual void onDeath(GameObject obj) //make event system detect on death
+        public virtual void onDeath(GameObject obj, bool endZoneDeath) //make event system detect on death
         {
             if (obj == this.gameObject)
             {
                 EventManager.RaiseEvent("onAiDeath", obj, _intentionallyNull, true);
+                if (endZoneDeath)
+                {
+                    //decrease the warfund we died to endzone
+                    GameManager.Instance.AdjustWarfund(-_warFund);
+                }
+                else
+                {
+                    // increase the warfund if we didn't die to the end zone.
+                    GameManager.Instance.AdjustWarfund(_warFund);
+                }
+
                 StartCoroutine(DeathRoutine());
 
             }
@@ -186,7 +198,7 @@ namespace CurtisDH.Scripts.Enemies
             _deathParticles.SetActive(true);
             foreach (var obj in _dissolveMaterials)
             {
-                StartCoroutine(Dissolve(obj,true)); 
+                StartCoroutine(Dissolve(obj, true));
             }
             yield return new WaitForSeconds(_deathTime);
             _deathParticles.SetActive(false); // play explosion sound

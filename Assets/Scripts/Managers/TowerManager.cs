@@ -108,6 +108,10 @@ namespace CurtisDH.Scripts.Managers
                 _turretShader.AddComponent<Rigidbody>().isKinematic = true;
                 _turretShader = null;
                 _selectedTower.GetComponent<Collider>().enabled = true;
+
+                //Need to remove get component here if possible..
+                GameManager.Instance.AdjustWarfund(-_selectedTower.GetComponent<Tower>().WarFund);
+
                 //_towerShaderPrefab.SetActive(false); //setup to recycle
                 CancelTowerCreation();
             }

@@ -8,7 +8,8 @@ namespace CurtisDH.Scripts.PlayerRelated
     {
         private void OnTriggerEnter(Collider other)
         {
-            EventManager.RaiseEvent("onPlayerBaseReached",other.gameObject);
+            //what gameObject reached the end?? Did it die to the endzone?
+            EventManager.RaiseEvent("onPlayerBaseReached",other.gameObject,true);
         }
     }
 }

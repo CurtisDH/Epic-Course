@@ -448,7 +448,7 @@ MonoBehaviour:
   _speed: 2.5
   _AICollision: 0
   _iD: 1
-  _warFund: 0
+  _warFund: 50
   _deathTime: 1.75
   _dissolveTime: 2
   _dissolveMaterials:
