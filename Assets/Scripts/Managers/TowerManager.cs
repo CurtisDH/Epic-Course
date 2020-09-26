@@ -18,20 +18,18 @@ namespace CurtisDH.Scripts.Managers
                 return _instance;
             }
         }
-
-        public static Action<bool> onIsPlacingTower; //Event system
         private void OnEnable()
         {
-            TowerLocation.onMouseDown += PlaceTower;
-            TowerLocation.onMouseEnter += SnapTower;
-            TowerLocation.onMouseExit += SnapTower;
+            EventManager.Listen("onMouseDown", (Action<Vector3>)PlaceTower);
+            EventManager.Listen("onMouseEnter", (Action<Vector3,bool>)SnapTower);
+            EventManager.Listen("onMouseExit", (Action<Vector3,bool>)SnapTower);
             _instance = this;
         }
         private void OnDisable()
         {
-            TowerLocation.onMouseDown -= PlaceTower;
-            TowerLocation.onMouseEnter -= SnapTower;
-            TowerLocation.onMouseExit -= SnapTower;
+            EventManager.UnsubscribeEvent("onMouseDown", (Action<Vector3>)PlaceTower);
+            EventManager.UnsubscribeEvent("onMouseEnter", (Action<Vector3, bool>)SnapTower);
+            EventManager.UnsubscribeEvent("onMouseExit", (Action<Vector3, bool>)SnapTower);
         }
 
         [SerializeField]
@@ -104,6 +102,7 @@ namespace CurtisDH.Scripts.Managers
             if (_isPlacingTower)
             {
                 _selectedTower.transform.position = pos;
+                _selectedTower.transform.parent = null;
                 _turretShader.GetComponent<MeshRenderer>().enabled = false;
                 _turretShader.AddComponent<SphereCollider>().isTrigger = true;
                 _turretShader.AddComponent<Rigidbody>().isKinematic = true;
@@ -178,7 +177,8 @@ namespace CurtisDH.Scripts.Managers
         public void CreateTower(int id) // pull out of the pooling system.
         {
             _isPlacingTower = true;
-            onIsPlacingTower?.Invoke(_isPlacingTower);
+            EventManager.RaiseEvent("onIsPlacingTower", _isPlacingTower);
+            //onIsPlacingTower?.Invoke(_isPlacingTower);
             _selectedTower = PoolManager.Instance.RequestTower(id);
             if(_turretShader == null)
             {
@@ -199,7 +199,7 @@ namespace CurtisDH.Scripts.Managers
         {
             _isPlacingTower = false;
             //Destroy(_turretShader);
-            onIsPlacingTower?.Invoke(_isPlacingTower);
+            EventManager.RaiseEvent("onIsPlacingTower", _isPlacingTower);
         }
 
         void RightClickCancel()

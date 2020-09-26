@@ -64,23 +64,23 @@ public class EventManager : MonoBehaviour
 
     public static void RaiseEvent(string eventName)
     {
-        var EventToRaise = _eventDictionary[eventName] as Action;
-        EventToRaise.Invoke();
+        var EventToRaise = _eventDictionary?[eventName] as Action;
+        EventToRaise?.Invoke();
     }
     public static void RaiseEvent<T>(string eventName, T arg)
     {
-        var EventToRaise = _eventDictionary[eventName] as Action<T>;
-        EventToRaise.Invoke(arg);
+        var EventToRaise = _eventDictionary?[eventName] as Action<T>;
+        EventToRaise?.Invoke(arg);
     }
     public static void RaiseEvent<T, Q>(string eventName, T arg, Q arg1)
     {
-        var EventToRaise = _eventDictionary[eventName] as Action<T, Q>;
-        EventToRaise.Invoke(arg, arg1);
+        var EventToRaise = _eventDictionary?[eventName] as Action<T, Q>;
+        EventToRaise?.Invoke(arg, arg1);
     }
     public static void RaiseEvent<T, Q, R>(string eventName, T arg, Q arg1, R arg2)
     {
-        var EventToRaise = _eventDictionary[eventName] as Action<T, Q, R>;
-        EventToRaise.Invoke(arg, arg1, arg2);
+        var EventToRaise = _eventDictionary?[eventName] as Action<T, Q, R>;
+        EventToRaise?.Invoke(arg, arg1, arg2);
     }
     #endregion
     #region Unsubscribing methods
@@ -93,7 +93,7 @@ public class EventManager : MonoBehaviour
 
     public static void UnsubscribeEvent<T>(string eventName, Action<T> method)
     {
-        var eventToUnsubscribe = _eventDictionary[eventName];
+        var eventToUnsubscribe = _eventDictionary?[eventName];
         eventToUnsubscribe -= method;
         _eventDictionary[eventName] = eventToUnsubscribe;
     }

@@ -9,39 +9,35 @@ namespace CurtisDH.Scripts.PlayerRelated.Tower
         GameObject TurretOccupying;
         [SerializeField]
         bool _isOccupied;
-
-
         [SerializeField]
         GameObject AvailableSpotPrefab;
         [SerializeField]
         GameObject _activeAvailableSpot;
-        public static Action<Vector3, bool> onMouseEnter, onMouseExit;
-        public static Action<Vector3> onMouseDown;
 
         private void OnEnable()
         {
-            TowerManager.onIsPlacingTower += ToggleParticleSystem;
+            EventManager.Listen("onIsPlacingTower", (Action<bool>)ToggleParticleSystem);
         }
         private void OnDisable()
         {
-            TowerManager.onIsPlacingTower -= ToggleParticleSystem;
+            EventManager.UnsubscribeEvent("onIsPlacingTower", (Action<bool>)ToggleParticleSystem);
         }
 
         private void OnMouseEnter()
         {
             if (_isOccupied) return;
-            onMouseEnter?.Invoke(this.gameObject.transform.position, true);
+            EventManager.RaiseEvent("onMouseEnter", this.gameObject.transform.position, true);
             Debug.Log(this.gameObject + "::TowerLocation");
         }
         private void OnMouseDown()
         {
             if (_isOccupied) return;
-            onMouseDown?.Invoke(this.gameObject.transform.position);
+            EventManager.RaiseEvent("onMouseDown", this.gameObject.transform.position);
             _isOccupied = true;
         }
         private void OnMouseExit()
         {
-            onMouseExit?.Invoke(Vector3.zero, false);
+            EventManager.RaiseEvent("onMouseExit", Vector3.zero, false);
         }
         //event system check if isPlacingTower is happening & if isoccupied is false
         public bool IsOccupied

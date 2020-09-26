@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.GameCenter;
 
 public abstract class Tower : MonoBehaviour
 {
@@ -37,9 +38,6 @@ public abstract class Tower : MonoBehaviour
     }
 
     protected GameObject _targetedEnemy;
-
-    public static Action<GameObject, float> onDamageEnemy;
-
     bool _enemyInRange;
     [SerializeField]
     float _fireRate; // this will determine how quickly we deal damage to an enemy.
@@ -62,12 +60,10 @@ public abstract class Tower : MonoBehaviour
     private void OnEnable()
     {
         EnemiesInRange = new List<GameObject>();
-        TowerEnemyDetection.onEnemyDetectionRadius += AddEnemyToQueue;
-        AIBase.onAiDeath += AddEnemyToQueue;
-        UIManager.onTowerUpgrade += UpgradeTower;
-        UIManager.onTowerCancel += DeselectTower;
+
+        
         gameObject.GetComponent<Collider>().enabled = false; //cache
-        if(_currentUpgradedTower == null && _upgradedTowerPrefab != null)
+        if (_currentUpgradedTower == null && _upgradedTowerPrefab != null)
         {
             var stagedTower = Instantiate(_upgradedTowerPrefab);
             stagedTower.SetActive(false);
@@ -97,6 +93,19 @@ public abstract class Tower : MonoBehaviour
         {
             _fireRate = 0.25f;
         }
+        EventManager.Listen("onEnemyDetectionRadius", (Action<GameObject, GameObject, bool>)AddEnemyToQueue);
+        EventManager.Listen("onAiDeath", (Action<GameObject, GameObject, bool>)AddEnemyToQueue);
+        EventManager.Listen("onTowerUpgrade", UpgradeTower);
+        EventManager.Listen("onTowerCancel", DeselectTower);
+
+    }
+
+    private void OnDisable()
+    {
+        EventManager.UnsubscribeEvent("onEnemyDetectionRadius", (Action<GameObject, GameObject, bool>)AddEnemyToQueue);
+        EventManager.UnsubscribeEvent("onAiDeath", (Action<GameObject,GameObject,bool>)AddEnemyToQueue);
+        EventManager.UnsubscribeEvent("onTowerUpgrade", UpgradeTower);
+        EventManager.UnsubscribeEvent("onTowerCancel", DeselectTower);
     }
     private void OnMouseDown()
     {
@@ -109,11 +118,6 @@ public abstract class Tower : MonoBehaviour
     }
     private void Update() //triggerstay
     {
-        //TEMP
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            UpgradeTower();
-        }
         if (_enemyInRange = true && _enemiesInRange.Count != 0)
         {
             TargetEnemy();
@@ -145,7 +149,13 @@ public abstract class Tower : MonoBehaviour
         _isCoroutineRunning = false;
         StopAllCoroutines();
     }
-    public void AddEnemyToQueue(GameObject enemy, GameObject turret, bool onTriggerExit)
+    /// <summary>
+    /// if turret == null turret is assigned by method. onTriggerExit:: are we exiting the trigger (Tower radius)
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <param name="turret"></param>
+    /// <param name="onTriggerExit"></param>
+    public void AddEnemyToQueue(GameObject enemy, GameObject turret, bool onTriggerExit=false)
     {
         if (turret == null)
         {
@@ -169,29 +179,14 @@ public abstract class Tower : MonoBehaviour
         _isCoroutineRunning = true;
         while (true)
         {
-            onDamageEnemy?.Invoke(_targetedEnemy, _damage);
+            EventManager.RaiseEvent("onDamageEnemy",_targetedEnemy,_damage);
             yield return new WaitForSeconds(time);
         }
     }
 
     public void UpgradeTower()
     {
-        if (_currentUpgradedTower == null)
-        {
-            return;
-        }
-        //switch(_towerID)
-        //{
-        //    case 0:
-
-        //        break;
-        //    case 1:
-        //        break;
-        //    default:
-        //        Debug.LogError("Tower::NO TOWER ID OF " + _towerID);
-        //        break;
-        //}
-        if(_isSelected)
+        if (_isSelected)
         {
             _currentUpgradedTower.SetActive(true);
             _currentUpgradedTower.transform.parent = null; // remove parent object so its stays active
@@ -204,17 +199,11 @@ public abstract class Tower : MonoBehaviour
     public void DeselectTower()
     {
         _isSelected = false;
-        if(_towerRadiusShader !=null)
-        _towerRadiusShader.GetComponent<Renderer>().enabled = _isSelected;
+        if (_towerRadiusShader != null)
+            _towerRadiusShader.GetComponent<Renderer>().enabled = _isSelected;
     }
 
-    private void OnDisable()
-    {
-        TowerEnemyDetection.onEnemyDetectionRadius -= AddEnemyToQueue;
-        AIBase.onAiDeath -= AddEnemyToQueue;
-        UIManager.onTowerUpgrade -= UpgradeTower;
-        UIManager.onTowerCancel -= DeselectTower;
-    }
+    
 
 
 }

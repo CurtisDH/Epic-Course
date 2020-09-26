@@ -11,9 +11,6 @@ namespace CurtisDH.Scripts.Enemies
 
     public abstract class AIBase : MonoBehaviour
     {
-        public static Action<GameObject, GameObject, bool> onAiDeath;
-
-
         [SerializeField]
         private NavMeshAgent _agent;
         [SerializeField]
@@ -52,6 +49,9 @@ namespace CurtisDH.Scripts.Enemies
         Renderer[] _dissolveMaterials;
         [SerializeField]
         GameObject _deathParticles;
+
+        GameObject _intentionallyNull = null;
+
         private void OnEnable()
         {
             InitaliseAI();
@@ -61,8 +61,8 @@ namespace CurtisDH.Scripts.Enemies
             }
 
             _anim?.SetTrigger("Reset");
-            PlayerBase.onPlayerBaseReached += onDeath;
-            Tower.onDamageEnemy += ReceiveDamage;
+            EventManager.Listen("onPlayerBaseReached",(Action<GameObject>)onDeath);
+            EventManager.Listen("onDamageEnemy", (Action<GameObject, float>)ReceiveDamage);
             _deathParticles.SetActive(false);
             foreach (var obj in _dissolveMaterials)
             {
@@ -71,8 +71,8 @@ namespace CurtisDH.Scripts.Enemies
         }
         private void OnDisable()
         {
-            PlayerBase.onPlayerBaseReached -= onDeath;
-            Tower.onDamageEnemy -= ReceiveDamage;
+            EventManager.UnsubscribeEvent("onPlayerBaseReached", (Action<GameObject>)onDeath);
+            EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float>)ReceiveDamage);
         }
         public void InitaliseAI()
         {
@@ -133,7 +133,7 @@ namespace CurtisDH.Scripts.Enemies
                 Health -= damage;
                 if (Health <= 0)
                 {
-                    onDeath(gameObject); // still need to play death animation
+                    onDeath(gameObject);
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace CurtisDH.Scripts.Enemies
         {
             if (obj == this.gameObject)
             {
-                onAiDeath?.Invoke(obj, null, true);
+                EventManager.RaiseEvent("onAiDeath", obj, _intentionallyNull, true);
                 StartCoroutine(DeathRoutine());
 
             }

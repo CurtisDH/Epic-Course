@@ -8,8 +8,6 @@ namespace CurtisDH.Scripts.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        public static event Action onTowerUpgrade;
-        public static event Action onTowerCancel;
         public static UIManager Instance { get; private set; }
         [SerializeField]
         GameObject _gatlingUpgrade;
@@ -43,12 +41,12 @@ namespace CurtisDH.Scripts.Managers
 
         public void CancelTowerUpgrade()
         {
-            onTowerCancel?.Invoke();
+            EventManager.RaiseEvent("onTowerCancel");
             ToggleUpgradeUI(selectedTowerID, false);
         }
         public void UpgradeTower()
         {
-            onTowerUpgrade?.Invoke();
+            EventManager.RaiseEvent("onTowerUpgrade");
             CancelTowerUpgrade();
         }
 
