@@ -98,6 +98,7 @@ public abstract class Tower : MonoBehaviour
         EventManager.Listen("onAiDeath", (Action<GameObject, GameObject, bool>)AddEnemyToQueue);
         EventManager.Listen("onTowerUpgrade", UpgradeTower);
         EventManager.Listen("onTowerCancel", DeselectTower);
+        EventManager.Listen("onTowerSell", SellTower);
 
     }
 
@@ -107,6 +108,7 @@ public abstract class Tower : MonoBehaviour
         EventManager.UnsubscribeEvent("onAiDeath", (Action<GameObject,GameObject,bool>)AddEnemyToQueue);
         EventManager.UnsubscribeEvent("onTowerUpgrade", UpgradeTower);
         EventManager.UnsubscribeEvent("onTowerCancel", DeselectTower);
+        EventManager.UnsubscribeEvent("onTowerSell", SellTower);
     }
     private void OnMouseDown()
     {
@@ -149,6 +151,13 @@ public abstract class Tower : MonoBehaviour
     {
         _isCoroutineRunning = false;
         StopAllCoroutines();
+    }
+    public void SellTower()
+    {
+        //give the player money for selling
+        EventManager.RaiseEvent("SoldTower", gameObject);
+        GameManager.Instance.AdjustWarfund(_warFund / 2);
+        PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
     }
     /// <summary>
     /// if turret == null turret is assigned by method. onTriggerExit:: are we exiting the trigger (Tower radius)

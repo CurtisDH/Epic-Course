@@ -108,7 +108,8 @@ namespace CurtisDH.Scripts.Managers
                 _turretShader.AddComponent<Rigidbody>().isKinematic = true;
                 _turretShader = null;
                 _selectedTower.GetComponent<Collider>().enabled = true;
-
+                //fastest solution i could think of might change later
+                EventManager.RaiseEvent("PlaceTower", _selectedTower); 
                 //Need to remove get component here if possible..
                 GameManager.Instance.AdjustWarfund(-_selectedTower.GetComponent<Tower>().WarFund);
 

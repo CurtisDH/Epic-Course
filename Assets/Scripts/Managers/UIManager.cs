@@ -40,6 +40,7 @@ namespace CurtisDH.Scripts.Managers
         public void ToggleUpgradeUI(int towerID, int UpgradeCost = 0,bool toggleUI = true)
         {
             selectedTowerID = towerID;
+            ToggleSellUI(toggleUI);
             switch (towerID)
             {
                 case 0:
@@ -58,6 +59,11 @@ namespace CurtisDH.Scripts.Managers
                     break;
             }
         }
+        void ToggleSellUI(bool toggleUI)
+        {
+            _dismantleWeapon.SetActive(toggleUI);
+        }
+
         // send a float into the method instead?
         public void UpdateWarFunds(int funds) 
         {
@@ -74,6 +80,13 @@ namespace CurtisDH.Scripts.Managers
         {
             EventManager.RaiseEvent("onTowerUpgrade");
             CancelTowerUpgrade();
+        }
+        // if we hit sell button then raise event
+        public void SellTower()
+        {
+            EventManager.RaiseEvent("onTowerSell");
+            CancelTowerUpgrade();
+
         }
 
     }

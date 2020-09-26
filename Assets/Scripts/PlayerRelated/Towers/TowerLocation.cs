@@ -17,6 +17,8 @@ namespace CurtisDH.Scripts.PlayerRelated.Tower
         private void OnEnable()
         {
             EventManager.Listen("onIsPlacingTower", (Action<bool>)ToggleParticleSystem);
+            EventManager.Listen("SoldTower", (Action<GameObject>)RemoveTower);
+            EventManager.Listen("PlaceTower", (Action<GameObject>)AddTower);
         }
         private void OnDisable()
         {
@@ -66,10 +68,18 @@ namespace CurtisDH.Scripts.PlayerRelated.Tower
             TurretOccupying.transform.position = this.transform.position;
             _isOccupied = true;
         }
-        public void RemoveTower()
+        public void AddTower(GameObject tower)
         {
-            TurretOccupying = null;
-            _isOccupied = false;
+            TurretOccupying = tower;
+        }
+        public void RemoveTower(GameObject tower)
+        {
+            if(tower.gameObject == TurretOccupying.gameObject)
+            {
+                TurretOccupying = null;
+                _isOccupied = false;
+            }
+
         }
     }
 
