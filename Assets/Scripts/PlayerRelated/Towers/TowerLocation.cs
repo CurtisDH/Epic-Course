@@ -17,8 +17,8 @@ namespace CurtisDH.Scripts.PlayerRelated.Tower
         private void OnEnable()
         {
             EventManager.Listen("onIsPlacingTower", (Action<bool>)ToggleParticleSystem);
-            EventManager.Listen("SoldTower", (Action<GameObject>)RemoveTower);
-            EventManager.Listen("PlaceTower", (Action<GameObject>)AddTower);
+            EventManager.Listen("onSoldTower", (Action<GameObject>)RemoveTower);
+            EventManager.Listen("onPlaceTower", (Action<GameObject, GameObject>)AddTower);
         }
         private void OnDisable()
         {
@@ -28,18 +28,18 @@ namespace CurtisDH.Scripts.PlayerRelated.Tower
         private void OnMouseEnter()
         {
             if (_isOccupied) return;
-            EventManager.RaiseEvent("onMouseEnter", this.gameObject.transform.position, true);
+            EventManager.RaiseEvent("onMouseEnter", this.gameObject, true);
             Debug.Log(this.gameObject + "::TowerLocation");
         }
         private void OnMouseDown()
         {
             if (_isOccupied) return;
-            EventManager.RaiseEvent("onMouseDown", this.gameObject.transform.position);
+            EventManager.RaiseEvent("onMouseDown", this.gameObject);
             _isOccupied = true;
         }
         private void OnMouseExit()
         {
-            EventManager.RaiseEvent("onMouseExit", Vector3.zero, false);
+            EventManager.RaiseEvent("onMouseExit", gameObject, false);
         }
         //event system check if isPlacingTower is happening & if isoccupied is false
         public bool IsOccupied
@@ -68,13 +68,17 @@ namespace CurtisDH.Scripts.PlayerRelated.Tower
             TurretOccupying.transform.position = this.transform.position;
             _isOccupied = true;
         }
-        public void AddTower(GameObject tower)
+        public void AddTower(GameObject tower, GameObject location)
         {
-            TurretOccupying = tower;
+            if (location == gameObject)
+            {
+                TurretOccupying = tower;
+            }
+
         }
         public void RemoveTower(GameObject tower)
         {
-            if(tower.gameObject == TurretOccupying.gameObject)
+            if (tower.gameObject == TurretOccupying.gameObject)
             {
                 TurretOccupying = null;
                 _isOccupied = false;

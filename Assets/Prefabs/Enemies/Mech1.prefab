@@ -310,6 +310,8 @@ MonoBehaviour:
   - {fileID: 5905443022776267967}
   - {fileID: 5907238151582735237}
   _deathParticles: {fileID: 2482021795986892730}
+  _hipRotation: {fileID: 5772309451117604107}
+  _targetTurret: 0
 --- !u!65 &5506511887496755999
 BoxCollider:
   m_ObjectHideFlags: 0

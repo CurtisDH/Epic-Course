@@ -1023,7 +1023,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8470200166009695698}
-  - component: {fileID: 8470200166009401843}
+  - component: {fileID: -9002605756822942450}
   - component: {fileID: 3590413385835111911}
   m_Layer: 0
   m_Name: Missile_Launcher_Dual_Turret
@@ -1031,7 +1031,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8470200166009695698
 Transform:
   m_ObjectHideFlags: 0
@@ -1048,7 +1048,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8470200166009401843
+--- !u!114 &-9002605756822942450
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1057,22 +1057,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8470200166009401842}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9da83c02e932eb41855433f194eb9bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 19b5ecf00dcb56c44a94d5faa6a73653, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _warFund: 500
+  _warFund: 750
+  _upgradeCost: 0
   _towerID: 3
   _towerRadius: 25
   _enemiesInRange: []
-  _fireRate: 5
-  _damage: 10
+  _fireRate: 3
+  _damage: 20
   _rotation: {fileID: 8470200166009401844}
   _isCoroutineRunning: 0
   _currentUpgradedTower: {fileID: 0}
   _upgradedTowerPrefab: {fileID: 0}
   _towerRadiusShader: {fileID: 3318918957541053756, guid: b2743e99a57b46f4889ef46c2dcaff14, type: 3}
   _isSelected: 0
-  _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147, type: 3}
+  _missilePrefab: {fileID: 0}
+  _missileType: 0
   _misslePositions:
   - {fileID: 8470200166009401850}
   - {fileID: 11816315329033430}
@@ -1086,12 +1088,12 @@ MonoBehaviour:
   - {fileID: 11816315969275552}
   - {fileID: 11816315438024030}
   - {fileID: 11816316137454923}
-  _fireDelay: 2.5
+  _fireDelay: 2
   _launchSpeed: 10
-  _power: 2.84
-  _fuseDelay: 0.25
-  _reloadTime: 5
-  _destroyTime: 1.78
+  _power: 20
+  _fuseDelay: 0
+  _reloadTime: 0
+  _destroyTime: 2
 --- !u!65 &3590413385835111911
 BoxCollider:
   m_ObjectHideFlags: 0

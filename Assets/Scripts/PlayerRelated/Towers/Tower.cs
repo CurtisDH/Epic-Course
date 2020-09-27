@@ -15,6 +15,7 @@ public abstract class Tower : MonoBehaviour
         get => _warFund;
         set => _warFund = value;
     }
+    [SerializeField]
     private int _upgradeCost;
     [SerializeField]
     protected int _towerID;
@@ -41,7 +42,7 @@ public abstract class Tower : MonoBehaviour
     protected GameObject _targetedEnemy;
     bool _enemyInRange;
     [SerializeField]
-    float _fireRate; // this will determine how quickly we deal damage to an enemy.
+    protected float _fireRate; // this will determine how quickly we deal damage to an enemy.
     [SerializeField]
     float _damage;
     [SerializeField]
@@ -57,7 +58,7 @@ public abstract class Tower : MonoBehaviour
     GameObject _towerRadiusShader;
     [SerializeField]
     bool _isSelected;
-
+    private GameObject _currentLocation;
     private void OnEnable()
     {
         EnemiesInRange = new List<GameObject>();
@@ -99,6 +100,7 @@ public abstract class Tower : MonoBehaviour
         EventManager.Listen("onTowerUpgrade", UpgradeTower);
         EventManager.Listen("onTowerCancel", DeselectTower);
         EventManager.Listen("onTowerSell", SellTower);
+        EventManager.Listen("onPlaceTower", (Action<GameObject,GameObject>)AddTowerLocation);
 
     }
 
@@ -109,6 +111,7 @@ public abstract class Tower : MonoBehaviour
         EventManager.UnsubscribeEvent("onTowerUpgrade", UpgradeTower);
         EventManager.UnsubscribeEvent("onTowerCancel", DeselectTower);
         EventManager.UnsubscribeEvent("onTowerSell", SellTower);
+        EventManager.UnsubscribeEvent("onPlaceTower", (Action<GameObject, GameObject>)AddTowerLocation);
     }
     private void OnMouseDown()
     {
@@ -132,11 +135,8 @@ public abstract class Tower : MonoBehaviour
     }
     public virtual void TargetEnemy()
     {
-
-        //we can add a shoot method in here. We need a way to detect if/when the target swaps 
         if (_enemiesInRange.Count != 0)
         {
-
             var enemy = _enemiesInRange[0];
             _targetedEnemy = enemy;
         }
@@ -155,9 +155,12 @@ public abstract class Tower : MonoBehaviour
     public void SellTower()
     {
         //give the player money for selling
-        EventManager.RaiseEvent("SoldTower", gameObject);
-        GameManager.Instance.AdjustWarfund(_warFund / 2);
-        PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
+        if(_isSelected)
+        {
+            EventManager.RaiseEvent("onSoldTower", gameObject);
+            GameManager.Instance.AdjustWarfund(_warFund / 2);
+            PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
+        }
     }
     /// <summary>
     /// if turret == null turret is assigned by method. onTriggerExit:: are we exiting the trigger (Tower radius)
@@ -200,13 +203,19 @@ public abstract class Tower : MonoBehaviour
     {
         if (_isSelected)
         {
-            _currentUpgradedTower.SetActive(true);
-            _currentUpgradedTower.transform.parent = null; // remove parent object so its stays active
-            _currentUpgradedTower.transform.position = gameObject.transform.position;
-            _currentUpgradedTower = null;
-            _isSelected = false;
-            GameManager.Instance.AdjustWarfund(-_upgradeCost);
-            PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
+            if(GameManager.Instance.WarFund >= _upgradeCost)
+            {
+                _currentUpgradedTower.SetActive(true);
+                _currentUpgradedTower.transform.parent = null; // remove parent object so its stays active
+                _currentUpgradedTower.transform.position = gameObject.transform.position;
+                //we pass in the tower that we're upgrading to & the location of the old tower
+                EventManager.RaiseEvent("onPlaceTower", _currentUpgradedTower, _currentLocation);
+                _currentUpgradedTower = null;
+                _currentLocation = null;
+                _isSelected = false;
+                GameManager.Instance.AdjustWarfund(-_upgradeCost);
+                PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
+            }
         }
 
     }
@@ -217,7 +226,12 @@ public abstract class Tower : MonoBehaviour
             _towerRadiusShader.GetComponent<Renderer>().enabled = _isSelected;
     }
 
-    
-
+    public void AddTowerLocation(GameObject tower,GameObject location)
+    {
+        if(tower == this.gameObject)
+        {
+            _currentLocation = location;
+        }
+    }
 
 }

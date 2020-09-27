@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _warFund: 250
+  _upgradeCost: 500
   _towerID: 0
   _towerRadius: 12
   _enemiesInRange: []
