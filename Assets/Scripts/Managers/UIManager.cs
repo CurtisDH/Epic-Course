@@ -31,13 +31,13 @@ namespace CurtisDH.Scripts.Managers
         }
         void OnEnable()
         {
-            EventManager.Listen("UpdateWarFunds", (Action<int>)UpdateWarFunds);
+            EventManager.Listen("onUpdateWarFunds", (Action<int>)UpdateWarFunds);
         }
         void OnDisable()
         {
-            EventManager.UnsubscribeEvent("UpdateWarFunds", (Action<int>)UpdateWarFunds);
+            EventManager.UnsubscribeEvent("onUpdateWarFunds", (Action<int>)UpdateWarFunds);
         }
-        public void ToggleUpgradeUI(int towerID, int UpgradeCost = 0,bool toggleUI = true)
+        public void ToggleUpgradeUI(int towerID, int UpgradeCost = 0, bool toggleUI = true)
         {
             selectedTowerID = towerID;
             ToggleSellUI(toggleUI);
@@ -63,18 +63,15 @@ namespace CurtisDH.Scripts.Managers
         {
             _dismantleWeapon.SetActive(toggleUI);
         }
-
-        // send a float into the method instead?
-        public void UpdateWarFunds(int funds) 
+        public void UpdateWarFunds(int funds)
         {
-            Debug.Log("UIMANAGER::Funds " + funds);
-            _mainWarfund.text = ""+funds;
+            _mainWarfund.text = "" + funds;
         }
 
         public void CancelTowerUpgrade()
         {
             EventManager.RaiseEvent("onTowerCancel");
-            ToggleUpgradeUI(selectedTowerID,toggleUI:false);
+            ToggleUpgradeUI(selectedTowerID, toggleUI: false);
         }
         public void UpgradeTower()
         {
@@ -88,7 +85,6 @@ namespace CurtisDH.Scripts.Managers
             CancelTowerUpgrade();
 
         }
-
     }
 
 }

@@ -20,16 +20,16 @@ namespace CurtisDH.Scripts.Managers
         }
         private void OnEnable()
         {
-            EventManager.Listen("onMouseDown", (Action<Vector3>)PlaceTower);
-            EventManager.Listen("onMouseEnter", (Action<Vector3,bool>)SnapTower);
-            EventManager.Listen("onMouseExit", (Action<Vector3,bool>)SnapTower);
+            EventManager.Listen("onMouseDown", (Action<GameObject>)PlaceTower);
+            EventManager.Listen("onMouseEnter", (Action<GameObject, bool>)SnapTower);
+            EventManager.Listen("onMouseExit", (Action<GameObject, bool>)SnapTower);
             _instance = this;
         }
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onMouseDown", (Action<Vector3>)PlaceTower);
-            EventManager.UnsubscribeEvent("onMouseEnter", (Action<Vector3, bool>)SnapTower);
-            EventManager.UnsubscribeEvent("onMouseExit", (Action<Vector3, bool>)SnapTower);
+            EventManager.UnsubscribeEvent("onMouseDown", (Action<GameObject>)PlaceTower);
+            EventManager.UnsubscribeEvent("onMouseEnter", (Action<GameObject, bool>)SnapTower);
+            EventManager.UnsubscribeEvent("onMouseExit", (Action<GameObject, bool>)SnapTower);
         }
 
         [SerializeField]
@@ -97,11 +97,11 @@ namespace CurtisDH.Scripts.Managers
             }
 
         }
-        public void PlaceTower(Vector3 pos) //receives the gameobject from towerlocation
+        public void PlaceTower(GameObject LocationObj) //receives the gameobject from towerlocation
         {
             if (_isPlacingTower)
             {
-                _selectedTower.transform.position = pos;
+                _selectedTower.transform.position = LocationObj.transform.position;
                 _selectedTower.transform.parent = null;
                 _turretShader.GetComponent<MeshRenderer>().enabled = false;
                 _turretShader.AddComponent<SphereCollider>().isTrigger = true;
@@ -109,7 +109,7 @@ namespace CurtisDH.Scripts.Managers
                 _turretShader = null;
                 _selectedTower.GetComponent<Collider>().enabled = true;
                 //fastest solution i could think of might change later
-                EventManager.RaiseEvent("PlaceTower", _selectedTower); 
+                EventManager.RaiseEvent("onPlaceTower", _selectedTower,LocationObj);
                 //Need to remove get component here if possible..
                 GameManager.Instance.AdjustWarfund(-_selectedTower.GetComponent<Tower>().WarFund);
 
@@ -118,7 +118,7 @@ namespace CurtisDH.Scripts.Managers
             }
         }
 
-        public void SnapTower(Vector3 pos, bool isSnapped) //if this runs set a bool to say hey we've snapped dont update me until i say so 
+        public void SnapTower(GameObject LocationObj, bool isSnapped) //if this runs set a bool to say hey we've snapped dont update me until i say so 
         {
             if (_isPlacingTower)
             {
@@ -131,7 +131,8 @@ namespace CurtisDH.Scripts.Managers
                     _turretShader.GetComponent<Renderer>().material.color = _invalidPlacement;
                 }
                 _snappedTower = isSnapped;
-                _selectedTower.transform.position = pos;
+                if (isSnapped)
+                    _selectedTower.transform.position = LocationObj.transform.position;
             }
         }
         public void GatlingTurret() // need to rework all of this just getting a prototype functional
@@ -185,7 +186,7 @@ namespace CurtisDH.Scripts.Managers
             EventManager.RaiseEvent("onIsPlacingTower", _isPlacingTower);
             //onIsPlacingTower?.Invoke(_isPlacingTower);
             _selectedTower = PoolManager.Instance.RequestTower(id);
-            if(_turretShader == null)
+            if (_turretShader == null)
             {
                 //need to move all this to poolmanager somehow.. or perhaps turn into an event system.
                 float TowerRadius = _selectedTower.GetComponent<Tower>().TowerRadius;
@@ -197,7 +198,7 @@ namespace CurtisDH.Scripts.Managers
                 selectionfield.name = "TowerRadius";
                 selectionfield.GetComponent<Renderer>().material.color = InvalidPlacement; //find a better way to change color. //event?
             }
-            
+
         }
 
         public void CancelTowerCreation()
@@ -219,7 +220,7 @@ namespace CurtisDH.Scripts.Managers
 
         void TowerToRecycle(GameObject obj)
         {
-            PoolManager.Instance.ObjectsReadyToRecycle(obj,false,obj.GetComponent<Tower>().TowerID);
+            PoolManager.Instance.ObjectsReadyToRecycle(obj, false, obj.GetComponent<Tower>().TowerID);
             obj.SetActive(false);
         }
 

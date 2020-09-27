@@ -51,6 +51,12 @@ namespace CurtisDH.Scripts.Enemies
         GameObject _deathParticles;
 
         GameObject _intentionallyNull = null;
+        [SerializeField]
+        GameObject _hipRotation;
+        GameObject _turretToLookAt;
+        [SerializeField]
+        bool _targetTurret;
+
 
         private void OnEnable()
         {
@@ -61,8 +67,9 @@ namespace CurtisDH.Scripts.Enemies
             }
 
             _anim?.SetTrigger("Reset");
-            EventManager.Listen("onPlayerBaseReached", (Action<GameObject,bool>)onDeath);
-            EventManager.Listen("onDamageEnemy", (Action<GameObject, float,bool>)ReceiveDamage);
+            EventManager.Listen("onPlayerBaseReached", (Action<GameObject, bool>)onDeath);
+            EventManager.Listen("onDamageEnemy", (Action<GameObject, float, bool>)ReceiveDamage);
+            EventManager.Listen("onEnemyDetectionRadius", (Action<GameObject, GameObject, bool>)TargetTurret);
             _deathParticles.SetActive(false);
             foreach (var obj in _dissolveMaterials)
             {
@@ -71,8 +78,21 @@ namespace CurtisDH.Scripts.Enemies
         }
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onPlayerBaseReached", (Action<GameObject,bool>)onDeath);
-            EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float,bool>)ReceiveDamage);
+            EventManager.UnsubscribeEvent("onPlayerBaseReached", (Action<GameObject, bool>)onDeath);
+            EventManager.UnsubscribeEvent("onEnemyDetectionRadius", (Action<GameObject, GameObject,bool>)TargetTurret);
+            EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float, bool>)ReceiveDamage);
+        }
+        void LateUpdate()
+        {
+            if (_targetTurret)
+            {
+                //Vector3 direction = (_hipRotation.transform.position -_turretToLookAt.transform.position);
+                float dir = _turretToLookAt.transform.position.z - _hipRotation.transform.position.z;
+                Vector3 direction = new Vector3(0, 0, dir);
+                _hipRotation.transform.rotation = Quaternion.Euler(direction);
+                //_hipRotation.transform.LookAt(_turretToLookAt.transform);
+            }
+            
         }
         public void InitaliseAI()
         {
@@ -125,6 +145,16 @@ namespace CurtisDH.Scripts.Enemies
 
                 }
             }
+        }
+        public void TargetTurret(GameObject mech, GameObject turret,bool b)
+        {
+            if (mech == this.gameObject)
+            {
+                _turretToLookAt = turret;
+                _anim.SetTrigger("Shoot");
+                if (_hipRotation != null) _targetTurret = true;
+            }
+                
         }
         private void ReceiveDamage(GameObject enemy, float damage, bool towerDeath)
         {

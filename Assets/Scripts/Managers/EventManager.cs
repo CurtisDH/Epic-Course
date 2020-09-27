@@ -64,23 +64,55 @@ public class EventManager : MonoBehaviour
 
     public static void RaiseEvent(string eventName)
     {
-        var EventToRaise = _eventDictionary?[eventName] as Action;
-        EventToRaise?.Invoke();
+        try
+        {
+            var EventToRaise = _eventDictionary?[eventName] as Action;
+            EventToRaise?.Invoke();
+        }
+        catch
+        {
+            Debug.LogError("EventManager::Key not found - No listeners");
+        }
+        
     }
     public static void RaiseEvent<T>(string eventName, T arg)
     {
-        var EventToRaise = _eventDictionary?[eventName] as Action<T>;
-        EventToRaise?.Invoke(arg);
+        try
+        {
+            var EventToRaise = _eventDictionary?[eventName] as Action<T>;
+            EventToRaise?.Invoke(arg);
+        }
+        catch
+        {
+            Debug.LogError("EventManager::Key not found - No listeners");
+        }
+
     }
     public static void RaiseEvent<T, Q>(string eventName, T arg, Q arg1)
     {
-        var EventToRaise = _eventDictionary?[eventName] as Action<T, Q>;
-        EventToRaise?.Invoke(arg, arg1);
+        try
+        {
+            var EventToRaise = _eventDictionary?[eventName] as Action<T, Q>;
+            EventToRaise?.Invoke(arg, arg1);
+        }
+        catch
+        {
+            Debug.LogError("EventManager::Key not found - No listeners");
+        }
+
     }
     public static void RaiseEvent<T, Q, R>(string eventName, T arg, Q arg1, R arg2)
     {
-        var EventToRaise = _eventDictionary?[eventName] as Action<T, Q, R>;
-        EventToRaise?.Invoke(arg, arg1, arg2);
+        try
+        {
+            var EventToRaise = _eventDictionary?[eventName] as Action<T, Q, R>;
+            EventToRaise?.Invoke(arg, arg1, arg2);
+        }
+        catch
+        {
+            Debug.LogError("EventManager::Key not found - No listeners");
+        }
+
     }
     #endregion
     #region Unsubscribing methods

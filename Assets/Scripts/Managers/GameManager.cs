@@ -45,7 +45,7 @@ namespace CurtisDH.Scripts.Managers
         public void AdjustWarfund(int amount)
         {
             _warFund += amount;
-            EventManager.RaiseEvent("UpdateWarFunds", _warFund);
+            EventManager.RaiseEvent("onUpdateWarFunds", _warFund);
         }
         public void AdjustPlayerLives(int amount)
         {
