@@ -32,10 +32,12 @@ namespace CurtisDH.Scripts.Managers
         void OnEnable()
         {
             EventManager.Listen("onUpdateWarFunds", (Action<int>)UpdateWarFunds);
+            EventManager.Listen("onNotEnoughWarfunds",(Action<bool>)ToggleNotEnoughWarfundsUI);
         }
         void OnDisable()
         {
             EventManager.UnsubscribeEvent("onUpdateWarFunds", (Action<int>)UpdateWarFunds);
+            EventManager.UnsubscribeEvent("onNotEnoughWarfunds", (Action<bool>)ToggleNotEnoughWarfundsUI);
         }
         public void ToggleUpgradeUI(int towerID, int UpgradeCost = 0, bool toggleUI = true)
         {
@@ -62,6 +64,10 @@ namespace CurtisDH.Scripts.Managers
         void ToggleSellUI(bool toggleUI)
         {
             _dismantleWeapon.SetActive(toggleUI);
+        }
+        public void ToggleNotEnoughWarfundsUI(bool toggleUI)
+        {
+            //noWarfunds.SetActive(true);
         }
         public void UpdateWarFunds(int funds)
         {

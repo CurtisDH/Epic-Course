@@ -82,14 +82,14 @@ namespace CurtisDH.Scripts.Enemies
             EventManager.UnsubscribeEvent("onEnemyDetectionRadius", (Action<GameObject, GameObject,bool>)TargetTurret);
             EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float, bool>)ReceiveDamage);
         }
-        void LateUpdate()
+        void Update()
         {
             if (_targetTurret)
             {
-                //Vector3 direction = (_hipRotation.transform.position -_turretToLookAt.transform.position);
-                float dir = _turretToLookAt.transform.position.z - _hipRotation.transform.position.z;
-                Vector3 direction = new Vector3(0, 0, dir);
-                _hipRotation.transform.rotation = Quaternion.Euler(direction);
+                Vector3 direction = (_hipRotation.transform.position -_turretToLookAt.transform.position);
+                //float dir = _turretToLookAt.transform.position.z - _hipRotation.transform.position.z;
+                //_hipRotation.transform.eulerAngles = new Vector3(0,0,direction.z);
+                _hipRotation.transform.Rotate(0,0,direction.z, Space.Self);
                 //_hipRotation.transform.LookAt(_turretToLookAt.transform);
             }
             

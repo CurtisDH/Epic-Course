@@ -216,6 +216,10 @@ public abstract class Tower : MonoBehaviour
                 GameManager.Instance.AdjustWarfund(-_upgradeCost);
                 PoolManager.Instance.ObjectsReadyToRecycle(gameObject, false, _towerID);
             }
+            else
+            {
+                EventManager.RaiseEvent("onNotEnoughWarfunds",true);
+            }
         }
 
     }
