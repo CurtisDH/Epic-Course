@@ -8,6 +8,8 @@ namespace CurtisDH.Scripts.Enemies
     using CurtisDH.Scripts.PlayerRelated;
     using System;
     using System.Collections;
+    using TMPro;
+    using UnityEngine.UI;
 
     public abstract class AIBase : MonoBehaviour
     {
@@ -56,7 +58,8 @@ namespace CurtisDH.Scripts.Enemies
         GameObject _turretToLookAt;
         [SerializeField]
         bool _targetTurret;
-
+        [SerializeField]
+        TextMeshProUGUI _healthBar;
 
         private void OnEnable()
         {
@@ -161,6 +164,8 @@ namespace CurtisDH.Scripts.Enemies
             if (enemy == this.gameObject)
             {
                 Health -= damage;
+                if(_healthBar!=null)
+                _healthBar.text = "" + _currentHealth;
                 if (Health <= 0)
                 {
                     //onDeath bool checks to see if it died from the endZone.

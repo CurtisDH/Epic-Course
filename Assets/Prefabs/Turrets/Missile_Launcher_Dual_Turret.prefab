@@ -1073,8 +1073,8 @@ MonoBehaviour:
   _upgradedTowerPrefab: {fileID: 0}
   _towerRadiusShader: {fileID: 3318918957541053756, guid: b2743e99a57b46f4889ef46c2dcaff14, type: 3}
   _isSelected: 0
-  _missilePrefab: {fileID: 0}
-  _missileType: 0
+  _missilePrefab: {fileID: 5718995783193502416, guid: 866c46f43bb5b93409f4b69ef73de9d8, type: 3}
+  _missileType: 1
   _misslePositions:
   - {fileID: 8470200166009401850}
   - {fileID: 11816315329033430}
@@ -1088,7 +1088,6 @@ MonoBehaviour:
   - {fileID: 11816315969275552}
   - {fileID: 11816315438024030}
   - {fileID: 11816316137454923}
-  _fireDelay: 2
   _launchSpeed: 10
   _power: 20
   _fuseDelay: 0
