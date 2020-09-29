@@ -11,12 +11,15 @@ namespace CurtisDH.Scripts.Managers
     public class UIManager : MonoBehaviour
     {
         public static UIManager Instance { get; private set; }
+        [Header("Whole UI Elements")]
         [SerializeField]
         GameObject _gatlingUpgrade;
         [SerializeField]
         GameObject _missileUpgrade;
         [SerializeField]
         GameObject _dismantleWeapon;
+        [SerializeField]
+        GameObject _levelComplete;
         private int selectedTowerID;
 
         [Header("Text Components")]
@@ -29,6 +32,10 @@ namespace CurtisDH.Scripts.Managers
         private Text _missileUpgradeCost;
         [SerializeField]
         private Text _uiStatusChange;
+        [SerializeField]
+        private Text _currentWave;
+        [SerializeField]
+        private Text _playerHealth;
 
         [Header("UI Status Change")]
         [SerializeField]
@@ -123,6 +130,15 @@ namespace CurtisDH.Scripts.Managers
         public void StatusSystem(int playerHealth)
         {
             string Status = "Good";
+            if (playerHealth >= 0)
+            {
+                _playerHealth.text = "" + playerHealth;
+            }
+            else
+            {
+                _playerHealth.text = "0";
+            }
+                
             if (playerHealth > 60)
             {
                 if (statusGood != true)
@@ -172,6 +188,17 @@ namespace CurtisDH.Scripts.Managers
             _uiStatusChange.text = Status;
         }
 
+        public void UpdateWave(int currentWave)
+        {
+            //set to 11 not 10 so we play last wave.
+            if (currentWave == 11)
+            {
+                _levelComplete.SetActive(true);
+                //restart/loop here
+            }
+            _currentWave.text = currentWave + "/10";
+
+        }
     }
 
 }

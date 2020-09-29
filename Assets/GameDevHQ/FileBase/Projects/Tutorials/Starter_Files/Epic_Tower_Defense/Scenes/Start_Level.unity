@@ -4063,6 +4063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _warFund: 1250
+  _playerHealth: 100
 --- !u!1 &439507092
 GameObject:
   m_ObjectHideFlags: 0
@@ -5711,9 +5712,75 @@ MonoBehaviour:
   _gatlingUpgrade: {fileID: 1364565713}
   _missileUpgrade: {fileID: 46770128}
   _dismantleWeapon: {fileID: 1624499973}
+  _levelComplete: {fileID: 909662579}
   _mainWarfund: {fileID: 2109062355}
   _gatlingUpgradeCost: {fileID: 1872218051}
   _missileUpgradeCost: {fileID: 1574409126}
+  _uiStatusChange: {fileID: 254106825}
+  _currentWave: {fileID: 640746102}
+  _playerHealth: {fileID: 783571177}
+  _images:
+  - {fileID: 2105959597}
+  - {fileID: 1353408165}
+  - {fileID: 1432688604}
+  - {fileID: 350660924}
+  - {fileID: 1706649507}
+  _keys:
+  - LivesNormal
+  - LivesCaution
+  - LivesWarning
+  - PlayBackCaution
+  - PlayBackNormal
+  - PlayBackWarning
+  - PlayBackSpeed0
+  - PlayBackSpeed1
+  - PlayBackSpeed2
+  - RestartNormal
+  - RestartCaution
+  - RestartWarning
+  - RestartPressed
+  - WarfundsCaution
+  - WarfundsNormal
+  - WarfundsWarning
+  - Gatling2Normal
+  - Gatling2Offline
+  - GatlingNormal
+  - GatlingOffline
+  - Missile2Normal
+  - Missile2Offline
+  - MissileNormal
+  - MissileOffline
+  - ArmoryCaution
+  - ArmoryNormal
+  - ArmoryWarning
+  _values:
+  - {fileID: 21300000, guid: 273a809b6555a804cb3fff5b61e3c185, type: 3}
+  - {fileID: 21300000, guid: 4540db8aa551b2f499cae41c71945bbc, type: 3}
+  - {fileID: 21300000, guid: 2680a2f8faec5614c886da0f05085b05, type: 3}
+  - {fileID: 21300000, guid: 2595a92f63977074ebfcd386beef77da, type: 3}
+  - {fileID: 21300000, guid: d4579749e0d58144094d4a39727d5c40, type: 3}
+  - {fileID: 21300000, guid: 3c161af85c32ab14da8086e599659427, type: 3}
+  - {fileID: 21300000, guid: e787c893da4580140b841a5558b448b3, type: 3}
+  - {fileID: 21300000, guid: 3dd5ff0156cb55a468da2504fbe891dd, type: 3}
+  - {fileID: 21300000, guid: 961a548c8133e2a42b22b674cebc3376, type: 3}
+  - {fileID: 21300000, guid: 7eae3c325c26561419a03d702f5d6536, type: 3}
+  - {fileID: 21300000, guid: ca5ce92be2d4363428e39322bb9f47c6, type: 3}
+  - {fileID: 21300000, guid: 2ae93df7680b6904eb7be714a920736f, type: 3}
+  - {fileID: 21300000, guid: 40f992f20caa5c54db0bdde7e59e5f0e, type: 3}
+  - {fileID: 21300000, guid: 46ef714c8f80b3d469779ddcb0639474, type: 3}
+  - {fileID: 21300000, guid: a3346135842a4d9439b25a5a51a9d66f, type: 3}
+  - {fileID: 21300000, guid: b03a2d5cc7c8c5a46b8fb57d1b01611a, type: 3}
+  - {fileID: 21300000, guid: 41b91a54c010f0e48ae8c13f33f64ff8, type: 3}
+  - {fileID: 21300000, guid: 9c7bb01989c52984695fc49d32efac20, type: 3}
+  - {fileID: 21300000, guid: 10295eb3f6d9c044cb90e10ee23d2ef2, type: 3}
+  - {fileID: 21300000, guid: 676ad688a3f017a4ea3bc1792e86f418, type: 3}
+  - {fileID: 21300000, guid: 5de31fa5228d05a449d14016d850225c, type: 3}
+  - {fileID: 21300000, guid: 44d76cbd62bdba34c97fa1a7ffa99da2, type: 3}
+  - {fileID: 21300000, guid: d0b3932cfa581274f9d73fa370d053c3, type: 3}
+  - {fileID: 21300000, guid: 092da8c8c9229534e8e38eb5845585ca, type: 3}
+  - {fileID: 21300000, guid: 7a42849eb0d7cb5479f9e4ca57fe76cc, type: 3}
+  - {fileID: 21300000, guid: 9f950a629fd5b4444bf25f7067e4dc5b, type: 3}
+  - {fileID: 21300000, guid: dacc8cdec14683643a07144914e513c3, type: 3}
 --- !u!1 &574998336
 GameObject:
   m_ObjectHideFlags: 0
@@ -6237,8 +6304,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.8290437, z: 0.6971025}
-  m_Center: {x: 0, y: 0.08547817, z: 0.010670817}
+  m_Size: {x: 4.461301, y: 0.8290437, z: 0.69710237}
+  m_Center: {x: 1.7306503, y: 0.08547817, z: 0.010670817}
 --- !u!4 &616653814
 Transform:
   m_ObjectHideFlags: 0
@@ -6581,7 +6648,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2 / 10
+  m_Text: '0/10
+
+'
 --- !u!222 &640746103
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7668,7 +7737,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20
+  m_Text: 100
 --- !u!222 &783571178
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22792,7 +22861,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1353408164
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28778,7 +28847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1432688603
 RectTransform:
   m_ObjectHideFlags: 0
