@@ -7,6 +7,8 @@ namespace CurtisDH.Scripts.Managers
     {
         [SerializeField]
         private int _warFund;
+        [SerializeField]
+        private int _playerHealth = 100;
         public int WarFund
         {
             get
@@ -45,15 +47,24 @@ namespace CurtisDH.Scripts.Managers
         public void AdjustWarfund(int amount)
         {
             _warFund += amount;
-            EventManager.RaiseEvent("onUpdateWarFunds", _warFund);
+            UIManager.Instance.UpdateWarFunds(_warFund);
+            //EventManager.RaiseEvent("onUpdateWarFunds", _warFund);
         }
-        public void AdjustPlayerLives(int amount)
+        public void AdjustPlayerHealth(int amount)
         {
-            amount *= -1;
-            amount /= 10;
-
-            //subtract player lives here
-            Debug.LogError("GameManager::AdjustPlayerLives not Implemented: " + amount);
+            _playerHealth += amount;
+            UIManager.Instance.StatusSystem(_playerHealth);
+            if (_playerHealth <= 0)
+            {
+                //GameOver || Restart?
+            }
+        }
+        void Update() // temp to speed up testing
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                Time.timeScale++;
+            }
         }
     }
 }
