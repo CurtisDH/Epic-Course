@@ -17,12 +17,6 @@ public class HealthBarUI : MonoBehaviour
     AIBase aiBase;
     [SerializeField]
     UnityEngine.UI.Image _healthBar;
-
-
-
-
-
-
     void OnEnable()
     {
         AssignVariables();

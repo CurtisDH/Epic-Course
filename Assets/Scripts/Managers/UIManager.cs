@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace CurtisDH.Scripts.Managers
@@ -71,6 +69,7 @@ namespace CurtisDH.Scripts.Managers
                     _sprites.Add(_keys[i], _values[i]);
                 }
             }
+            UpdateWarFunds(GameManager.Instance.WarFund);
         }
         void OnDisable()
         {
@@ -199,6 +198,24 @@ namespace CurtisDH.Scripts.Managers
             _currentWave.text = currentWave + "/10";
 
         }
+
+        public void PauseButton()
+        {
+            Time.timeScale = 0;
+        }
+        public void PlayButton()
+        {
+            Time.timeScale = 1;
+        }
+        public void FastForwardButton()
+        {
+            Time.timeScale = 2;
+        }
+        public void Restartbutton()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
+
 
 }
