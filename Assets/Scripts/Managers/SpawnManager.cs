@@ -115,7 +115,8 @@ namespace CurtisDH.Scripts.Managers
                 {
                     Wave.Add(Enemies[Random.Range(0, Enemies.Length)]);
                 }
-                UIManager.Instance.UpdateWave(_currentWave);
+                EventManager.RaiseEvent("onWaveComplete", _currentWave);
+                //UIManager.Instance.UpdateWave(_currentWave);
                 StartCoroutine(SpawnRoutine());
             }
 

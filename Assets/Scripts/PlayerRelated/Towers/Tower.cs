@@ -101,11 +101,13 @@ public abstract class Tower : MonoBehaviour
         EventManager.Listen("onTowerCancel", DeselectTower);
         EventManager.Listen("onTowerSell", SellTower);
         EventManager.Listen("onPlaceTower", (Action<GameObject,GameObject>)AddTowerLocation);
+        EventManager.Listen("onWaveComplete", (Action<int>)ClearList);
 
     }
 
     private void OnDisable()
     {
+        EventManager.Listen("onWaveComplete", (Action<int>)ClearList);
         EventManager.UnsubscribeEvent("onEnemyDetectionRadius", (Action<GameObject, GameObject, bool>)AddEnemyToQueue);
         EventManager.UnsubscribeEvent("onAiDeath", (Action<GameObject,GameObject,bool>)AddEnemyToQueue);
         EventManager.UnsubscribeEvent("onTowerUpgrade", UpgradeTower);
@@ -236,6 +238,10 @@ public abstract class Tower : MonoBehaviour
         {
             _currentLocation = location;
         }
+    }
+    public void ClearList(int T)
+    {
+        _enemiesInRange.Clear();
     }
 
 }

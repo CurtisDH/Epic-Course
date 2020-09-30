@@ -57,6 +57,7 @@ namespace CurtisDH.Scripts.Managers
         void OnEnable()
         {
             EventManager.Listen("onNotEnoughWarfunds", (Action<bool>)ToggleNotEnoughWarfundsUI);
+            EventManager.Listen("onWaveComplete", (Action<int>)UpdateWave);
 
             if (_keys.Count != _values.Count)
             {
@@ -73,6 +74,7 @@ namespace CurtisDH.Scripts.Managers
         }
         void OnDisable()
         {
+            EventManager.UnsubscribeEvent("onWaveComplete", (Action<int>)UpdateWave);
             EventManager.UnsubscribeEvent("onNotEnoughWarfunds", (Action<bool>)ToggleNotEnoughWarfundsUI);
         }
         public void ToggleUpgradeUI(int towerID, int UpgradeCost = 0, bool toggleUI = true)
