@@ -58,9 +58,6 @@ namespace CurtisDH.Scripts.Enemies
         GameObject _turretToLookAt;
         [SerializeField]
         bool _targetTurret;
-        [SerializeField]
-        TextMeshProUGUI _healthBar;
-
         private void OnEnable()
         {
             InitaliseAI();
@@ -78,24 +75,25 @@ namespace CurtisDH.Scripts.Enemies
             {
                 StartCoroutine(Dissolve(obj, false));
             }
+
         }
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onPlayerBaseReached", (Action<GameObject, bool>)onDeath);
-            EventManager.UnsubscribeEvent("onEnemyDetectionRadius", (Action<GameObject, GameObject,bool>)TargetTurret);
+            EventManager.UnsubscribeEvent("onEnemyDetectionRadius", (Action<GameObject, GameObject, bool>)TargetTurret);
             EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float, bool>)ReceiveDamage);
         }
         void Update()
         {
             if (_targetTurret)
             {
-                Vector3 direction = (_hipRotation.transform.position -_turretToLookAt.transform.position);
+                Vector3 direction = (_hipRotation.transform.position - _turretToLookAt.transform.position);
                 //float dir = _turretToLookAt.transform.position.z - _hipRotation.transform.position.z;
                 //_hipRotation.transform.eulerAngles = new Vector3(0,0,direction.z);
-                _hipRotation.transform.Rotate(0,0,direction.z, Space.Self);
+                _hipRotation.transform.Rotate(0, 0, direction.z, Space.Self);
                 //_hipRotation.transform.LookAt(_turretToLookAt.transform);
             }
-            
+
         }
         public void InitaliseAI()
         {
@@ -149,7 +147,7 @@ namespace CurtisDH.Scripts.Enemies
                 }
             }
         }
-        public void TargetTurret(GameObject mech, GameObject turret,bool b)
+        public void TargetTurret(GameObject mech, GameObject turret, bool b)
         {
             if (mech == this.gameObject)
             {
@@ -157,20 +155,20 @@ namespace CurtisDH.Scripts.Enemies
                 _anim.SetTrigger("Shoot");
                 if (_hipRotation != null) _targetTurret = true;
             }
-                
+
         }
         private void ReceiveDamage(GameObject enemy, float damage, bool towerDeath)
         {
             if (enemy == this.gameObject)
             {
                 Health -= damage;
-                if(_healthBar!=null)
-                _healthBar.text = "" + _currentHealth;
                 if (Health <= 0)
                 {
                     //onDeath bool checks to see if it died from the endZone.
                     onDeath(gameObject, !towerDeath);
                 }
+
+
             }
         }
         IEnumerator Dissolve(Renderer obj, bool deathRoutine)

@@ -71,7 +71,7 @@ public class EventManager : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("EventManager::Key not found - No listeners");
+            
         }
         
     }
@@ -84,7 +84,7 @@ public class EventManager : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("EventManager::Key not found - No listeners");
+            
         }
 
     }
@@ -97,7 +97,7 @@ public class EventManager : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("EventManager::Key not found - No listeners");
+            
         }
 
     }
@@ -110,7 +110,7 @@ public class EventManager : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("EventManager::Key not found - No listeners");
+            
         }
 
     }
