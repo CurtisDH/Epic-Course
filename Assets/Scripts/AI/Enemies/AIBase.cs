@@ -234,7 +234,10 @@ namespace CurtisDH.Scripts.Enemies
                 StartCoroutine(Dissolve(obj, true));
             }
             yield return new WaitForSeconds(_deathTime);
-            _deathParticles.SetActive(false); // play explosion sound
+            // had odd cases where the enemy wasn't removed from the turret enemy list
+            //warping the enemy out should remove it from the list if it isnt already.
+            _agent.Warp(SpawnManager.Instance.StartPos);
+            _deathParticles.SetActive(false); // play explosion sound here with particle
             _anim.WriteDefaultValues();
             PoolManager.Instance.ObjectsReadyToRecycle(gameObject, true, _iD, _warFund);
             SpawnManager.Instance.CreateWave(); // checks if all AI is dead then creates new wave if they are.
