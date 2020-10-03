@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -34,6 +35,8 @@ namespace CurtisDH.Scripts.Managers
         private Text _currentWave;
         [SerializeField]
         private Text _playerHealth;
+        [SerializeField]
+        private Text _countDownTimer;
 
         [Header("UI Status Change")]
         [SerializeField]
@@ -198,6 +201,23 @@ namespace CurtisDH.Scripts.Managers
                 //restart/loop here
             }
             _currentWave.text = currentWave + "/10";
+
+        }
+        public void CountDown()
+        {
+            StartCoroutine(countDown());
+        }
+        public IEnumerator countDown()
+        {
+            var timer = 3;
+            _countDownTimer.enabled = true;
+            while (timer > 0)
+            {
+                _countDownTimer.text = "Wave starting in " + timer;
+                timer--;
+                yield return new WaitForSeconds(1);
+            }
+            _countDownTimer.enabled = false;
 
         }
 

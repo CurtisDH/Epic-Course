@@ -55,9 +55,6 @@ namespace CurtisDH.Scripts.Enemies
         GameObject _intentionallyNull = null;
         [SerializeField]
         GameObject _hipRotation;
-        GameObject _turretToLookAt;
-        [SerializeField]
-        bool _targetTurret;
         private void OnEnable()
         {
             InitaliseAI();
@@ -69,7 +66,7 @@ namespace CurtisDH.Scripts.Enemies
             _anim?.SetTrigger("Reset");
             EventManager.Listen("onPlayerBaseReached", (Action<GameObject, bool>)onDeath);
             EventManager.Listen("onDamageEnemy", (Action<GameObject, float, bool>)ReceiveDamage);
-            EventManager.Listen("onEnemyDetectionRadius", (Action<GameObject, GameObject, bool>)TargetTurret);
+           
             _deathParticles.SetActive(false);
             foreach (var obj in _dissolveMaterials)
             {
@@ -80,20 +77,7 @@ namespace CurtisDH.Scripts.Enemies
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onPlayerBaseReached", (Action<GameObject, bool>)onDeath);
-            EventManager.UnsubscribeEvent("onEnemyDetectionRadius", (Action<GameObject, GameObject, bool>)TargetTurret);
             EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float, bool>)ReceiveDamage);
-        }
-        void Update()
-        {
-            if (_targetTurret)
-            {
-                Vector3 direction = (_hipRotation.transform.position - _turretToLookAt.transform.position);
-                //float dir = _turretToLookAt.transform.position.z - _hipRotation.transform.position.z;
-                //_hipRotation.transform.eulerAngles = new Vector3(0,0,direction.z);
-                _hipRotation.transform.Rotate(0, 0, direction.z, Space.Self);
-                //_hipRotation.transform.LookAt(_turretToLookAt.transform);
-            }
-
         }
         public void InitaliseAI()
         {
@@ -147,16 +131,7 @@ namespace CurtisDH.Scripts.Enemies
                 }
             }
         }
-        public void TargetTurret(GameObject mech, GameObject turret, bool b)
-        {
-            if (mech == this.gameObject)
-            {
-                _turretToLookAt = turret;
-                _anim.SetTrigger("Shoot");
-                if (_hipRotation != null) _targetTurret = true;
-            }
 
-        }
         private void ReceiveDamage(GameObject enemy, float damage, bool towerDeath)
         {
             if (enemy == this.gameObject)

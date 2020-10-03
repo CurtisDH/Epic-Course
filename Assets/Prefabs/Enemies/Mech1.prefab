@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4389222593603924886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1951341924312127164}
+  m_Layer: 0
+  m_Name: Constraint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1951341924312127164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389222593603924886}
+  m_LocalRotation: {x: -0.49655858, y: -0.50302505, z: 0.48556203, w: 0.5144171}
+  m_LocalPosition: {x: -0.00022387833, y: 0.019977152, z: -0.8862285}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5769909926734831187}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5771368369900464921
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,6 +235,7 @@ GameObject:
   - component: {fileID: 5772830793391562296}
   - component: {fileID: 5772830793391562295}
   - component: {fileID: 5506511887496755999}
+  - component: {fileID: 8256205160585741246}
   m_Layer: 0
   m_Name: Mech1
   m_TagString: Enemy
@@ -312,7 +343,6 @@ MonoBehaviour:
   - {fileID: 5907238151582735237}
   _deathParticles: {fileID: 2482021795986892730}
   _hipRotation: {fileID: 5772309451117604107}
-  _targetTurret: 0
 --- !u!65 &5506511887496755999
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -326,6 +356,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8256205160585741246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5771616546207876607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d60b568d48ba10b4f93b16fd4a30220c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotation: {fileID: 4389222593603924886}
+  _turretToLookAt: {fileID: 0}
+  _anim: {fileID: 5857284314160747275}
+  mech: {fileID: 5771616546207876607}
 --- !u!1 &5771661698704006033
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,6 +734,7 @@ Transform:
   - {fileID: 5770033644763922265}
   - {fileID: 5769868524628561147}
   - {fileID: 5768066271495424299}
+  - {fileID: 1951341924312127164}
   m_Father: {fileID: 5770083269338426519}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 87.976, y: 88.717, z: 0}
@@ -1776,6 +1823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5768066271495424299}
+  - component: {fileID: 199790418333522667}
   m_Layer: 0
   m_Name: Waist
   m_TagString: Untagged
@@ -1790,14 +1838,40 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5772309451117604107}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalRotation: {x: 0.0000044940844, y: 0.0000003745087, z: -0.0000003745087, w: 1}
+  m_LocalPosition: {x: -0.000008282252, y: -0.00000017881393, z: -1.0000002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5768127977240772371}
   m_Father: {fileID: 5769909926734831187}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1773428102 &199790418333522667
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5772309451117604107}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: -0.000008282252, y: 0, z: -1.0000002}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: -0.0054682866, y: 0.025775313, z: -0.00017166138}
+  m_RotationOffsets:
+  - {x: 87.97651, y: 88.717964, z: 0.0009186044}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 1951341924312127164}
+    weight: 1
 --- !u!1 &5772311916757085319
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace CurtisDH.Scripts.Managers
@@ -40,15 +41,19 @@ namespace CurtisDH.Scripts.Managers
                 return _instance;
             }
         }
+        bool incrementRunning;
         private void Awake()
         {
             _instance = this;
         }
         public void AdjustWarfund(int amount)
         {
+            //if(incrementRunning == false)
+            //{
+            //    StartCoroutine(IncrementWarfund(amount));
+            //}
             _warFund += amount;
             UIManager.Instance.UpdateWarFunds(_warFund);
-            //EventManager.RaiseEvent("onUpdateWarFunds", _warFund);
         }
         public void AdjustPlayerHealth(int amount)
         {
@@ -56,12 +61,36 @@ namespace CurtisDH.Scripts.Managers
             UIManager.Instance.StatusSystem(_playerHealth);
             if (_playerHealth <= 0)
             {
-                //GameOver || Restart?
+                Invoke("RestartRequest", 3);
+
             }
         }
+        //IEnumerator IncrementWarfund(int amount)
+        //{
+        //    incrementRunning = true;
+        //    int i = 0;
+        //    int increment = _warFund - amount;
+        //    while(true)
+        //    {
+        //        i++;
+        //        yield return new WaitForSeconds(0.05f);
+        //        UIManager.Instance.UpdateWarFunds(increment + i);
+        //        if (i == amount)
+        //        {
+        //            incrementRunning = false;
+        //            break;
+        //        }
+        //    }
+            
+        //}
+        void RestartRequest()
+        {
+            UIManager.Instance.Restartbutton();
+        }
+
         void Update() // temp to speed up testing
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 Time.timeScale++;
             }

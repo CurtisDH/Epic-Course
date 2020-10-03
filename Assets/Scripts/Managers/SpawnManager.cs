@@ -6,6 +6,7 @@ using UnityEngine;
 namespace CurtisDH.Scripts.Managers
 {
     using CurtisDH.Utilities;
+    using System.Threading;
     using UnityEditor;
 
     public class SpawnManager : MonoBehaviour
@@ -52,6 +53,8 @@ namespace CurtisDH.Scripts.Managers
             }
         }
 
+        bool _startingWave = true;
+
         [SerializeField]
         List<GameObject> _wave;
         public List<GameObject> Wave
@@ -81,6 +84,12 @@ namespace CurtisDH.Scripts.Managers
         }
         IEnumerator SpawnRoutine()
         {
+            if(_startingWave == true)
+            {
+                UIManager.Instance.CountDown();
+                _startingWave = false;
+                yield return new WaitForSeconds(3);
+            }
             bool customWave = false;
             foreach (var wave in CustomWaves) //quick and dirty will refine it later
             {
