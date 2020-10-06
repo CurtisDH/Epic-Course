@@ -59,10 +59,15 @@ public abstract class Tower : MonoBehaviour
     [SerializeField]
     bool _isSelected;
     private GameObject _currentLocation;
+
+    private WaitForSeconds _fireRateTimer;
     private void OnEnable()
     {
         EnemiesInRange = new List<GameObject>();
-
+        if(_fireRateTimer == null)
+        {
+            _fireRateTimer = new WaitForSeconds(_fireRate);
+        }
         
         gameObject.GetComponent<Collider>().enabled = false; //cache
         if (_currentUpgradedTower == null && _upgradedTowerPrefab != null)
@@ -145,7 +150,7 @@ public abstract class Tower : MonoBehaviour
         _rotation.transform.LookAt(_targetedEnemy.transform);
         if (_isCoroutineRunning == false)
         {
-            StartCoroutine(DamageEnemy(_fireRate));
+            StartCoroutine(DamageEnemy());
         }
 
     }
@@ -189,7 +194,7 @@ public abstract class Tower : MonoBehaviour
             _enemiesInRange?.Add(enemy);
         }
     }
-    IEnumerator DamageEnemy(float time)
+    IEnumerator DamageEnemy()
     {
         _isCoroutineRunning = true;
         while (true)
@@ -197,7 +202,7 @@ public abstract class Tower : MonoBehaviour
             //Passing in what enemy we are attacking, then the damage it needs to take.
             // by passing in true we say "we've died from the tower" 
             EventManager.RaiseEvent("onDamageEnemy",_targetedEnemy,_damage,true);
-            yield return new WaitForSeconds(time);
+            yield return _fireRateTimer;
         }
     }
 

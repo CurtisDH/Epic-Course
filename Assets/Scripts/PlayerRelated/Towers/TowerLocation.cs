@@ -29,7 +29,6 @@ namespace CurtisDH.Scripts.PlayerRelated.Tower
         {
             if (_isOccupied) return;
             EventManager.RaiseEvent("onMouseEnter", this.gameObject, true);
-            Debug.Log(this.gameObject + "::TowerLocation");
         }
         private void OnMouseDown()
         {

@@ -8,9 +8,6 @@ namespace CurtisDH.Scripts.Enemies
     using CurtisDH.Scripts.PlayerRelated;
     using System;
     using System.Collections;
-    using TMPro;
-    using UnityEngine.UI;
-
     public abstract class AIBase : MonoBehaviour
     {
         [SerializeField]
@@ -35,13 +32,6 @@ namespace CurtisDH.Scripts.Enemies
         }
         [SerializeField]
         private int _warFund;
-        public int WarFund
-        {
-            get
-            {
-                return _warFund;
-            }
-        }
         Animator _anim;
         [SerializeField]
         float _deathTime = 3;
@@ -55,6 +45,16 @@ namespace CurtisDH.Scripts.Enemies
         GameObject _intentionallyNull = null;
         [SerializeField]
         GameObject _hipRotation;
+
+        #region yield returns
+        private WaitForSeconds _deathTimer;
+        private WaitForSeconds _dissolvetimer;
+        #endregion
+        private void Start()
+        {
+            _dissolvetimer = new WaitForSeconds(_dissolveTime/100);
+            _deathTimer = new WaitForSeconds(_deathTime);
+        }
         private void OnEnable()
         {
             InitaliseAI();
@@ -103,6 +103,7 @@ namespace CurtisDH.Scripts.Enemies
             transform.parent = GameObject.Find("EnemyContainer").transform;
             _agent.speed = _speed;
             _currentHealth = _maxHP;
+            
 
         }
 
@@ -159,7 +160,7 @@ namespace CurtisDH.Scripts.Enemies
                 //}
                 for (float i = 0; i < 1; i += 0.01f)
                 {
-                    yield return new WaitForSeconds(_dissolveTime / 100);
+                    yield return _dissolvetimer;
                     obj.material.SetFloat("_fillAmount", i);
                 }
             }
@@ -174,7 +175,7 @@ namespace CurtisDH.Scripts.Enemies
 
                 for (float i = 1; i > 0; i -= 0.01f)
                 {
-                    yield return new WaitForSeconds(_dissolveTime / 100);
+                    yield return _dissolvetimer;
                     obj.material.SetFloat("_fillAmount", i);
                 }
             }
@@ -208,7 +209,7 @@ namespace CurtisDH.Scripts.Enemies
             {
                 StartCoroutine(Dissolve(obj, true));
             }
-            yield return new WaitForSeconds(_deathTime);
+            yield return _deathTimer;
             // had odd cases where the enemy wasn't removed from the turret enemy list
             //warping the enemy out should remove it from the list if it isnt already.
             _agent.Warp(SpawnManager.Instance.StartPos);

@@ -71,8 +71,15 @@ namespace CurtisDH.Scripts.Managers
 
         float timeBetweenWave = 2f;
         [SerializeField] // look into adding customwaves from folder to list at runtime
-        private List<Wave> CustomWaves;
-
+        #region Custom Wave related
+        private List<Wave> _customWaves;
+        private List<WaitForSeconds> _customWaveTimers = new List<WaitForSeconds>();
+        int _customWaveCount;
+        #endregion
+        #region Yield return
+        private WaitForSeconds _betweenWaveTimer;
+        private WaitForSeconds _startTimer; // not sure if this needs to be cached
+        #endregion
 
         private void Awake()
         {
@@ -80,6 +87,12 @@ namespace CurtisDH.Scripts.Managers
         }
         private void Start()
         {
+            foreach(var wave in _customWaves)
+            {
+                _customWaveTimers.Add(new WaitForSeconds(wave.TimeBetweenEnemySpawns));
+            }
+            _betweenWaveTimer = new WaitForSeconds(timeBetweenWave);
+            _startTimer = new WaitForSeconds(3);
             CreateWave();
         }
         IEnumerator SpawnRoutine()
@@ -88,10 +101,10 @@ namespace CurtisDH.Scripts.Managers
             {
                 UIManager.Instance.CountDown();
                 _startingWave = false;
-                yield return new WaitForSeconds(3);
+                yield return _startTimer;
             }
             bool customWave = false;
-            foreach (var wave in CustomWaves) //quick and dirty will refine it later
+            foreach (var wave in _customWaves) //quick and dirty will refine it later
             {
                 if (wave.WaveID == _currentWave)
                 {
@@ -99,8 +112,9 @@ namespace CurtisDH.Scripts.Managers
                     {
                         var enemy = Instantiate(wave.Enemies[i]);
                         enemy.name = wave.Enemies[i].name;
-                        yield return new WaitForSeconds(wave.TimeBetweenEnemySpawns);
+                        yield return _customWaveTimers[_customWaveCount];
                     }
+                    _customWaveCount++;
                     customWave = true;
                 }
             }
@@ -109,7 +123,7 @@ namespace CurtisDH.Scripts.Managers
                 //Debug.Log(Wave.Count);
                 for (int i = 0; i < Wave.Count; i++)
                 {
-                    yield return new WaitForSeconds(timeBetweenWave);
+                    yield return _betweenWaveTimer;
                     PoolManager.Instance.RequestEnemy(waveID:i);
                 }
             }
