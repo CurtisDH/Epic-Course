@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using CurtisDH.Scripts.PlayerRelated.Tower;
+using System.Collections.Generic;
+
 namespace CurtisDH.Scripts.Managers
 {
     public class TowerManager : MonoBehaviour // renameto tower manager?
@@ -24,6 +26,12 @@ namespace CurtisDH.Scripts.Managers
             EventManager.Listen("onMouseEnter", (Action<GameObject, bool>)SnapTower);
             EventManager.Listen("onMouseExit", (Action<GameObject, bool>)SnapTower);
             _instance = this;
+
+            //find how much all the towers cost and cache it.
+            foreach(var tower in Towers)
+            {
+                TowerCosts.Add(tower.GetComponent<Tower>().WarFund);
+            }
         }
         private void OnDisable()
         {
@@ -82,6 +90,8 @@ namespace CurtisDH.Scripts.Managers
         bool _isPlacingTower;
         [SerializeField]
         bool _snappedTower = false;
+
+        public List<int> TowerCosts { get; } = new List<int>();
         private void Update()
         {
             if (_isPlacingTower != true) return;

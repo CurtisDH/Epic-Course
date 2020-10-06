@@ -40,6 +40,8 @@ namespace CurtisDH.Scripts.Managers
         private Text _countDownTimer;
         [SerializeField]
         private Text _notEnoughWarfunds;
+        [SerializeField]
+        private Text _dismantleFund;
 
         [Header("UI Status Change")]
         [SerializeField]
@@ -94,8 +96,8 @@ namespace CurtisDH.Scripts.Managers
         public void ToggleUpgradeUI(int towerID, int UpgradeCost = 0, bool toggleUI = true)
         {
             selectedTowerID = towerID;
-            ToggleSellUI(toggleUI);
-            if(UpgradeCost > GameManager.Instance.WarFund)
+            ToggleSellUI(toggleUI, towerID);
+            if (UpgradeCost > GameManager.Instance.WarFund)
             {
                 return;
             }
@@ -116,21 +118,49 @@ namespace CurtisDH.Scripts.Managers
                     break;
             }
         }
-        void ToggleSellUI(bool toggleUI)
+        void ToggleSellUI(bool toggleUI, int towerid)
         {
+            if(towerid == 2)
+            {
+                towerid = 0;
+            }
+            else if (towerid == 3)
+            {
+                towerid = 1;
+            }
+            _dismantleFund.text = TowerManager.Instance.TowerCosts[towerid].ToString();
             _dismantleWeapon.SetActive(toggleUI);
         }
         public void UpdateWarFunds(int funds)
         {
             _mainWarfund.text = "" + funds;
+            CheckTowerCost();
 
         }
         public void ToggleNotEnoughWarfunds(bool toggle)
         {
-            if(toggle == true)
+            if (toggle == true)
             {
                 _notEnoughWarfunds.gameObject.SetActive(toggle);
-                StartCoroutine(ToggleElement(!toggle, _notEnoughWarfunds.gameObject,3));
+                StartCoroutine(ToggleElement(!toggle, _notEnoughWarfunds.gameObject, 3));
+            }
+        }
+        public void CheckTowerCost()
+        {
+            if (GameManager.Instance.WarFund > TowerManager.Instance.TowerCosts[0])
+            {
+                //then we set the ui back to online.
+                _images[5].sprite = _sprites["GatlingNormal"];
+                if (GameManager.Instance.WarFund > TowerManager.Instance.TowerCosts[1])
+                    _images[6].sprite = _sprites["MissileNormal"];
+            }
+            else
+            {
+                _images[5].sprite = _sprites["GatlingOffline"];
+                if (GameManager.Instance.WarFund < TowerManager.Instance.TowerCosts[1])
+                {
+                    _images[6].sprite = _sprites["MissileOffline"];
+                }
             }
         }
         public void CancelTowerUpgrade()
@@ -161,7 +191,7 @@ namespace CurtisDH.Scripts.Managers
             {
                 _playerHealth.text = "0";
             }
-                
+
             if (playerHealth > 60)
             {
                 if (statusGood != true)
@@ -239,7 +269,7 @@ namespace CurtisDH.Scripts.Managers
             _countDownTimer.enabled = false;
 
         }
-        public IEnumerator ToggleElement(bool toggle,GameObject obj,float time)
+        public IEnumerator ToggleElement(bool toggle, GameObject obj, float time)
         {
             yield return new WaitForSeconds(time);
             obj.SetActive(toggle);
