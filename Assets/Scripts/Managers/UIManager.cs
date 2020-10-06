@@ -114,7 +114,7 @@ namespace CurtisDH.Scripts.Managers
                     _missileUpgradeCost.text = "" + UpgradeCost;
                     break;
                 default:
-                    Debug.LogError("UIManager::TowerID " + towerID + " Does NOT exist");
+                    //Debug.LogError("UIManager::TowerID " + towerID + " Does NOT exist");
                     break;
             }
         }
