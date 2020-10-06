@@ -150,8 +150,7 @@ namespace CurtisDH.Scripts.Managers
             }
             else
             {
-                Debug.Log("TowerConstruction::" + GameManager.Instance.WarFund);
-                //tell the users that there is not enough currency
+                EventManager.RaiseEvent("onNotEnoughWarfunds", true);
             }
         }
         public void MissleLauncher() //need a better way to access the towers warfund..
@@ -168,7 +167,7 @@ namespace CurtisDH.Scripts.Managers
             }
             else
             {
-                Debug.Log("TowerConstruction::" + GameManager.Instance.WarFund);
+                EventManager.RaiseEvent("onNotEnoughWarfunds", true);
                 //tell the users that there is not enough currency
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameDevHQ.FileBase.Gatling_Gun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,6 +38,8 @@ namespace CurtisDH.Scripts.Managers
         private Text _playerHealth;
         [SerializeField]
         private Text _countDownTimer;
+        [SerializeField]
+        private Text _notEnoughWarfunds;
 
         [Header("UI Status Change")]
         [SerializeField]
@@ -53,14 +56,22 @@ namespace CurtisDH.Scripts.Managers
         bool statusGood, statusCaution, statusDangerous;
 
 
+        #region yield returns
+        WaitForSeconds countDownTimer;
+        #endregion
+
         void Awake()
         {
             Instance = this;
         }
+        void Start()
+        {
+            countDownTimer = new WaitForSeconds(1);
+        }
         void OnEnable()
         {
-            EventManager.Listen("onNotEnoughWarfunds", (Action<bool>)ToggleNotEnoughWarfundsUI);
             EventManager.Listen("onWaveComplete", (Action<int>)UpdateWave);
+            EventManager.Listen("onNotEnoughWarfunds", (Action<bool>)ToggleNotEnoughWarfunds);
 
             if (_keys.Count != _values.Count)
             {
@@ -78,12 +89,16 @@ namespace CurtisDH.Scripts.Managers
         void OnDisable()
         {
             EventManager.UnsubscribeEvent("onWaveComplete", (Action<int>)UpdateWave);
-            EventManager.UnsubscribeEvent("onNotEnoughWarfunds", (Action<bool>)ToggleNotEnoughWarfundsUI);
+            EventManager.UnsubscribeEvent("onNotEnoughWarfunds", (Action<bool>)ToggleNotEnoughWarfunds);
         }
         public void ToggleUpgradeUI(int towerID, int UpgradeCost = 0, bool toggleUI = true)
         {
             selectedTowerID = towerID;
             ToggleSellUI(toggleUI);
+            if(UpgradeCost > GameManager.Instance.WarFund)
+            {
+                return;
+            }
             switch (towerID)
             {
                 case 0:
@@ -105,15 +120,19 @@ namespace CurtisDH.Scripts.Managers
         {
             _dismantleWeapon.SetActive(toggleUI);
         }
-        public void ToggleNotEnoughWarfundsUI(bool toggleUI)
-        {
-            //noWarfunds.SetActive(true);
-        }
         public void UpdateWarFunds(int funds)
         {
             _mainWarfund.text = "" + funds;
-        }
 
+        }
+        public void ToggleNotEnoughWarfunds(bool toggle)
+        {
+            if(toggle == true)
+            {
+                _notEnoughWarfunds.gameObject.SetActive(toggle);
+                StartCoroutine(ToggleElement(!toggle, _notEnoughWarfunds.gameObject,3));
+            }
+        }
         public void CancelTowerUpgrade()
         {
             EventManager.RaiseEvent("onTowerCancel");
@@ -215,10 +234,15 @@ namespace CurtisDH.Scripts.Managers
             {
                 _countDownTimer.text = "Wave starting in " + timer;
                 timer--;
-                yield return new WaitForSeconds(1);
+                yield return countDownTimer;
             }
             _countDownTimer.enabled = false;
 
+        }
+        public IEnumerator ToggleElement(bool toggle,GameObject obj,float time)
+        {
+            yield return new WaitForSeconds(time);
+            obj.SetActive(toggle);
         }
 
         public void PauseButton()
