@@ -147,19 +147,24 @@ namespace CurtisDH.Scripts.Managers
         }
         public void CheckTowerCost()
         {
-            if (GameManager.Instance.WarFund > TowerManager.Instance.TowerCosts[0])
+            if (GameManager.Instance.WarFund > TowerManager.Instance.TowerCosts[1])
             {
                 //then we set the ui back to online.
-                _images[5].sprite = _sprites["GatlingNormal"];
-                if (GameManager.Instance.WarFund > TowerManager.Instance.TowerCosts[1])
-                    _images[6].sprite = _sprites["MissileNormal"];
+                
+                _images[6].sprite = _sprites["MissileNormal"];
+                if (GameManager.Instance.WarFund > TowerManager.Instance.TowerCosts[0])
+                {
+                    _images[5].sprite = _sprites["GatlingNormal"];
+                }
+                    
             }
             else
             {
-                _images[5].sprite = _sprites["GatlingOffline"];
-                if (GameManager.Instance.WarFund < TowerManager.Instance.TowerCosts[1])
+                _images[6].sprite = _sprites["MissileOffline"];
+                if (GameManager.Instance.WarFund < TowerManager.Instance.TowerCosts[0])
                 {
-                    _images[6].sprite = _sprites["MissileOffline"];
+                _images[5].sprite = _sprites["GatlingOffline"];
+
                 }
             }
         }

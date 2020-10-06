@@ -122,7 +122,6 @@ public abstract class Tower : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        Debug.Log("TOWER:: ON MOUSE DOWN");
         _isSelected = !_isSelected;
         if (_towerRadiusShader != null)
             _towerRadiusShader.GetComponent<Renderer>().enabled = _isSelected;
