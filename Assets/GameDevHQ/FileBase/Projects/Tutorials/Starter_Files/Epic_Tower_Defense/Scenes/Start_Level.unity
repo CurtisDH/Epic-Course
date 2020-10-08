@@ -337,6 +337,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12562994}
   m_CullTransparentMesh: 0
+--- !u!1 &15481521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 15481522}
+  - component: {fileID: 15481524}
+  - component: {fileID: 15481523}
+  m_Layer: 5
+  m_Name: Not Enough Warfunds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &15481522
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15481521}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 592720672}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -230.32}
+  m_SizeDelta: {x: 314.00732, y: 113.367004}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &15481523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15481521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.6509434, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 5cb4434262dab0946b66d63c489196da, type: 3}
+    m_FontSize: 48
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 48
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Not Enough Warfunds
+--- !u!222 &15481524
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15481521}
+  m_CullTransparentMesh: 0
 --- !u!1001 &21353971
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5932,12 +6011,16 @@ MonoBehaviour:
   _currentWave: {fileID: 640746102}
   _playerHealth: {fileID: 783571177}
   _countDownTimer: {fileID: 1058420700}
+  _notEnoughWarfunds: {fileID: 15481523}
+  _dismantleFund: {fileID: 1700177798}
   _images:
   - {fileID: 2105959597}
   - {fileID: 1353408165}
   - {fileID: 1432688604}
   - {fileID: 350660924}
   - {fileID: 1706649507}
+  - {fileID: 150529100}
+  - {fileID: 1416097950}
   _keys:
   - LivesNormal
   - LivesCaution
@@ -6324,6 +6407,7 @@ RectTransform:
   - {fileID: 46770129}
   - {fileID: 1364565714}
   - {fileID: 1058420698}
+  - {fileID: 15481522}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8835,7 +8919,8 @@ MonoBehaviour:
   _startPos: {x: -45, y: 1, z: 0}
   _endPos: {x: 0, y: 1, z: 0}
   _wave: []
-  CustomWaves:
+  _currentWave: 0
+  _customWaves:
   - {fileID: 11400000, guid: 944bdfcc6cb3f9746b86164208abcffa, type: 2}
 --- !u!4 &839555677
 Transform:
@@ -24331,7 +24416,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 427653911}
         m_TargetAssemblyTypeName: CurtisDH.Scripts.Managers.TowerManager, Assembly-CSharp
-        m_MethodName: MissleLauncher
+        m_MethodName: MissileLauncher
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

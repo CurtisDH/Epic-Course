@@ -163,7 +163,7 @@ namespace CurtisDH.Scripts.Managers
                 EventManager.RaiseEvent("onNotEnoughWarfunds", true);
             }
         }
-        public void MissleLauncher() //need a better way to access the towers warfund..
+        public void MissileLauncher() //need a better way to access the towers warfund..
         {
             if (GameManager.Instance.WarFund >= Towers?[1].GetComponent<Tower>().WarFund)
             {

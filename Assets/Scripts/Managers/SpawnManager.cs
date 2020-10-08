@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace CurtisDH.Scripts.Managers
 {
+    using CurtisDH.Scripts.Enemies;
     using CurtisDH.Utilities;
     using System.Threading;
     using UnityEditor;
@@ -67,8 +68,9 @@ namespace CurtisDH.Scripts.Managers
         }
 
         private int _amountToSpawn = 10;
+        [SerializeField]
         private int _currentWave;
-
+        public int CurrentWave { get => _currentWave; set => _currentWave = value; }
         float timeBetweenWave = 2f;
         [SerializeField] // look into adding customwaves from folder to list at runtime
         #region Custom Wave related
@@ -142,7 +144,22 @@ namespace CurtisDH.Scripts.Managers
                 //UIManager.Instance.UpdateWave(_currentWave);
                 StartCoroutine(SpawnRoutine());
             }
+        }
+        public void SpawnEnemy(int id)
+        {
+            Instantiate(Enemies[id]);
+        }
 
+        public void SkipToWave(int wave)
+        {
+            Debug.Log("test");
+            StopAllCoroutines();
+            _currentWave = wave-1;
+            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                go.GetComponent<AIBase>().onDeath(go, false);
+            }
+            CreateWave();
         }
     }
 

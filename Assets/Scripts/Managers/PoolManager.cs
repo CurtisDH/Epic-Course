@@ -57,15 +57,13 @@ namespace CurtisDH.Scripts.Managers
                 _enemyType1.Add(obj);
             }
         }
-        public GameObject RequestEnemy(int waveID = 0) //Reworking the whole pooling system as its non-functional
-        
+        public GameObject RequestEnemy(int waveID = 0)
         {
             int id = SpawnManager.Instance.Wave[waveID].GetComponent<AIBase>().ID;
             if (id == 0)//switch to switch statement if increase ID's in size.
             {
                 if (_enemyType0.Count > 0)
                 {
-
                     var enemy = _enemyType0[0];
                     enemy.SetActive(true);
                     _enemyType0.RemoveAt(0);

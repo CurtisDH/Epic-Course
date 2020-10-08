@@ -198,10 +198,11 @@ public abstract class Tower : MonoBehaviour
         _isCoroutineRunning = true;
         while (true)
         {
+            yield return _fireRateTimer;
             //Passing in what enemy we are attacking, then the damage it needs to take.
             // by passing in true we say "we've died from the tower" 
             EventManager.RaiseEvent("onDamageEnemy",_targetedEnemy,_damage,true);
-            yield return _fireRateTimer;
+            
         }
     }
 
