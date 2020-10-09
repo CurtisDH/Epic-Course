@@ -73,9 +73,11 @@ namespace CurtisDH.Scripts.Enemies
                 StartCoroutine(Dissolve(obj, false));
             }
 
+            EventManager.RaiseEvent("onAiSpawn", gameObject, true);
         }
         private void OnDisable()
         {
+            EventManager.RaiseEvent("onAiSpawn", gameObject, false);
             EventManager.UnsubscribeEvent("onPlayerBaseReached", (Action<GameObject, bool>)onDeath);
             EventManager.UnsubscribeEvent("onDamageEnemy", (Action<GameObject, float, bool>)ReceiveDamage);
         }
@@ -103,8 +105,6 @@ namespace CurtisDH.Scripts.Enemies
             transform.parent = GameObject.Find("EnemyContainer").transform;
             _agent.speed = _speed;
             _currentHealth = _maxHP;
-            
-
         }
 
         public virtual void MoveTo(Vector3 position)

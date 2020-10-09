@@ -112,7 +112,7 @@ public abstract class Tower : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.Listen("onWaveComplete", (Action<int>)ClearList);
+        EventManager.UnsubscribeEvent("onWaveComplete", (Action<int>)ClearList);
         EventManager.UnsubscribeEvent("onEnemyDetectionRadius", (Action<GameObject, GameObject, bool>)AddEnemyToQueue);
         EventManager.UnsubscribeEvent("onAiDeath", (Action<GameObject,GameObject,bool>)AddEnemyToQueue);
         EventManager.UnsubscribeEvent("onTowerUpgrade", UpgradeTower);

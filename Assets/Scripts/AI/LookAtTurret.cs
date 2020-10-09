@@ -9,6 +9,7 @@ public class LookAtTurret : MonoBehaviour
     private GameObject _rotation;
     [SerializeField]
     private GameObject _turretToLookAt;
+    public GameObject TurretToLookAt { get => _turretToLookAt; }
     [SerializeField]
     private Animator _anim;
     [SerializeField]
