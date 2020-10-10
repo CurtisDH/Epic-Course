@@ -113,7 +113,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _edgeWidth: 0.01
-    - _fillAmount: 1
+    - _fillAmount: 0
     - _noiseScale: 30
     m_Colors:
     - Color_355E94D7: {r: 0.02322215, g: 0.105882354, b: 0.754717, a: 1}

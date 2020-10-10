@@ -69,9 +69,9 @@ public class EventManager : MonoBehaviour
             var EventToRaise = _eventDictionary?[eventName] as Action;
             EventToRaise?.Invoke();
         }
-        catch
+        catch(Exception e)
         {
-            
+            Debug.Log(e.Data);
         }
         
     }

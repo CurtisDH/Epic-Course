@@ -15,6 +15,7 @@ public class GameStateEditor : EditorWindow
     bool _findPrefabCollapse;
     bool _activeSettingsCollapse;
     bool _enemyTrackerCollapse;
+    bool _enemyStatsCollapse;
 
     float _timeControlSlider = 1;
 
@@ -22,6 +23,8 @@ public class GameStateEditor : EditorWindow
     private Object[] _quickPrefabs;
     [SerializeField]
     private List<GameObject> _activeEnemies;
+
+    Editor goEditor;
 
     Vector2 _scrollPos;
 
@@ -104,13 +107,18 @@ public class GameStateEditor : EditorWindow
             }
             _warFundTxt = GUILayout.TextField(_warFundTxt);
             GUILayout.Label("Time Control");
+            EditorGUI.BeginChangeCheck();
             _timeControlSlider = EditorGUILayout.Slider(_timeControlSlider, 0, 5);
-            if(Application.isPlaying) // need to find a way to call this once..
+            if (EditorGUI.EndChangeCheck())
             {
-                Time.timeScale = _timeControlSlider;
+                if (Application.isPlaying) // need to find a way to call this once..
+                {
+                    Time.timeScale = _timeControlSlider;
+                }
             }
-            
-            
+
+
+
             GUILayout.Label("Enemy Related", EditorStyles.boldLabel);
             if (GUILayout.Button("Spawn Mech1"))
             {
@@ -162,7 +170,7 @@ public class GameStateEditor : EditorWindow
             {
                 if (_activeEnemies != null)
                 {
-                    _scrollPos= GUILayout.BeginScrollView(_scrollPos,GUILayout.Height(100));
+                    _scrollPos = GUILayout.BeginScrollView(_scrollPos, GUILayout.Height(100));
                     for (int i = 0; i < _activeEnemies.Count; i++)
                     {
                         if (GUILayout.Button(_activeEnemies[i].name))
@@ -172,24 +180,47 @@ public class GameStateEditor : EditorWindow
                     }
                     GUILayout.EndScrollView();
                 }
+                
+            }
+            _enemyStatsCollapse = EditorGUILayout.Foldout(_enemyStatsCollapse, "Target Stats");
+            if(_enemyStatsCollapse)
+            {
                 if (Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<AIBase>())
                 {
                     var comp = Selection.activeGameObject.GetComponent<LookAtTurret>();
-                    GUILayout.Label("Currently Targeting Turret");
-                    if(comp.TurretToLookAt != null)
+                    var aiBase = Selection.activeGameObject.GetComponent<AIBase>();
+                    if (comp.gameObject != null)
                     {
+                        var compGO = comp.gameObject;
+                        compGO = (GameObject)EditorGUILayout.ObjectField(compGO, typeof(GameObject), true);
+
+                        GUIStyle bgColor = new GUIStyle();
+
+                        if (goEditor == null || goEditor.target != compGO)
+                        {
+                            goEditor = Editor.CreateEditor(compGO);
+                        }
+
+
+                        goEditor.OnPreviewGUI(GUILayoutUtility.GetRect(100, 100), EditorStyles.whiteLabel);
+                        goEditor.OnInspectorGUI();
+                        goEditor.DrawDefaultInspector();
+
+                    }
+
+                    if (comp.TurretToLookAt != null)
+                    {
+                        GUILayout.Label("Currently Targeting Turret");
                         EditorGUILayout.ObjectField(comp.TurretToLookAt, typeof(Object));
                         if (GUILayout.Button("Select Target Turret"))
                         {
                             Selection.activeGameObject = comp.TurretToLookAt;
                         }
                     }
-                    
-
-                    
+                    GUILayout.Label("Current Mech HP:   " + aiBase.Health);
                 }
             }
-            
+
             EditorGUILayout.EndToggleGroup();
 
 
