@@ -3725,6 +3725,11 @@ MonoBehaviour:
     Count: 5
     WaveID: 2
     TimeBetweenSpawns: 0.35
+  - Type: 1
+    Prefab: {fileID: 5368526353365115250, guid: fe10453352d8a2c42bb7f0edf1654ed8, type: 3}
+    Count: 5
+    WaveID: 2
+    TimeBetweenSpawns: 0.35
 --- !u!4 &408685559
 Transform:
   m_ObjectHideFlags: 0

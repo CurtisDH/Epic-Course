@@ -25,7 +25,7 @@ public class GameStateEditor : EditorWindow
     private List<GameObject> _activeEnemies;
 
     Editor goEditor;
-
+    Editor componentStats;
     Vector2 _scrollPos;
 
     int _desiredPrefabs = 6;
@@ -203,8 +203,13 @@ public class GameStateEditor : EditorWindow
 
 
                         goEditor.OnPreviewGUI(GUILayoutUtility.GetRect(100, 100), EditorStyles.whiteLabel);
-                        goEditor.OnInspectorGUI();
-                        goEditor.DrawDefaultInspector();
+                        if(componentStats == null||componentStats.target != comp)
+                        {
+                            componentStats = Editor.CreateEditor(comp);
+                        }
+                        componentStats.OnInspectorGUI();
+                        componentStats.DrawDefaultInspector();
+
 
                     }
 
