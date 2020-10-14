@@ -8,7 +8,6 @@ using UnityEngine;
 public class WaveCreator : Editor
 {
     private ReorderableList list;
-
     private void OnEnable()
     {
         list = new ReorderableList(serializedObject, serializedObject.FindProperty("Waves"), true, true, true, true);

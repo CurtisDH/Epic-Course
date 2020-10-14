@@ -7,6 +7,7 @@ namespace CurtisDH.Scripts.Managers
 {
     using CurtisDH.Scripts.Enemies;
     using CurtisDH.Utilities;
+    using System.IO;
     using System.Threading;
     using UnityEditor;
 
@@ -89,6 +90,19 @@ namespace CurtisDH.Scripts.Managers
         }
         private void Start()
         {
+            //var path = "/Scripts/ScriptableObjects/Waves";
+            //string[] assetEntries = Directory.GetFiles(Application.dataPath + path);
+            //for(int i = 0; i <assetEntries.Length; i++)
+            //{
+            //    Debug.Log(assetEntries[i]);
+            //    Object t = AssetDatabase.LoadAssetAtPath(assetEntries[i], typeof(Wave));
+            //    Debug.Log(t);
+            //}
+            //Resources.LoadAll(Application.dataPath + path);
+            
+            
+
+
             foreach(var wave in _customWaves)
             {
                 _customWaveTimers.Add(new WaitForSeconds(wave.TimeBetweenEnemySpawns));

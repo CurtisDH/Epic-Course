@@ -622,7 +622,7 @@ MonoBehaviour:
   _launchSpeed: 10
   _power: 20
   _fuseDelay: 0
-  _reloadTime: 2
+  _reloadTime: 0
   _destroyTime: 5
 --- !u!65 &-8162194782325502245
 BoxCollider:

@@ -16,7 +16,7 @@ public class GameStateEditor : EditorWindow
     bool _activeSettingsCollapse;
     bool _enemyTrackerCollapse;
     bool _enemyStatsCollapse;
-
+    
     float _timeControlSlider = 1;
 
     [SerializeField]
@@ -27,6 +27,7 @@ public class GameStateEditor : EditorWindow
     Editor goEditor;
     Editor componentStats;
     Vector2 _scrollPos;
+    Vector2 _CompStatsScroll;
 
     int _desiredPrefabs = 6;
 
@@ -185,6 +186,7 @@ public class GameStateEditor : EditorWindow
             _enemyStatsCollapse = EditorGUILayout.Foldout(_enemyStatsCollapse, "Target Stats");
             if(_enemyStatsCollapse)
             {
+                _CompStatsScroll = GUILayout.BeginScrollView(_CompStatsScroll);
                 if (Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<AIBase>())
                 {
                     var comp = Selection.activeGameObject.GetComponent<LookAtTurret>();
@@ -203,6 +205,9 @@ public class GameStateEditor : EditorWindow
 
 
                         goEditor.OnPreviewGUI(GUILayoutUtility.GetRect(100, 100), EditorStyles.whiteLabel);
+                        var e = Editor.CreateEditor(aiBase);
+                        e.OnInspectorGUI();
+                        e.DrawDefaultInspector();
                         if(componentStats == null||componentStats.target != comp)
                         {
                             componentStats = Editor.CreateEditor(comp);
@@ -224,6 +229,7 @@ public class GameStateEditor : EditorWindow
                     }
                     GUILayout.Label("Current Mech HP:   " + aiBase.Health);
                 }
+                GUILayout.EndScrollView();
             }
 
             EditorGUILayout.EndToggleGroup();
